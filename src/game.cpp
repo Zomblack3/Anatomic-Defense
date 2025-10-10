@@ -1,6 +1,10 @@
 #include "game.h"
 
+#include <math.h>
+
 #include "gameplay.h"
+
+#include "player.h"
 
 using namespace settings;
 
@@ -8,7 +12,12 @@ namespace run
 {
 	void game()
 	{
-		Screen currentScreen = Screen::MAIN_MENU;
+		Screen currentScreen = Screen::GAMEPLAY;
+
+		Player player;
+
+		player.position = { screenWidth / 2.0f, screenHeight / 2.0f };
+		player.height = (player.size / 2) / tanf(20 * DEG2RAD);
 
 		InitWindow(screenWidth, screenHeight, "Anatomic Defense");
 
@@ -23,7 +32,7 @@ namespace run
 				break;
 			case Screen::GAMEPLAY:
 
-				gameplay::gameplay();
+				gameplay::gameplay(player);
 
 				break;
 			case Screen::WIN_SCREEN:

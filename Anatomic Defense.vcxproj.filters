@@ -26,6 +26,9 @@
     <ClCompile Include="src\gameplay.cpp">
       <Filter>Screens .cpp</Filter>
     </ClCompile>
+    <ClCompile Include="src\player.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game.h">
@@ -33,6 +36,9 @@
     </ClInclude>
     <ClInclude Include="src\gameplay.h">
       <Filter>Screens .h</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

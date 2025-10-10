@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include "gameplay.h"
+
 using namespace settings;
 
 namespace run
@@ -21,7 +23,7 @@ namespace run
 				break;
 			case Screen::GAMEPLAY:
 
-
+				gameplay::gameplay();
 
 				break;
 			case Screen::WIN_SCREEN:

@@ -15,6 +15,12 @@
     <Filter Include="Screens .h">
       <UniqueIdentifier>{4b3e2535-b551-495a-a698-29f027948a7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects .h">
+      <UniqueIdentifier>{87a55798-25ea-4c22-9e84-d1468eecb4e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects .cpp">
+      <UniqueIdentifier>{0c21c77e-9547-4447-a7b0-7f1db1035e97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -27,7 +33,7 @@
       <Filter>Screens .cpp</Filter>
     </ClCompile>
     <ClCompile Include="src\player.cpp">
-      <Filter>Main</Filter>
+      <Filter>Objects .cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -38,7 +44,7 @@
       <Filter>Screens .h</Filter>
     </ClInclude>
     <ClInclude Include="src\player.h">
-      <Filter>Game</Filter>
+      <Filter>Objects .h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

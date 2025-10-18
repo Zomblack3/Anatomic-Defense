@@ -18,8 +18,7 @@ namespace gameplayFeatures
 {
 	void update(Player& player, float deltaTime)
 	{
-		playerFeatures::move(player, deltaTime);
-		playerFeatures::rotate(player, deltaTime);
+		playerFeatures::movePlayer(player, deltaTime);
 
 	}
 
@@ -30,6 +29,8 @@ namespace gameplayFeatures
 		ClearBackground(BLACK);
 
 		playerFeatures::drawPlayer(player);
+
+		DrawLine(static_cast <int> (player.v1.x), static_cast <int> (player.v1.y), GetMouseX(), GetMouseY(), YELLOW);
 
 		EndDrawing();
 	}

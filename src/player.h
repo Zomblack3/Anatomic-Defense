@@ -1,23 +1,42 @@
 #pragma once
 
 #include <raylib.h>
+#include <vector>
+
+struct Bullet
+{
+	Vector2 position = { 0.0f, 0.0f };
+	Vector2 speed = { 0.0f, 0.0f };
+	
+	Color color = YELLOW;
+
+	float radius = 2.0f;
+
+	bool isActive = false;
+};
 
 struct Player
 {
 	Vector2 position = { 0.0f, 0.0f };
 	Vector2 speed = { 0.0f, 0.0f };
+	Vector2 direction = { 0.0f, 0.0f };
 
-	// For triangle vertices
+	// Triangle vertices
 	Vector2 v1 = { 0.0f, 0.0f };
 	Vector2 v2 = { 0.0f, 0.0f };
 	Vector2 v3 = { 0.0f, 0.0f };
 
 	Color color = RED;
 
+	std::vector<Bullet> bullets;
+
 	const float baseSpeed = 6.0f;
 	
+	float lastAcceleration = 0.0f;
 	float acceleration = 0.0f;
+	float lastRotation = 0.0f; // in degrees
 	float rotation = 0.0f; // in degrees
+
 	float size = 20.0f;
 	float height = 0.0f;
 
@@ -30,10 +49,17 @@ struct Player
 
 namespace playerFeatures
 {
-	void drawPlayer(Player player);
-	void move(Player& player, float deltaTime);
-	void rotate(Player& player, float deltaTime);
+	void drawPlayer(Player& player);
+	void movePlayer(Player& player, float deltaTime);
+	void rotatePlayer(Player& player);
 	void takeDamage(Player& player, int damage);
 	void addScore(Player& player, int points);
 	void setDefault(Player& player);
+}
+
+namespace playerShooting
+{
+	void moveBullet(std::vector <Bullet> bullets);
+	void shootBullet(std::vector <Bullet> bullets);
+	void drawBullets(std::vector <Bullet> bullets);
 }

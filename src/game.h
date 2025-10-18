@@ -9,7 +9,7 @@ namespace run
 
 namespace settings
 {
-	constexpr int screenWidth = 1250;
+	constexpr int screenWidth = 1024;
 	constexpr int screenHeight = 750;
 
 	enum class Screen

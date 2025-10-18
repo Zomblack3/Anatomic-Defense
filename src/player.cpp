@@ -2,13 +2,13 @@
 
 #include "game.h"
 
-#include <math.h>
+#include <raymath.h>
 
 namespace playerFeatures
 {
 	float accelerationDelay = 0.0f;
 
-	void drawPlayer(Player player)
+	void drawPlayer(Player& player)
 	{
 		// Calculate triangle vertices based on position, size, height, and rotation
 		player.v1 = { player.position.x + sinf(player.rotation * DEG2RAD) * (player.height), player.position.y - cosf(player.rotation * DEG2RAD) * (player.height) };
@@ -18,21 +18,31 @@ namespace playerFeatures
 		DrawTriangle(player.v1, player.v2, player.v3, player.color);
 	}
 
-	void move(Player& player, float deltaTime)
+	void movePlayer(Player& player, float deltaTime)
 	{
 		if (player.isActive)
 		{
-			player.speed.x = sin(player.rotation * DEG2RAD) * player.baseSpeed;
-			player.speed.y = cos(player.rotation * DEG2RAD) * player.baseSpeed;
+			player.speed.x = static_cast <float> (sin(player.rotation * DEG2RAD) * player.baseSpeed);
+			player.speed.y = static_cast <float> (cos(player.rotation * DEG2RAD) * player.baseSpeed);
 
 			if (accelerationDelay <= 0)
 			{
-				if (IsKeyDown(KEY_UP))
+				if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 				{
-					if (player.acceleration < 1)
-						player.acceleration += 0.004f;
+					rotatePlayer(player);
+
+					player.speed.x = static_cast <float> (sin(player.rotation * DEG2RAD) * player.baseSpeed);
+					player.speed.y = static_cast <float> (cos(player.rotation * DEG2RAD) * player.baseSpeed);
 
 					accelerationDelay = 1.0f;
+
+					if (player.lastAcceleration > 0.0f)
+						player.lastAcceleration -= 0.004f;
+					else if (player.lastAcceleration < 0.0f)
+						player.lastAcceleration = 0.0f;
+					else
+						if (player.acceleration < 1)
+							player.acceleration += 0.004f;
 				}
 				else
 				{
@@ -46,6 +56,8 @@ namespace playerFeatures
 			}
 			else
 				accelerationDelay -= deltaTime;
+
+
 
 			if (IsKeyDown(KEY_DOWN))
 			{
@@ -75,9 +87,25 @@ namespace playerFeatures
 		}
 	}
 
-	void rotate(Player& player, float deltaTime)
+	void rotatePlayer(Player& player)
 	{
-		if (IsKeyDown(KEY_LEFT)) 
+		float mouseX = static_cast <float> (GetMouseX());
+		float mouseY = static_cast <float> (GetMouseY());
+
+		float deltaX = mouseX - player.position.x;
+		float deltaY = mouseY - player.position.y;
+
+		float angle = static_cast <float> (atan2(deltaY, deltaX));
+		float grades = angle * (180.0f / PI) + 90.0f;
+
+		//player.rotation = grades;
+
+		if (player.rotation > grades)
+			player.rotation -= 2.0f;
+		else if (player.rotation < grades)
+			player.rotation += 2.0f;
+
+		/*if (IsKeyDown(KEY_LEFT)) 
 			player.rotation -= 5.0f * deltaTime;
 		if (IsKeyDown(KEY_RIGHT)) 
 			player.rotation += 5.0f * deltaTime;
@@ -85,7 +113,7 @@ namespace playerFeatures
 		if (player.rotation >= 360.0f)
 			player.rotation -= 360.0f;
 		if (player.rotation < 0.0f)
-			player.rotation += 360.0f;
+			player.rotation += 360.0f;*/
 	}
 
 	void takeDamage(Player& player, int damage)
@@ -110,5 +138,49 @@ namespace playerFeatures
 		player.rotation = 0.0f;
 		player.health = 100;
 		player.score = 0;
+	}
+}
+
+namespace playerShooting
+{
+	void moveBullet(std::vector <Bullet> bullets)
+	{
+		for (auto& bullet : bullets)
+		{
+			if (bullet.isActive)
+			{
+				bullet.position.x += bullet.speed.x;
+				bullet.position.y -= bullet.speed.y;
+				if (bullet.position.x > settings::screenWidth || bullet.position.x < 0 ||
+					bullet.position.y > settings::screenHeight || bullet.position.y < 0)
+				{
+					bullet.isActive = false;
+				}
+			}
+		}
+	}
+
+	void shootBullet(std::vector <Bullet> bullets)
+	{
+		for (auto& bullet : bullets)
+		{
+			if (!bullet.isActive)
+			{
+				bullet.isActive = true;
+				// Set bullet position and speed based on player position and rotation
+				break; // Shoot only one bullet at a time
+			}
+		}
+	}
+
+	void drawBullets(std::vector <Bullet> bullets)
+	{
+		for (const auto& bullet : bullets)
+		{
+			if (bullet.isActive)
+			{
+				DrawCircleV(bullet.position, bullet.radius, bullet.color);
+			}
+		}
 	}
 }

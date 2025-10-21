@@ -32,25 +32,22 @@ namespace playerFeatures
 			{
 				if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 				{
-					player.speed.x = static_cast <float> (sin(player.rotation * DEG2RAD) * player.baseSpeed);
-					player.speed.y = static_cast <float> (cos(player.rotation * DEG2RAD) * player.baseSpeed);
+					/*player.speed.x = static_cast <float> (sin(player.rotation * DEG2RAD) * player.baseSpeed);
+					player.speed.y = static_cast <float> (cos(player.rotation * DEG2RAD) * player.baseSpeed);*/
 
 					accelerationDelay = 1.0f;
 
-					if (player.lastAcceleration > 0.0f)
-						player.lastAcceleration -= 0.004f;
-					else if (player.lastAcceleration < 0.0f)
-						player.lastAcceleration = 0.0f;
+					if (player.acceleration < player.maxAcceleration)
+						player.acceleration += 0.004f;
 					else
-						if (player.acceleration < 1)
-							player.acceleration += 0.004f;
+						player.acceleration = player.maxAcceleration;
 				}
 				else
 				{
-					if (player.acceleration > 0.2f)
+					if (player.acceleration > player.minAcceleration)
 						player.acceleration -= 0.004f;
-					else if (player.acceleration < 0.2f)
-						player.acceleration = 0.2f;
+					else
+						player.acceleration = player.minAcceleration;
 
 					accelerationDelay = 1.0f;
 				}

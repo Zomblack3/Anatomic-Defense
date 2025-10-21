@@ -35,6 +35,9 @@
     <ClCompile Include="src\player.cpp">
       <Filter>Objects .cpp</Filter>
     </ClCompile>
+    <ClCompile Include="src\enemies.cpp">
+      <Filter>Objects .cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game.h">
@@ -44,6 +47,9 @@
       <Filter>Screens .h</Filter>
     </ClInclude>
     <ClInclude Include="src\player.h">
+      <Filter>Objects .h</Filter>
+    </ClInclude>
+    <ClInclude Include="src\enemies.h">
       <Filter>Objects .h</Filter>
     </ClInclude>
   </ItemGroup>

@@ -35,7 +35,8 @@ struct Player
 
 	const float baseSpeed = 6.0f;
 	
-	float lastAcceleration = 0.0f;
+	float minAcceleration = 0.2f;
+	float maxAcceleration = 4.0f;
 	float acceleration = 0.0f;
 	float lastRotation = 0.0f; // in degrees
 	float rotation = 0.0f; // in degrees

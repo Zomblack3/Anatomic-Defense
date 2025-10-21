@@ -1,16 +1,19 @@
 #pragma once
 
 #include <raylib.h>
-#include <vector>
+
+const int maxAmountOfBullets = 100;
 
 struct Bullet
 {
 	Vector2 position = { 0.0f, 0.0f };
 	Vector2 speed = { 0.0f, 0.0f };
+	Vector2 direction = { 0.0f, 0.0f };
 	
 	Color color = YELLOW;
 
-	float radius = 2.0f;
+	float radius = 5.0f;
+	float baseSpeed = 5.0f;
 
 	bool isActive = false;
 };
@@ -28,7 +31,7 @@ struct Player
 
 	Color color = RED;
 
-	std::vector<Bullet> bullets;
+	Bullet bullets[maxAmountOfBullets];
 
 	const float baseSpeed = 6.0f;
 	
@@ -49,7 +52,8 @@ struct Player
 
 namespace playerFeatures
 {
-	void drawPlayer(Player& player);
+	void setPlayerDirection(Player& player);
+	void drawPlayer(Player player);
 	void movePlayer(Player& player, float deltaTime);
 	void rotatePlayer(Player& player);
 	void takeDamage(Player& player, int damage);
@@ -59,7 +63,7 @@ namespace playerFeatures
 
 namespace playerShooting
 {
-	void moveBullet(std::vector <Bullet> bullets);
-	void shootBullet(std::vector <Bullet> bullets);
-	void drawBullets(std::vector <Bullet> bullets);
+	void moveBullet(Bullet bullets[], int amountOfBullets, float deltaTime);
+	void shootBullet(Player player, Bullet bullets[], int amountOfBullets);
+	void drawBullets(Bullet bullets[], int amountOfBullets);
 }

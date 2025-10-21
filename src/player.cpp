@@ -8,13 +8,16 @@ namespace playerFeatures
 {
 	float accelerationDelay = 0.0f;
 
-	void drawPlayer(Player& player)
+	void setPlayerDirection(Player& player)
 	{
 		// Calculate triangle vertices based on position, size, height, and rotation
 		player.v1 = { player.position.x + sinf(player.rotation * DEG2RAD) * (player.height), player.position.y - cosf(player.rotation * DEG2RAD) * (player.height) };
 		player.v2 = { player.position.x - cosf(player.rotation * DEG2RAD) * (player.size / 2), player.position.y - sinf(player.rotation * DEG2RAD) * (player.size / 2) };
 		player.v3 = { player.position.x + cosf(player.rotation * DEG2RAD) * (player.size / 2), player.position.y + sinf(player.rotation * DEG2RAD) * (player.size / 2) };
-		
+	}
+
+	void drawPlayer(Player player)
+	{
 		DrawTriangle(player.v1, player.v2, player.v3, player.color);
 	}
 
@@ -29,8 +32,6 @@ namespace playerFeatures
 			{
 				if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 				{
-					rotatePlayer(player);
-
 					player.speed.x = static_cast <float> (sin(player.rotation * DEG2RAD) * player.baseSpeed);
 					player.speed.y = static_cast <float> (cos(player.rotation * DEG2RAD) * player.baseSpeed);
 
@@ -98,12 +99,12 @@ namespace playerFeatures
 		float angle = static_cast <float> (atan2(deltaY, deltaX));
 		float grades = angle * (180.0f / PI) + 90.0f;
 
-		//player.rotation = grades;
+		player.rotation = grades;
 
-		if (player.rotation > grades)
+		/*if (player.rotation > grades)
 			player.rotation -= 2.0f;
 		else if (player.rotation < grades)
-			player.rotation += 2.0f;
+			player.rotation += 2.0f;*/
 
 		/*if (IsKeyDown(KEY_LEFT)) 
 			player.rotation -= 5.0f * deltaTime;
@@ -143,44 +144,45 @@ namespace playerFeatures
 
 namespace playerShooting
 {
-	void moveBullet(std::vector <Bullet> bullets)
+	void moveBullet(Bullet bullets[], int amountOfBullets, float deltaTime)
 	{
-		for (auto& bullet : bullets)
+		for (int i = 0; i < amountOfBullets; i++)
 		{
-			if (bullet.isActive)
+			if (bullets[i].isActive)
 			{
-				bullet.position.x += bullet.speed.x;
-				bullet.position.y -= bullet.speed.y;
-				if (bullet.position.x > settings::screenWidth || bullet.position.x < 0 ||
-					bullet.position.y > settings::screenHeight || bullet.position.y < 0)
-				{
-					bullet.isActive = false;
-				}
+				bullets[i].position.x += bullets[i].speed.x * deltaTime;
+				bullets[i].position.y -= bullets[i].speed.y * deltaTime;
+
+				if (bullets[i].position.x > settings::screenWidth || bullets[i].position.x < 0 ||
+					bullets[i].position.y > settings::screenHeight || bullets[i].position.y < 0)
+					bullets[i].isActive = false;
 			}
 		}
 	}
 
-	void shootBullet(std::vector <Bullet> bullets)
+	void shootBullet(Player player, Bullet bullets[], int amountOfBullets)
 	{
-		for (auto& bullet : bullets)
+		for (int i = 0; i < amountOfBullets; i++)
 		{
-			if (!bullet.isActive)
+			if (!bullets[i].isActive)
 			{
-				bullet.isActive = true;
+				bullets[i].isActive = true;
 				// Set bullet position and speed based on player position and rotation
+				bullets[i].position = player.v1;
+				bullets[i].speed.x = static_cast <float>(sin(player.rotation * DEG2RAD) * bullets[i].baseSpeed);
+				bullets[i].speed.y = static_cast <float>(cos(player.rotation * DEG2RAD) * bullets[i].baseSpeed);
+				bullets[i].direction = player.direction;
 				break; // Shoot only one bullet at a time
 			}
 		}
 	}
 
-	void drawBullets(std::vector <Bullet> bullets)
+	void drawBullets(Bullet bullets[], int amountOfBullets)
 	{
-		for (const auto& bullet : bullets)
+		for (int i = 0; i < amountOfBullets; i++)
 		{
-			if (bullet.isActive)
-			{
-				DrawCircleV(bullet.position, bullet.radius, bullet.color);
-			}
+			if (bullets[i].isActive)
+				DrawCircleV(bullets[i].position, bullets[i].radius, bullets[i].color);
 		}
 	}
 }

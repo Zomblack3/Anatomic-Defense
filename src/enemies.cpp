@@ -10,7 +10,7 @@ namespace enemiesFeatures
 {
 	void spawnEnemy(std::vector <Enemy> enemies, float deltaTime)
 	{
-		int randomEnemyType = 0.0f;
+		int randomEnemyType = 0;
 
 		ENEMY_TYPE enemyType = ENEMY_TYPE::SMALL;
 
@@ -27,7 +27,7 @@ namespace enemiesFeatures
 
 			if (randomSpawnPositionX > 5 || randomSpawnPositionX < settings::screenWidth - 5)
 			{
-				randomSpawnPositionY = GetRandomValue(0, 100);
+				randomSpawnPositionY = static_cast <float> (GetRandomValue(0, 100));
 
 				if (randomSpawnPositionY < 50)
 					randomSpawnPositionY = 0;
@@ -35,7 +35,7 @@ namespace enemiesFeatures
 					randomSpawnPositionY = settings::screenHeight;
 			}
 			else
-				randomSpawnPositionY = static_cast <float>(GetRandomValue(0, settings::screenHeight));
+				randomSpawnPositionY = static_cast <float> (GetRandomValue(0, settings::screenHeight));
 
 			switch (randomEnemyType)
 			{
@@ -66,14 +66,20 @@ namespace enemiesFeatures
 
 	void splitEnemy(std::vector<Enemy>& enemies, ENEMY_TYPE type)
 	{
-		enemies
+		Enemy enemiese;
+		std::vector <Enemy> tuMama = enemies;
+ 
+		enemiese.type = type;
+		//enemiese = enemies;
 
 		//enemies.push_back()
 	}
 
 	void moveEnemy(std::vector <Enemy> enemies, float deltaTime)
 	{
+		float tiempo = 0.0f;
 
+		tiempo = deltaTime;
 	}
 
 	void drawEnemy(std::vector <Enemy> enemies)
@@ -104,8 +110,8 @@ namespace enemiesFeatures
 			break;
 		}
 
-		enemy.speed.x = GetRandomValue(0, speed.x);
-		enemy.speed.y = GetRandomValue(0, speed.y);
+		enemy.speed.x = static_cast <float> (GetRandomValue(0, static_cast <int> (speed.x)));
+		enemy.speed.y = static_cast <float> (GetRandomValue(0, static_cast <int> (speed.y)));
 
 		enemy.position = position;
 

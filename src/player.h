@@ -13,7 +13,7 @@ struct Bullet
 	Color color = YELLOW;
 
 	float radius = 5.0f;
-	float baseSpeed = 5.0f;
+	float baseSpeed = 6.5f;
 
 	bool isActive = false;
 };

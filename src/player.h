@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <raylib.h>
 
 const int maxAmountOfBullets = 100;
@@ -8,8 +9,7 @@ struct Bullet
 {
 	Vector2 position = { 0.0f, 0.0f };
 	Vector2 speed = { 0.0f, 0.0f };
-	Vector2 direction = { 0.0f, 0.0f };
-	
+
 	Color color = YELLOW;
 
 	float radius = 5.0f;
@@ -22,7 +22,6 @@ struct Player
 {
 	Vector2 position = { 0.0f, 0.0f };
 	Vector2 speed = { 0.0f, 0.0f };
-	Vector2 direction = { 0.0f, 0.0f };
 
 	// Triangle vertices
 	Vector2 v1 = { 0.0f, 0.0f };
@@ -44,8 +43,11 @@ struct Player
 	float size = 20.0f;
 	float height = 0.0f;
 
+	float untouchableTimer = 0.0f;
+
 	int health = 100;
 	int score = 0;
+	int hitboxRadius = 10;
 	
 	bool isAlive() const { return health > 0; };
 	bool isActive = false;

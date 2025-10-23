@@ -1,8 +1,8 @@
 #include "player.h"
 
-#include "game.h"
-
 #include <raymath.h>
+
+#include "game.h"
 
 namespace playerFeatures
 {
@@ -18,7 +18,11 @@ namespace playerFeatures
 
 	void drawPlayer(Player player)
 	{
+		/*float hitboxPosX = (player.v1.x + player.v2.x + player.v3.x) / 3.0;
+		float hitboxPosY = (player.v1.y + player.v2.y + player.v3.y) / 3.0;*/
+
 		DrawTriangle(player.v1, player.v2, player.v3, player.color);
+		//DrawCircle(static_cast <int> (hitboxPosX), static_cast <int> (hitboxPosY), player.hitboxRadius, BLUE);
 	}
 
 	void movePlayer(Player& player, float deltaTime)
@@ -32,9 +36,6 @@ namespace playerFeatures
 			{
 				if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 				{
-					/*player.speed.x = static_cast <float> (sin(player.rotation * DEG2RAD) * player.baseSpeed);
-					player.speed.y = static_cast <float> (cos(player.rotation * DEG2RAD) * player.baseSpeed);*/
-
 					accelerationDelay = 1.0f;
 
 					if (player.acceleration < player.maxAcceleration)
@@ -54,8 +55,6 @@ namespace playerFeatures
 			}
 			else
 				accelerationDelay -= deltaTime;
-
-
 
 			if (IsKeyDown(KEY_DOWN))
 			{
@@ -168,7 +167,6 @@ namespace playerShooting
 				bullets[i].position = player.v1;
 				bullets[i].speed.x = static_cast <float>(sin(player.rotation * DEG2RAD) * bullets[i].baseSpeed);
 				bullets[i].speed.y = static_cast <float>(cos(player.rotation * DEG2RAD) * bullets[i].baseSpeed);
-				bullets[i].direction = player.direction;
 				break; // Shoot only one bullet at a time
 			}
 		}

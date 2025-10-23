@@ -5,6 +5,7 @@
 #include "gameplay.h"
 
 #include "player.h"
+#include "enemies.h"
 
 using namespace settings;
 
@@ -15,6 +16,8 @@ namespace run
 		Screen currentScreen = Screen::GAMEPLAY;
 
 		Player player;
+
+		std::vector <Enemy> enemies;
 
 		player.position = { screenWidth / 2.0f, screenHeight / 2.0f };
 		player.height = (player.size / 2) / tanf(20 * DEG2RAD);
@@ -32,7 +35,7 @@ namespace run
 				break;
 			case Screen::GAMEPLAY:
 
-				gameplay::gameplay(player);
+				gameplay::gameplay(player, enemies);
 
 				break;
 			case Screen::WIN_SCREEN:

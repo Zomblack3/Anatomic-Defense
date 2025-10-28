@@ -22,7 +22,6 @@ struct Enemy
 	ENEMY_TYPE type = ENEMY_TYPE::SMALL;
 
 	int amountOfInternalEnemies = 0;
-	int damage = 0;
 	int points = 0;
 
 	float radius = 0.0f;

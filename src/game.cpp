@@ -50,7 +50,7 @@ namespace run
 		player.pos = { screenWidth / 2.0f, screenHeight / 2.0f };
 		player.height = (player.size / 2) / tanf(20 * DEG2RAD);
 
-		InitWindow(screenWidth, screenHeight, "Anatomic Defense");
+		resources::loadResources(font, MMBackground, gameplayBackground, player.texture);
 
 		while (!WindowShouldClose())
 		{
@@ -107,5 +107,38 @@ namespace run
 				break;
 			}
 		}
+
+		resources::unloadResources(font, MMBackground, gameplayBackground, player.texture);
+	}
+}
+
+namespace resources
+{
+	void loadResources(Font& font, Texture& MMBackground, Image& gameplayBackground, Texture& playerTexture)
+	{
+		int frames = 60;
+
+		Image MMBackroundImage = LoadImage("res/textures/main_menu/background.png");
+		gameplayBackground = LoadImageAnim("res/textures/gameplay/background.gif", &frames);
+
+		ImageResize(&MMBackroundImage, screenWidth, screenHeight);
+		ImageResize(&gameplayBackground, screenWidth, screenHeight);
+
+		//nave_de_prueba.webp
+		//player.png
+
+		font = LoadFont("res/fonts/robot_crush/Robot Crush.ttf");
+		MMBackground = LoadTextureFromImage(MMBackroundImage);
+		playerTexture = LoadTexture("res/textures/gameplay/player.png");
+
+		UnloadImage(MMBackroundImage);
+	}
+
+	void unloadResources(Font& font, Texture& MMBackground, Image& gameplayBackground, Texture& playerTexture)
+	{
+		UnloadFont(font);
+		UnloadTexture(MMBackground);
+		UnloadImage(gameplayBackground);
+		UnloadTexture(playerTexture);
 	}
 }

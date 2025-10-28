@@ -2,21 +2,17 @@
 
 #include <raymath.h>
 
-#include "game.h"
+#include "settings.h"
 
 namespace enemiesFeatures
 {
-	const float baseSpeedSmall = 4.0f;
-	const float baseSpeedMedium = 3.0f;
-	const float baseSpeedBig = 2.5f;
+	const float baseSpeedSmall = 400.0f;
+	const float baseSpeedMedium = 300.0f;
+	const float baseSpeedBig = 200.0f;
 
 	const float radiusSmall = 15.0f;
 	const float radiusMedium = 25.0f;
 	const float radiusBig = 35.0f;
-
-	const int damageSmall = 15;
-	const int damageMedium = 25;
-	const int damageBig = 35;
 
 	const int pointsSmall = 10;
 	const int pointsMedium = 25;
@@ -43,19 +39,19 @@ namespace enemiesFeatures
 
 			randomEnemyType = GetRandomValue(1, 3);
 
-			enemyPos.x = static_cast <float>(GetRandomValue(0, settings::screenWidth));
+			enemyPos.x = static_cast <float>(GetRandomValue(0, screenWidth));
 
-			if (enemyPos.x > 5 || enemyPos.x < settings::screenWidth - 5)
+			if (enemyPos.x > 5 || enemyPos.x < screenWidth - 5)
 			{
-				randomPosY = static_cast <float> (GetRandomValue(0, 100));
+				randomPosY = GetRandomValue(0, 100);
 
 				if (randomPosY < 50)
 					enemyPos.y = 0;
 				else
-					enemyPos.y = settings::screenHeight;
+					enemyPos.y = screenHeight;
 			}
 			else
-				enemyPos.y = static_cast <float> (GetRandomValue(0, settings::screenHeight));
+				enemyPos.y = static_cast <float> (GetRandomValue(0, screenHeight));
 
 			switch (randomEnemyType)
 			{
@@ -64,7 +60,6 @@ namespace enemiesFeatures
 				enemyType = ENEMY_TYPE::SMALL;
 				enemy.radius = radiusSmall;
 				enemy.baseSpeed = baseSpeedSmall;
-				enemy.damage = damageSmall;
 				enemy.points = pointsSmall;
 
 				break;
@@ -73,7 +68,6 @@ namespace enemiesFeatures
 				enemyType = ENEMY_TYPE::MEDIUM;
 				enemy.radius = radiusMedium;
 				enemy.baseSpeed = baseSpeedMedium;
-				enemy.damage = damageMedium;
 				enemy.points = pointsMedium;
 
 				break;
@@ -82,7 +76,6 @@ namespace enemiesFeatures
 				enemyType = ENEMY_TYPE::BIG;
 				enemy.radius = radiusBig;
 				enemy.baseSpeed = baseSpeedBig;
-				enemy.damage = damageBig;
 				enemy.points = pointsBig;
 
 				break;
@@ -101,10 +94,10 @@ namespace enemiesFeatures
 
 			spawnTimer = baseSpawnTime;
 
-			baseSpawnTime -= deltaTime;
+			baseSpawnTime -= deltaTime * 100;
 		}
 		else
-			spawnTimer -= deltaTime;
+			spawnTimer -= deltaTime * 100;
 	}
 
 	void splitEnemy(std::vector<Enemy>& enemies, Enemy enemySplited, ENEMY_TYPE type, int index)
@@ -125,15 +118,15 @@ namespace enemiesFeatures
 			enemies.at(i).position.x += enemies.at(i).speed.x = static_cast <float>(sin(enemies.at(i).rotation * DEG2RAD) * enemies.at(i).baseSpeed) * deltaTime;
 			enemies.at(i).position.y -= enemies.at(i).speed.y = static_cast <float>(cos(enemies.at(i).rotation * DEG2RAD) * enemies.at(i).baseSpeed) * deltaTime;
 
-			if (enemies.at(i).position.x > settings::screenWidth + enemies.at(i).radius)
+			if (enemies.at(i).position.x > screenWidth + enemies.at(i).radius)
 				enemies.at(i).position.x = -(enemies.at(i).radius);
 			else if (enemies.at(i).position.x < -(enemies.at(i).radius))
-				enemies.at(i).position.x = settings::screenWidth + enemies.at(i).radius;
+				enemies.at(i).position.x = screenWidth + enemies.at(i).radius;
 
-			if (enemies.at(i).position.y > (settings::screenHeight + enemies.at(i).radius))
+			if (enemies.at(i).position.y > (screenHeight + enemies.at(i).radius))
 				enemies.at(i).position.y = -(enemies.at(i).radius);
 			else if (enemies.at(i).position.y < -(enemies.at(i).radius))
-				enemies.at(i).position.y = settings::screenHeight + enemies.at(i).radius;
+				enemies.at(i).position.y = screenHeight + enemies.at(i).radius;
 		}
 	}
 
@@ -196,21 +189,21 @@ namespace enemiesFeatures
 		{
 			for (int i = 0; i < enemies.size(); i++)
 			{
-				if (player.position.x > enemies.at(i).position.x)
-					distanceX = player.position.x - enemies.at(i).position.x;
+				if (player.pos.x > enemies.at(i).position.x)
+					distanceX = player.pos.x - enemies.at(i).position.x;
 				else
-					distanceX = enemies.at(i).position.x - player.position.x;
+					distanceX = enemies.at(i).position.x - player.pos.x;
 
-				if (player.position.y > enemies.at(i).position.y)
-					distanceY = player.position.y - enemies.at(i).position.y;
+				if (player.pos.y > enemies.at(i).position.y)
+					distanceY = player.pos.y - enemies.at(i).position.y;
 				else
-					distanceY = enemies.at(i).position.y - player.position.y;
+					distanceY = enemies.at(i).position.y - player.pos.y;
 
 				totalDistance = static_cast <float> (sqrt((distanceX * distanceX) + (distanceY * distanceY)));
 
 				if (totalDistance <= enemies.at(i).radius + player.hitboxRadius)
 				{
-					playerFeatures::takeDamage(player, enemies.at(i).damage);
+					player.lives--;
 
 					if (enemies.at(i).type != ENEMY_TYPE::SMALL)
 						splitEnemy(enemies, enemies.at(i), enemies.at(i).type, i);
@@ -222,7 +215,7 @@ namespace enemiesFeatures
 			}
 		}
 		else
-			player.untouchableTimer -= deltaTime;
+			player.untouchableTimer -= deltaTime * 100;
 	}
 
 	Enemy setSplitedEnemy(ENEMY_TYPE type, Vector2 speed, Vector2 position)
@@ -240,7 +233,6 @@ namespace enemiesFeatures
 			enemy.type = ENEMY_TYPE::SMALL;
 			enemy.radius = radiusSmall;
 			enemy.baseSpeed = baseSpeedSmall;
-			enemy.damage = damageSmall;
 			enemy.points = pointsSmall;
 
 			break;
@@ -249,7 +241,6 @@ namespace enemiesFeatures
 			enemy.type = ENEMY_TYPE::MEDIUM;
 			enemy.radius = radiusMedium;
 			enemy.baseSpeed = baseSpeedMedium;
-			enemy.damage = damageMedium;
 			enemy.points = pointsMedium;
 
 			break;

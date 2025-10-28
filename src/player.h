@@ -3,7 +3,7 @@
 #include <vector>
 #include <raylib.h>
 
-const int maxAmountOfBullets = 100;
+#include "settings.h"
 
 struct Bullet
 {
@@ -13,14 +13,18 @@ struct Bullet
 	Color color = YELLOW;
 
 	float radius = 5.0f;
-	float baseSpeed = 6.5f;
+	float baseSpeed = 650.0f;
 
 	bool isActive = false;
 };
 
 struct Player
 {
-	Vector2 position = { 0.0f, 0.0f };
+	Vector2 pos = { 0.0f, 0.0f };
+	Vector2 textureOrigin = { 0.0f, 0.0f };
+	Vector2 texturePos = { 0.0f, 0.0f };
+	Vector2 hitboxPos = { 0.0f, 0.0f };
+
 	Vector2 speed = { 0.0f, 0.0f };
 
 	// Triangle vertices
@@ -30,14 +34,15 @@ struct Player
 
 	Color color = RED;
 
-	Bullet bullets[maxAmountOfBullets];
+	Texture texture = { };
+	Rectangle textureRec = { };
+	Rectangle textureDest = { };
 
-	const float baseSpeed = 6.0f;
+	Bullet bullets[maxAmountOfBullets];
 	
-	float minAcceleration = 0.2f;
-	float maxAcceleration = 4.0f;
+	float minAcceleration = 0.002f;
+	float maxAcceleration = 1.0f;
 	float acceleration = 0.0f;
-	float lastRotation = 0.0f; // in degrees
 	float rotation = 0.0f; // in degrees
 
 	float size = 20.0f;
@@ -45,23 +50,23 @@ struct Player
 
 	float untouchableTimer = 0.0f;
 
-	int health = 100;
+	int lives = 3;
 	int score = 0;
 	int hitboxRadius = 10;
 	
-	bool isAlive() const { return health > 0; };
 	bool isActive = false;
 };
 
 namespace playerFeatures
 {
 	void setPlayerDirection(Player& player);
-	void drawPlayer(Player player);
-	void movePlayer(Player& player, float deltaTime);
+	void drawPlayer(const Player player);
+	void movePlayer(Player& player, const float deltaTime);
 	void rotatePlayer(Player& player);
-	void takeDamage(Player& player, int damage);
-	void addScore(Player& player, int points);
+	void addScore(Player& player, const int points);
 	void setDefault(Player& player);
+
+	bool isAlive(const Player player);
 }
 
 namespace playerShooting

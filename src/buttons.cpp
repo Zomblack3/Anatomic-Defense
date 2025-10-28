@@ -22,7 +22,7 @@ namespace buttonsFeatures
 	{
 		for (int i = 0; i < amountOfButtons; i++)
 		{
-			buttons[i].rec.width = texts[i].size() * buttons[i].textSize;
+			buttons[i].rec.width = static_cast <float> (texts[i].size()) * buttons[i].textSize;
 			buttons[i].rec.height = buttons[i].baseHeight;
 			buttons[i].rec.y = startingPosY;
 			buttons[i].rec.x = startingPosX - (buttons[i].rec.width / 2.0f);

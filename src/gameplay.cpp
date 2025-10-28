@@ -8,11 +8,11 @@ bool isPauseOn = false;
 
 namespace gameplay
 {
-	void gameplay(Player& player, std::vector <Enemy>& enemies, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Font font, Image background)
+	void gameplay(Player& player, std::vector <Enemy>& enemies, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Font font, Image& backgroundAnim, Texture& background, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, int frames)
 	{
 		float deltaTime = GetFrameTime();
 
-		gameplayFeatures::update(player, enemies, deltaTime, buttons, amountOfButtons, currentScreen);
+		gameplayFeatures::update(player, enemies, deltaTime, buttons, amountOfButtons, currentScreen, background, backgroundAnim, frames, smallEnemy, mediumEnemy, bigEnemy);
 
 		gameplayFeatures::draw(player, enemies, buttons, amountOfButtons, font, background);
 	}
@@ -20,11 +20,19 @@ namespace gameplay
 
 namespace gameplayFeatures
 {
-	void update(Player& player, std::vector <Enemy>& enemies, float deltaTime, Button buttons[], int amountOfButtons, SCREEN& currentScreen)
+	unsigned int nextFrameDataOffset = 0;  // Current byte offset to next frame in image.data
+
+	int currentAnimFrame = 0;       // Current animation frame to load and draw
+	float frameDelay = 1.0f / 30.0f;             // Frame delay to switch between animation frames
+	float animTimer = 0.0f;           // General frames counter
+
+	void update(Player& player, std::vector <Enemy>& enemies, float deltaTime, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Texture& gameplayBackground, Image& backgroundAnim, int frames, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy)
 	{
 		if (!isPauseOn)
 		{
-			enemiesFeatures::spawnEnemy(enemies, deltaTime);
+			updateBackground(backgroundAnim, gameplayBackground, frames, deltaTime);
+
+			enemiesFeatures::spawnEnemy(enemies, smallEnemy, mediumEnemy, bigEnemy, deltaTime);
 
 			playerFeatures::movePlayer(player, deltaTime);
 			playerFeatures::rotatePlayer(player);
@@ -38,8 +46,8 @@ namespace gameplayFeatures
 			if (enemies.size() > 0)
 			{
 				enemiesFeatures::moveEnemy(enemies, deltaTime);
-				enemiesFeatures::checkBulletEnemyCollition(enemies, player);
-				enemiesFeatures::checkPlayerEnemyCollition(enemies, player, deltaTime);
+				enemiesFeatures::checkBulletEnemyCollition(enemies, player, smallEnemy, mediumEnemy, bigEnemy);
+				enemiesFeatures::checkPlayerEnemyCollition(enemies, player, deltaTime, smallEnemy, mediumEnemy, bigEnemy);
 			}
 
 			if (IsKeyPressed(KEY_P))
@@ -72,7 +80,7 @@ namespace gameplayFeatures
 		}
 	}
 
-	void draw(Player player, std::vector <Enemy> enemies, Button buttons[], int amountOfButtons, Font font, Image background)
+	void draw(Player player, std::vector <Enemy> enemies, Button buttons[], int amountOfButtons, Font font, Texture background)
 	{
 		int lifePositionX = 800;
 		int textPositionY = 20;
@@ -82,11 +90,13 @@ namespace gameplayFeatures
 
 		BeginDrawing();
 
-		ClearBackground(WHITE);
+		ClearBackground(BLACK);
 
-		playerFeatures::drawPlayer(player);
+		DrawTexture(background, 0, 0, WHITE);
 
 		playerShooting::drawBullets(player.bullets, maxAmountOfBullets);
+
+		playerFeatures::drawPlayer(player);
 
 		enemiesFeatures::drawEnemy(enemies);
 
@@ -103,5 +113,30 @@ namespace gameplayFeatures
 			buttonsFeatures::drawButtons(buttons, amountOfButtons);
 
 		EndDrawing();
+	}
+
+	void updateBackground(Image& backgroundAnim, Texture& background, int& frames, float deltaTime)
+	{
+		animTimer += deltaTime;
+
+		if (animTimer >= frameDelay)
+		{
+			// Move to next frame
+			// NOTE: If final frame is reached we return to first frame
+			currentAnimFrame++;
+			
+			if (currentAnimFrame >= frames) 
+				currentAnimFrame = 0;
+
+			// Get memory offset position for next frame data in image.data
+			nextFrameDataOffset = backgroundAnim.width * backgroundAnim.height * 4 * currentAnimFrame;
+
+			// Update GPU texture data with next frame image data
+			// WARNING: Data size (frame size) and pixel format must match already created texture
+			UpdateTexture(background, ((unsigned char*)backgroundAnim.data) + nextFrameDataOffset);
+
+			animTimer -= frameDelay;
+		}
+
 	}
 }

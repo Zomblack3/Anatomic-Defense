@@ -19,6 +19,8 @@ struct Enemy
 
 	Color color = GREEN;
 
+	Texture texture = { };
+
 	ENEMY_TYPE type = ENEMY_TYPE::SMALL;
 
 	int amountOfInternalEnemies = 0;
@@ -33,15 +35,15 @@ struct Enemy
 
 namespace enemiesFeatures
 {
-	void spawnEnemy(std::vector <Enemy>& enemies, float deltaTime);
-	void splitEnemy(std::vector <Enemy>& enemies, Enemy enemySplited, ENEMY_TYPE type, int index);
+	void spawnEnemy(std::vector <Enemy>& enemies, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, float deltaTime);
+	void splitEnemy(std::vector <Enemy>& enemies, Enemy enemySplited, ENEMY_TYPE type, int index, Texture smallEnemy, Texture mediumEnemy);
 	void moveEnemy(std::vector <Enemy>& enemies, float deltaTime);
 	void drawEnemy(std::vector <Enemy> enemies);
 
-	void checkBulletEnemyCollition(std::vector <Enemy>& enemies, Player& player);
-	void checkPlayerEnemyCollition(std::vector <Enemy>& enemies, Player& player, float deltaTime);
+	void checkBulletEnemyCollition(std::vector <Enemy>& enemies, Player& player, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy);
+	void checkPlayerEnemyCollition(std::vector <Enemy>& enemies, Player& player, float deltaTime, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy);
 
-	Enemy setSplitedEnemy(ENEMY_TYPE type, Vector2 speed, Vector2 position);
+	Enemy setSplitedEnemy(ENEMY_TYPE type, Vector2 position, Texture smallEnemy, Texture mediumEnemy);
 }
 
 

@@ -10,7 +10,7 @@ namespace enemiesFeatures
 	const float baseSpeedMedium = 300.0f;
 	const float baseSpeedBig = 200.0f;
 
-	const float radiusSmall = 15.0f;
+	const float radiusSmall = 20.0f;
 	const float radiusMedium = 25.0f;
 	const float radiusBig = 35.0f;
 
@@ -21,7 +21,7 @@ namespace enemiesFeatures
 	float spawnTimer = 0.0f;
 	float baseSpawnTime = 500.0f;
 
-	void spawnEnemy(std::vector <Enemy>& enemies, float deltaTime)
+	void spawnEnemy(std::vector <Enemy>& enemies, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, float deltaTime)
 	{
 		Enemy enemy = { };
 
@@ -61,6 +61,7 @@ namespace enemiesFeatures
 				enemy.radius = radiusSmall;
 				enemy.baseSpeed = baseSpeedSmall;
 				enemy.points = pointsSmall;
+				enemy.texture = smallEnemy;
 
 				break;
 			case 2:
@@ -69,6 +70,7 @@ namespace enemiesFeatures
 				enemy.radius = radiusMedium;
 				enemy.baseSpeed = baseSpeedMedium;
 				enemy.points = pointsMedium;
+				enemy.texture = mediumEnemy;
 
 				break;
 			case 3:
@@ -77,6 +79,7 @@ namespace enemiesFeatures
 				enemy.radius = radiusBig;
 				enemy.baseSpeed = baseSpeedBig;
 				enemy.points = pointsBig;
+				enemy.texture = bigEnemy;
 
 				break;
 			default:
@@ -100,10 +103,10 @@ namespace enemiesFeatures
 			spawnTimer -= deltaTime * 100;
 	}
 
-	void splitEnemy(std::vector<Enemy>& enemies, Enemy enemySplited, ENEMY_TYPE type, int index)
+	void splitEnemy(std::vector<Enemy>& enemies, Enemy enemySplited, ENEMY_TYPE type, int index, Texture smallEnemy, Texture mediumEnemy)
 	{
-		Enemy enemy1 = setSplitedEnemy(type, enemySplited.speed, enemySplited.position);
-		Enemy enemy2 = setSplitedEnemy(type, enemySplited.speed, enemySplited.position);
+		Enemy enemy1 = setSplitedEnemy(type, enemySplited.position, smallEnemy, mediumEnemy);
+		Enemy enemy2 = setSplitedEnemy(type, enemySplited.position, smallEnemy, mediumEnemy);
 
 		enemies.erase(enemies.begin() + index);
 
@@ -133,10 +136,34 @@ namespace enemiesFeatures
 	void drawEnemy(std::vector <Enemy> enemies)
 	{
 		for (int i = 0; i < enemies.size(); i++)
-			DrawCircle(static_cast <int>(enemies.at(i).position.x), static_cast <int>(enemies.at(i).position.y), enemies.at(i).radius, enemies.at(i).color);
+		{
+			switch (enemies.at(i).type)
+			{
+			case ENEMY_TYPE::SMALL:
+
+				DrawTexture(enemies.at(i).texture, static_cast <int>(enemies.at(i).position.x - enemies.at(i).radius), static_cast <int>(enemies.at(i).position.y - enemies.at(i).radius), WHITE);
+
+				break;
+			case ENEMY_TYPE::MEDIUM:
+
+				DrawTexture(enemies.at(i).texture, static_cast <int>(enemies.at(i).position.x - enemies.at(i).radius), static_cast <int>(enemies.at(i).position.y - enemies.at(i).radius), WHITE);
+
+				break;
+			case ENEMY_TYPE::BIG:
+				
+				DrawTexture(enemies.at(i).texture, static_cast <int>(enemies.at(i).position.x - enemies.at(i).radius - enemies.at(i).radius / 2) - 10, static_cast <int>(enemies.at(i).position.y - enemies.at(i).radius - enemies.at(i).radius / 2), WHITE);
+				
+				break;
+			default:
+				break;
+			}
+
+			/*if (enemies.at(i).type != ENEMY_TYPE::SMALL && enemies.at(i).type != ENEMY_TYPE::BIG)
+				DrawCircle(static_cast <int>(enemies.at(i).position.x), static_cast <int>(enemies.at(i).position.y), enemies.at(i).radius, enemies.at(i).color);*/
+		}
 	}
 
-	void checkBulletEnemyCollition(std::vector<Enemy>& enemies, Player& player)
+	void checkBulletEnemyCollition(std::vector<Enemy>& enemies, Player& player, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy)
 	{
 		float distanceX = 0.0f;
 		float distanceY = 0.0f;
@@ -165,7 +192,7 @@ namespace enemiesFeatures
 						playerFeatures::addScore(player, enemies.at(i).points);
 
 						if (enemies.at(i).type != ENEMY_TYPE::SMALL)
-							splitEnemy(enemies, enemies.at(i), enemies.at(i).type, i);
+							splitEnemy(enemies, enemies.at(i), enemies.at(i).type, i, smallEnemy, mediumEnemy);
 						else
 							enemies.erase(enemies.begin() + i);
 
@@ -179,7 +206,7 @@ namespace enemiesFeatures
 		}
 	}
 
-	void checkPlayerEnemyCollition(std::vector<Enemy>& enemies, Player& player, float deltaTime)
+	void checkPlayerEnemyCollition(std::vector<Enemy>& enemies, Player& player, float deltaTime, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy)
 	{
 		float distanceX = 0.0f;
 		float distanceY = 0.0f;
@@ -206,7 +233,7 @@ namespace enemiesFeatures
 					player.lives--;
 
 					if (enemies.at(i).type != ENEMY_TYPE::SMALL)
-						splitEnemy(enemies, enemies.at(i), enemies.at(i).type, i);
+						splitEnemy(enemies, enemies.at(i), enemies.at(i).type, i, smallEnemy, mediumEnemy);
 					else
 						enemies.erase(enemies.begin() + i);
 
@@ -218,7 +245,7 @@ namespace enemiesFeatures
 			player.untouchableTimer -= deltaTime * 100;
 	}
 
-	Enemy setSplitedEnemy(ENEMY_TYPE type, Vector2 speed, Vector2 position)
+	Enemy setSplitedEnemy(ENEMY_TYPE type, Vector2 position, Texture smallEnemy, Texture mediumEnemy)
 	{
 		Enemy enemy;
 
@@ -234,6 +261,7 @@ namespace enemiesFeatures
 			enemy.radius = radiusSmall;
 			enemy.baseSpeed = baseSpeedSmall;
 			enemy.points = pointsSmall;
+			enemy.texture = smallEnemy;
 
 			break;
 		case ENEMY_TYPE::BIG:
@@ -242,6 +270,7 @@ namespace enemiesFeatures
 			enemy.radius = radiusMedium;
 			enemy.baseSpeed = baseSpeedMedium;
 			enemy.points = pointsMedium;
+			enemy.texture = mediumEnemy;
 
 			break;
 		default:

@@ -1,6 +1,5 @@
 #include "player.h"
 
-#include <iostream>
 #include <raymath.h>
 
 namespace playerFeatures
@@ -15,17 +14,6 @@ namespace playerFeatures
 		player.v2 = { player.pos.x - cosf(player.rotation * DEG2RAD) * (player.size / 2), player.pos.y - sinf(player.rotation * DEG2RAD) * (player.size / 2) };
 		player.v3 = { player.pos.x + cosf(player.rotation * DEG2RAD) * (player.size / 2), player.pos.y + sinf(player.rotation * DEG2RAD) * (player.size / 2) };
 
-		/*player.hitboxPos.x = (player.v1.x + player.v2.x + player.v3.x) / 3.0;
-		player.hitboxPos.y = (player.v1.y + player.v2.y + player.v3.y) / 3.0;*/
-
-		/*player.texturePos.x = player.hitboxPos.x;
-		player.texturePos.y = player.hitboxPos.y;*/
-
-		//player.textureRec.x = player.hitboxPos.x - (player.hitboxRadius / 2.0f);
-		//player.textureRec.y = player.hitboxPos.y - (player.hitboxRadius / 2.0f);
-		//player.textureRec.width = player.texture.width / 2.0f;
-		//player.textureRec.height = player.texture.height / 2.0f;
-
 		player.textureRec.x = 0.0f;
 		player.textureRec.y = 0.0f;
 		player.textureRec.width = static_cast <float> (frameWidth);
@@ -36,42 +24,23 @@ namespace playerFeatures
 		player.textureDest.width = player.textureRec.width;
 		player.textureDest.height = player.textureRec.height;
 
-		player.textureOrigin.x = player.pos.x;
-		player.textureOrigin.y = player.pos.y;
+		player.textureOrigin.x = player.texture.width / 2.0f;
+		player.textureOrigin.y = player.texture.height / 2.0f;
 
 		player.texturePos.x = player.textureOrigin.x - player.texture.width;
 		player.texturePos.y = player.textureOrigin.y - player.texture.height;
 
-		player.hitboxPos.x = player.textureOrigin.x + (player.texture.width / 2.0f);
-		player.hitboxPos.y = player.textureOrigin.y + (player.texture.height / 2.0f);
-
-		//player.textureRecDestination.x = /*player.hitboxPos.x + (player.hitboxRadius / 2.0f)*/ player.hitboxPos.x;
-		//player.textureRecDestination.y = /*player.hitboxPos.y + (player.hitboxRadius / 2.0f)*/ player.hitboxPos.y;
-		//player.textureRecDestination.width = player.texture.width;
-		//player.textureRecDestination.height = player.texture.height;
+		player.hitboxPos.x = player.textureDest.x;
+		player.hitboxPos.y = player.textureDest.y;
 	}
 
 	void drawPlayer(const Player player)
 	{
-		Rectangle testRec = { screenWidth / 2.0f, screenHeight / 2.0f, player.texture.width * 2.0f, player.texture.height * 2.0f };
-		Vector2 testVector = { screenWidth / 2.0f, screenHeight / 2.0f };
+		//DrawTriangle(player.v1, player.v2, player.v3, player.color);
 
-		DrawTriangle(player.v1, player.v2, player.v3, player.color);
+		DrawTexturePro(player.texture, player.textureRec, player.textureDest, player.textureOrigin, player.rotation, WHITE);
 		
-		//DrawTextureEx(player.texture, player.textureOrigin, player.rotation, 1, WHITE);
-		//DrawRectangleLines(player.textureOrigin.x, player.textureOrigin.y, player.texture.width, player.texture.height, RED);
-		//DrawTexture(player.texture, hitboxPosX - (player.texture.width / 2.0f), hitboxPosY - (player.texture.height / 2.0f), WHITE);
-		//DrawTexturePro(player.texture, player.textureRec, player.textureRecDestination, player.textureOrigin, player.rotation, WHITE);
-		//DrawTexturePro(player.texture, player.textureRec, player.textureDest, player.textureOrigin, 0, WHITE);
-		
-		//DrawTexturePro(player.texture, player.textureRec, testRec, testVector, 0.0f, WHITE);
-
-		//DrawTexture(player.texture, screenWidth / 2.0f, screenHeight / 2.0f, WHITE);
-
-		std::cout << "Textura X: " << player.textureOrigin.x << std::endl;
-		std::cout << "Textura Y: " << player.textureOrigin.y << std::endl;
-		
-		DrawCircle(static_cast <int> (player.hitboxPos.x), static_cast <int> (player.hitboxPos.y), player.hitboxRadius, BLUE);
+		DrawCircle(static_cast <int> (player.hitboxPos.x), static_cast <int> (player.hitboxPos.y), static_cast <float> (player.hitboxRadius), BLUE);
 	}
 
 	void movePlayer(Player& player, const float deltaTime)
@@ -201,8 +170,8 @@ namespace playerShooting
 			{
 				bullets[i].isActive = true;
 				// Set bullet position and speed based on player position and rotation
-				bullets[i].position.x = player.pos.x + (player.texture.width / 2.0f);
-				bullets[i].position.y = player.pos.y;
+				bullets[i].position.x = player.hitboxPos.x;
+				bullets[i].position.y = player.hitboxPos.y;
 				bullets[i].speed.x = static_cast <float>(sin(player.rotation * DEG2RAD) * bullets[i].baseSpeed);
 				bullets[i].speed.y = static_cast <float>(cos(player.rotation * DEG2RAD) * bullets[i].baseSpeed);
 				break; // Shoot only one bullet at a time

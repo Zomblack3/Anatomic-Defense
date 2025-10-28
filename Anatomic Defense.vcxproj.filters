@@ -38,6 +38,9 @@
     <ClCompile Include="src\enemies.cpp">
       <Filter>Objects .cpp</Filter>
     </ClCompile>
+    <ClCompile Include="src\buttons.cpp">
+      <Filter>Objects .cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game.h">
@@ -51,6 +54,15 @@
     </ClInclude>
     <ClInclude Include="src\enemies.h">
       <Filter>Objects .h</Filter>
+    </ClInclude>
+    <ClInclude Include="src\buttons.h">
+      <Filter>Objects .h</Filter>
+    </ClInclude>
+    <ClInclude Include="src\screen.h">
+      <Filter>Screens .h</Filter>
+    </ClInclude>
+    <ClInclude Include="src\settings.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

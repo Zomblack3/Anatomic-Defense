@@ -2,12 +2,9 @@
 
 #include <math.h>
 
+#include "settings.h"
+
 #include "gameplay.h"
-
-#include "player.h"
-#include "enemies.h"
-
-using namespace settings;
 
 namespace run
 {
@@ -17,9 +14,11 @@ namespace run
 
 		Player player;
 
+		Font font = { };
+
 		std::vector <Enemy> enemies;
 
-		player.position = { screenWidth / 2.0f, screenHeight / 2.0f };
+		player.pos = { screenWidth / 2.0f, screenHeight / 2.0f };
 		player.height = (player.size / 2) / tanf(20 * DEG2RAD);
 
 		InitWindow(screenWidth, screenHeight, "Anatomic Defense");
@@ -28,34 +27,51 @@ namespace run
 		{
 			switch (currentScreen)
 			{
-			case Screen::MAIN_MENU:
+			case SCREEN::MAIN_MENU:
 
-				
+				BeginDrawing();
+
+				ClearBackground(BLACK);
+
+				DrawTexture(MMBackground, 0, 0, WHITE);
+
+				buttonsFeatures::drawButtons(buttonsMM, amountOfButtonsMM);
+
+				for (int i = 0; i < amountOfButtonsMM; i++)
+				{
+					if (buttonsFeatures::collitionCheckButtonMouse(buttonsMM[i].rec))
+					{
+						buttonsFeatures::chageButtonState(buttonsMM[i]);
+
+						if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+						{
+							if (buttonsMM[i].directionScreen != currentScreen)
+								currentScreen = buttonsMM[i].directionScreen;
+						}
+					}
+				}
+
+				EndDrawing();
 
 				break;
-			case Screen::GAMEPLAY:
+			case SCREEN::GAMEPLAY:
 
-				gameplay::gameplay(player, enemies);
-
-				break;
-			case Screen::WIN_SCREEN:
-
-
+				gameplay::gameplay(player, enemies, buttonsPause, amountOfButtonsPause, currentScreen, font, gameplayBackground);
 
 				break;
-			case Screen::LOSE_SCREEN:
+			case SCREEN::END_SCREEN:
 
-
+				CloseWindow();
 
 				break;
-			case Screen::OPTIONS:
+			case SCREEN::OPTIONS:
 
 
 
 				break;
-			case Screen::EXIT:
+			case SCREEN::EXIT:
 
-
+				CloseWindow();
 
 				break;
 			default:

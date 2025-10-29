@@ -6,6 +6,8 @@
 
 #include "gameplay.h"
 
+bool areAssetsReady = false;
+
 namespace run
 {
 	void game()
@@ -17,6 +19,8 @@ namespace run
 		const int amountOfButtonsPause = 2;
 		const int amountOfButtonsES = 2;
 		const int amountOfButtonsExit = 2;
+
+		Font font = LoadFont("res/fonts/robot_crush/Robot Crush.ttf");
 
 		std::string textsOfMM[amountOfButtonsMM] = { "INICIAR", "OPCIONES", "CREDITOS", "SALIR" };
 		std::string textsOfOptions[amountOfButtonsOptions] = { "TAMARINDO", "TANGAMANDAPIO", "TANGENTE", "VOLVER AL MENU" };
@@ -30,11 +34,11 @@ namespace run
 		Button buttonsES[amountOfButtonsES];
 		Button buttonsExit[amountOfButtonsExit];
 
-		buttonsFeatures::setButtons(buttonsMM, amountOfButtonsMM, screenWidth - (screenWidth / 4.0f), (screenHeight / 2.0f) - 100, textsOfMM, SCREEN::MAIN_MENU);
-		buttonsFeatures::setButtons(buttonsOptions, amountOfButtonsOptions, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 100, textsOfOptions, SCREEN::OPTIONS);
-		buttonsFeatures::setButtons(buttonsPause, amountOfButtonsPause, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfPause, SCREEN::GAMEPLAY);
-		buttonsFeatures::setButtons(buttonsES, amountOfButtonsES, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfES, SCREEN::END_SCREEN);
-		buttonsFeatures::setButtons(buttonsExit, amountOfButtonsExit, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfExit, SCREEN::EXIT);
+		buttonsFeatures::setButtons(buttonsMM, amountOfButtonsMM, screenWidth - (screenWidth / 4.0f), (screenHeight / 2.0f) - 100, textsOfMM, SCREEN::MAIN_MENU, font);
+		buttonsFeatures::setButtons(buttonsOptions, amountOfButtonsOptions, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 100, textsOfOptions, SCREEN::OPTIONS, font);
+		buttonsFeatures::setButtons(buttonsPause, amountOfButtonsPause, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfPause, SCREEN::GAMEPLAY, font);
+		buttonsFeatures::setButtons(buttonsES, amountOfButtonsES, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfES, SCREEN::END_SCREEN, font);
+		buttonsFeatures::setButtons(buttonsExit, amountOfButtonsExit, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfExit, SCREEN::EXIT, font);
 
 		SCREEN currentScreen = SCREEN::MAIN_MENU;
 
@@ -47,9 +51,24 @@ namespace run
 		Texture mediumEnemy = { };
 		Texture bigEnemy = { };
 
-		Player player;
+		Texture tutorialLeft = { };
+		Texture tutorialRight = { };
 
-		Font font = { };
+		Sound playerShotSound = { };
+
+		std::string titleText = "ANATOMIC DEFENSE";
+		Vector2 titleLenght = MeasureTextEx(font, titleText.c_str(), 50, 2);
+		
+		Rectangle titleRec = { };
+		Vector2 titlePos = { };
+		titleRec.x = 50.0f;
+		titleRec.y = 50.0f;
+		titleRec.width = static_cast <float> (titleText.size()) * 50;
+		titleRec.height = 70.0f;
+		titlePos.x = (titleRec.x + (titleRec.width / 2.0f)) - titleLenght.x / 2.0f;
+		titlePos.y = titleRec.y + (titleRec.height / 2.0f);
+
+		Player player;
 
 		std::vector <Enemy> enemies;
 
@@ -58,7 +77,7 @@ namespace run
 		player.pos = { screenWidth / 2.0f, screenHeight / 2.0f };
 		player.height = (player.size / 2) / tanf(20 * DEG2RAD);
 
-		resources::loadResources(font, MMBackground, gameplayBackground, gameplayBackgroundImage, player.texture, frames, smallEnemy, mediumEnemy, bigEnemy);
+		resources::loadResources(MMBackground, gameplayBackground, gameplayBackgroundImage, player.texture, frames, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, player.shotSound);
 
 		while (!WindowShouldClose())
 		{
@@ -72,7 +91,11 @@ namespace run
 
 				DrawTexture(MMBackground, 0, 0, WHITE);
 
-				buttonsFeatures::drawButtons(buttonsMM, amountOfButtonsMM);
+				DrawRectangle(static_cast <int> (titleRec.x), static_cast <int> (titleRec.y), static_cast <int> (titleRec.width), static_cast <int> (titleRec.height), WHITE);
+				//DrawText(titleText.c_str(), static_cast <int> ((titleRec.x + (titleRec.width / 2.0f)) - titleLenght / 2.0f), static_cast <int> (titleRec.y + 25), 50, BLACK);
+				DrawTextEx(font, titleText.c_str(), titlePos, 50, 2, BLACK);
+
+				buttonsFeatures::drawButtons(buttonsMM, amountOfButtonsMM, font);
 
 				for (int i = 0; i < amountOfButtonsMM; i++)
 				{
@@ -88,12 +111,14 @@ namespace run
 					}
 				}
 
+				DrawText("Creado por Zomblack3 (Santiago Britos)", 0, static_cast <int> (screenHeight) - 30, 30, BLACK);
+
 				EndDrawing();
 
 				break;
 			case SCREEN::GAMEPLAY:
 
-				gameplay::gameplay(player, enemies, buttonsPause, amountOfButtonsPause, currentScreen, font, gameplayBackgroundImage, gameplayBackground, smallEnemy, mediumEnemy, bigEnemy, frames);
+				gameplay::gameplay(player, enemies, buttonsPause, amountOfButtonsPause, currentScreen, font, gameplayBackgroundImage, gameplayBackground, smallEnemy, mediumEnemy, bigEnemy, frames, tutorialLeft, tutorialRight);
 
 				break;
 			case SCREEN::END_SCREEN:
@@ -116,45 +141,65 @@ namespace run
 			}
 		}
 
-		resources::unloadResources(font, MMBackground, gameplayBackground, gameplayBackgroundImage, player.texture, smallEnemy, mediumEnemy, bigEnemy);
+		resources::unloadResources(font, MMBackground, gameplayBackground, gameplayBackgroundImage, player.texture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound);
 	}
 }
 
 namespace resources
 {
-	void loadResources(Font& font, Texture& MMBackground, Texture& gameplayBackground, Image& backgroundAnim, Texture& playerTexture, int& frames, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy)
+	void loadResources(Texture& MMBackground, Texture& gameplayBackground, Image& backgroundAnim, Texture& playerTexture, int& frames, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShotSound)
 	{
+		int loadingText = MeasureText("Cargando Recursos", 30);
+
+		BeginDrawing();
+
+		ClearBackground(BLACK);
+
+		DrawText("Cargando Recursos", (screenWidth / 2) - (loadingText / 2), static_cast <int> (screenHeight) / 2, 30, WHITE);
+
+		EndDrawing();
+
+		frames = 0;
+
+		playerShotSound = LoadSound("res/sound_efects/player/player_shot.wav");
+
 		Image MMBackroundImage = LoadImage("res/textures/main_menu/background.png");
-		backgroundAnim = LoadImageAnim("res/textures/gameplay/background.gif", &frames);
-		//backgroundAnim = LoadImageAnim("res/textures/gameplay/scarfy_run.gif", &frames);
+		//backgroundAnim = LoadImageAnim("res/textures/gameplay/background.gif", &frames);
+		backgroundAnim = LoadImage("res/textures/gameplay/player.png");
 		Image mediumEnemyImage = LoadImage("res/textures/gameplay/virus_medium.png");
 		Image bigEnemyImage = LoadImage("res/textures/gameplay/virus_big.png");
 
 		ImageResize(&MMBackroundImage, screenWidth, screenHeight);
-		//ImageResize(&backgroundAnim, screenWidth, screenHeight);
 		ImageResize(&mediumEnemyImage, 50, 50);
 		ImageResize(&bigEnemyImage, 120, 120);
 
-		font = LoadFont("res/fonts/robot_crush/Robot Crush.ttf");
 		MMBackground = LoadTextureFromImage(MMBackroundImage);
-		gameplayBackground = LoadTextureFromImage(backgroundAnim);
+		//gameplayBackground = LoadTextureFromImage(backgroundAnim);
+		gameplayBackground = LoadTexture("res/textures/gameplay/player.png");
 		playerTexture = LoadTexture("res/textures/gameplay/player.png");
 		smallEnemy = LoadTexture("res/textures/gameplay/virus_small.png");
 		mediumEnemy = LoadTextureFromImage(mediumEnemyImage);
 		bigEnemy = LoadTextureFromImage(bigEnemyImage);
+		tutorialLeft = LoadTexture("res/textures/gameplay/left_click_tutorial.png");
+		tutorialRight = LoadTexture("res/textures/gameplay/right_click_tutorial.png");
+
+		areAssetsReady = true;
 
 		UnloadImage(MMBackroundImage);
 	}
 
-	void unloadResources(Font& font, Texture& MMBackground, Texture& gameplayBackground, Image& backgroundAnim, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy)
+	void unloadResources(Font& font, Texture& MMBackground, Texture& gameplayBackground, Image& backgroundAnim, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShot)
 	{
 		UnloadFont(font);
+		UnloadSound(playerShot);
 		UnloadTexture(MMBackground);
 		UnloadTexture(gameplayBackground);
 		UnloadTexture(playerTexture);
 		UnloadTexture(smallEnemy);
 		UnloadTexture(mediumEnemy);
 		UnloadTexture(bigEnemy);
+		UnloadTexture(tutorialLeft);
+		UnloadTexture(tutorialRight);
 		UnloadImage(backgroundAnim);
 	}
 }

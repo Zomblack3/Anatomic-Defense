@@ -31,7 +31,7 @@ namespace buttonsFeatures
 {
     bool collitionCheckButtonMouse(Rectangle rec);
 
-    void setButtons(Button buttons[], int amountOfButtons, float startingPosX, float startingPosY, std::string texts[], SCREEN buttonScreen);
+    void setButtons(Button buttons[], int amountOfButtons, float startingPosX, float startingPosY, std::string texts[], SCREEN buttonScreen, Font font);
     void chageButtonState(Button& button);
-    void drawButtons(Button buttons[], int amountOfButtons);
+    void drawButtons(Button buttons[], int amountOfButtons, Font font);
 }

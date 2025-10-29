@@ -9,11 +9,6 @@ namespace playerFeatures
 		int frameWidth = player.texture.width;
 		int frameHeight = player.texture.height;
 
-		// Calculate triangle vertices based on position, size, height, and rotation
-		player.v1 = { player.pos.x + sinf(player.rotation * DEG2RAD) * (player.height), player.pos.y - cosf(player.rotation * DEG2RAD) * (player.height) };
-		player.v2 = { player.pos.x - cosf(player.rotation * DEG2RAD) * (player.size / 2), player.pos.y - sinf(player.rotation * DEG2RAD) * (player.size / 2) };
-		player.v3 = { player.pos.x + cosf(player.rotation * DEG2RAD) * (player.size / 2), player.pos.y + sinf(player.rotation * DEG2RAD) * (player.size / 2) };
-
 		player.textureRec.x = 0.0f;
 		player.textureRec.y = 0.0f;
 		player.textureRec.width = static_cast <float> (frameWidth);
@@ -36,61 +31,49 @@ namespace playerFeatures
 
 	void drawPlayer(const Player player)
 	{
-		//DrawTriangle(player.v1, player.v2, player.v3, player.color);
-
 		DrawTexturePro(player.texture, player.textureRec, player.textureDest, player.textureOrigin, player.rotation, WHITE);
-		
-		DrawCircle(static_cast <int> (player.hitboxPos.x), static_cast <int> (player.hitboxPos.y), static_cast <float> (player.hitboxRadius), BLUE);
 	}
 
 	void movePlayer(Player& player, const float deltaTime)
 	{
-		if (player.isActive)
+		if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
 		{
-			if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
-			{
-				player.speed.x += static_cast <float> (sin(player.rotation * DEG2RAD) * player.acceleration);
-				player.speed.y += static_cast <float> (cos(player.rotation * DEG2RAD) * player.acceleration);
+			player.speed.x += static_cast <float> (sin(player.rotation * DEG2RAD) * player.acceleration);
+			player.speed.y += static_cast <float> (cos(player.rotation * DEG2RAD) * player.acceleration);
 
-				if (player.acceleration < player.maxAcceleration)
-					player.acceleration += baseAcceleration;
-				else
-					player.acceleration = player.maxAcceleration;
-			}
+			if (player.acceleration < player.maxAcceleration)
+				player.acceleration += baseAcceleration;
 			else
-			{
-				if (player.acceleration > player.minAcceleration)
-					player.acceleration -= baseAcceleration;
-				else
-					player.acceleration = player.minAcceleration;
-			}
-
-			if (IsKeyDown(KEY_DOWN))
-			{
-				if (player.acceleration > 0)
-					player.acceleration -= baseAcceleration;
-				else if (player.acceleration < 0)
-					player.acceleration = 0;
-			}
-
-			player.pos.x += (player.speed.x * deltaTime);
-			player.pos.y -= (player.speed.y * deltaTime);
-
-			if (player.pos.x > screenWidth + player.height) 
-				player.pos.x = -(player.height);
-			else if (player.pos.x < -(player.height)) 
-				player.pos.x = screenWidth + player.height;
-			
-			if (player.pos.y > (screenHeight + player.height)) 
-				player.pos.y = -(player.height);
-			else if (player.pos.y < -(player.height)) 
-				player.pos.y = screenHeight + player.height;
+				player.acceleration = player.maxAcceleration;
 		}
 		else
 		{
-			if (IsKeyPressed(KEY_ENTER))
-				player.isActive = true;
+			if (player.acceleration > player.minAcceleration)
+				player.acceleration -= baseAcceleration;
+			else
+				player.acceleration = player.minAcceleration;
 		}
+
+		if (IsKeyDown(KEY_DOWN))
+		{
+			if (player.acceleration > 0)
+				player.acceleration -= baseAcceleration;
+			else if (player.acceleration < 0)
+				player.acceleration = 0;
+		}
+
+		player.pos.x += (player.speed.x * deltaTime);
+		player.pos.y -= (player.speed.y * deltaTime);
+
+		if (player.pos.x > screenWidth + player.height)
+			player.pos.x = -(player.height);
+		else if (player.pos.x < -(player.height))
+			player.pos.x = screenWidth + player.height;
+
+		if (player.pos.y > (screenHeight + player.height))
+			player.pos.y = -(player.height);
+		else if (player.pos.y < -(player.height))
+			player.pos.y = screenHeight + player.height;
 	}
 
 	void rotatePlayer(Player& player)
@@ -174,6 +157,13 @@ namespace playerShooting
 				bullets[i].position.y = player.hitboxPos.y;
 				bullets[i].speed.x = static_cast <float>(sin(player.rotation * DEG2RAD) * bullets[i].baseSpeed);
 				bullets[i].speed.y = static_cast <float>(cos(player.rotation * DEG2RAD) * bullets[i].baseSpeed);
+
+				InitAudioDevice();
+
+				PlaySound(player.shotSound);
+
+				CloseAudioDevice();
+
 				break; // Shoot only one bullet at a time
 			}
 		}

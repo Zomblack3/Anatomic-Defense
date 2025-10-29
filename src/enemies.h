@@ -40,8 +40,8 @@ namespace enemiesFeatures
 	void moveEnemy(std::vector <Enemy>& enemies, float deltaTime);
 	void drawEnemy(std::vector <Enemy> enemies);
 
-	void checkBulletEnemyCollition(std::vector <Enemy>& enemies, Player& player, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy);
-	void checkPlayerEnemyCollition(std::vector <Enemy>& enemies, Player& player, float deltaTime, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy);
+	void checkBulletEnemyCollition(std::vector <Enemy>& enemies, Player& player, Texture smallEnemy, Texture mediumEnemy);
+	void checkPlayerEnemyCollition(std::vector <Enemy>& enemies, Player& player, float deltaTime, Texture smallEnemy, Texture mediumEnemy);
 
 	Enemy setSplitedEnemy(ENEMY_TYPE type, Vector2 position, Texture smallEnemy, Texture mediumEnemy);
 }

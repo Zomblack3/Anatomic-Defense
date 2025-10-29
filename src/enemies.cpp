@@ -157,13 +157,10 @@ namespace enemiesFeatures
 			default:
 				break;
 			}
-
-			/*if (enemies.at(i).type != ENEMY_TYPE::SMALL && enemies.at(i).type != ENEMY_TYPE::BIG)
-				DrawCircle(static_cast <int>(enemies.at(i).position.x), static_cast <int>(enemies.at(i).position.y), enemies.at(i).radius, enemies.at(i).color);*/
 		}
 	}
 
-	void checkBulletEnemyCollition(std::vector<Enemy>& enemies, Player& player, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy)
+	void checkBulletEnemyCollition(std::vector<Enemy>& enemies, Player& player, Texture smallEnemy, Texture mediumEnemy)
 	{
 		float distanceX = 0.0f;
 		float distanceY = 0.0f;
@@ -206,7 +203,7 @@ namespace enemiesFeatures
 		}
 	}
 
-	void checkPlayerEnemyCollition(std::vector<Enemy>& enemies, Player& player, float deltaTime, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy)
+	void checkPlayerEnemyCollition(std::vector<Enemy>& enemies, Player& player, float deltaTime, Texture smallEnemy, Texture mediumEnemy)
 	{
 		float distanceX = 0.0f;
 		float distanceY = 0.0f;

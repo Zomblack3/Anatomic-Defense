@@ -18,10 +18,14 @@ namespace buttonsFeatures
 		return false;
 	}
 
-	void setButtons(Button buttons[], int amountOfButtons, float startingPosX, float startingPosY, std::string texts[], SCREEN buttonScreen)
+	void setButtons(Button buttons[], int amountOfButtons, float startingPosX, float startingPosY, std::string texts[], SCREEN buttonScreen, Font font)
 	{
+		Vector2 textSize = { };
+
 		for (int i = 0; i < amountOfButtons; i++)
 		{
+			textSize = MeasureTextEx(font, texts[i].c_str(), static_cast <float>(buttons[i].textSize), 2.0f);
+
 			buttons[i].rec.width = static_cast <float> (texts[i].size()) * buttons[i].textSize;
 			buttons[i].rec.height = buttons[i].baseHeight;
 			buttons[i].rec.y = startingPosY;
@@ -29,8 +33,8 @@ namespace buttonsFeatures
 
 			buttons[i].text = texts[i];
 
-			buttons[i].textPos.x = buttons[i].rec.x + ((buttons[i].rec.width / 2.0f) - (MeasureText(texts[i].c_str(), buttons[i].textSize) / 2.0f));
-			buttons[i].textPos.y = buttons[i].rec.y + buttons[i].textSize;
+			buttons[i].textPos.x = buttons[i].rec.x + (buttons[i].rec.width / 4.0f);
+			buttons[i].textPos.y = buttons[i].rec.y + textSize.y;
 
 			switch (buttonScreen)
 			{
@@ -157,21 +161,21 @@ namespace buttonsFeatures
 		}
 	}
 
-	void drawButtons(Button buttons[], int amountOfButtons)
+	void drawButtons(Button buttons[], int amountOfButtons, Font font)
 	{
 		for (int i = 0; i < amountOfButtons; i++)
 		{
 			if (!collitionCheckButtonMouse(buttons[i].rec))
 			{
-				DrawRectangle(static_cast <int>(buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), static_cast <int>(buttons[i].rec.width), static_cast <int> (buttons[i].rec.height), buttons[i].actualColor);
+				DrawRectangle(static_cast <int>(buttons[i].rec.x), static_cast <int> (buttons[i].rec.y), static_cast <int>(buttons[i].rec.width), static_cast <int> (buttons[i].rec.height), buttons[i].actualColor);
 
-				DrawText(buttons[i].text.c_str(), static_cast <int>(buttons[i].textPos.x), static_cast <int> (buttons[i].textPos.y), buttons[i].textSize, buttons[i].actualTextColor);
+				DrawTextEx(font, buttons[i].text.c_str(), buttons[i].textPos, static_cast <float>(buttons[i].textSize), 2, buttons[i].actualTextColor);
 			}
 			else
 			{
 				DrawRectangle(static_cast <int>(buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), static_cast <int>(buttons[i].rec.width), static_cast <int>(buttons[i].rec.height), buttons[i].actualColor);
 
-				DrawText(buttons[i].text.c_str(), static_cast <int>(buttons[i].textPos.x), static_cast <int> (buttons[i].textPos.y), buttons[i].textSize, buttons[i].actualTextColor);
+				DrawTextEx(font, buttons[i].text.c_str(), buttons[i].textPos, static_cast <float>(buttons[i].textSize), 2, buttons[i].actualTextColor);
 			}
 		}
 	}

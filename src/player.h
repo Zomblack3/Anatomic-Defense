@@ -27,16 +27,14 @@ struct Player
 
 	Vector2 speed = { 0.0f, 0.0f };
 
-	// Triangle vertices
-	Vector2 v1 = { 0.0f, 0.0f };
-	Vector2 v2 = { 0.0f, 0.0f };
-	Vector2 v3 = { 0.0f, 0.0f };
-
 	Color color = RED;
 
 	Texture texture = { };
+
 	Rectangle textureRec = { };
 	Rectangle textureDest = { };
+
+	Sound shotSound = { };
 
 	Bullet bullets[maxAmountOfBullets];
 	
@@ -55,6 +53,7 @@ struct Player
 	int hitboxRadius = 10;
 	
 	bool isActive = false;
+	bool isShooting = false;
 };
 
 namespace playerFeatures

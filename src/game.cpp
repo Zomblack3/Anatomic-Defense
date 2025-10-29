@@ -159,13 +159,13 @@ namespace resources
 
 		EndDrawing();
 
-		frames = 0;
+		//frames = 0;
 
 		playerShotSound = LoadSound("res/sound_efects/player/player_shot.wav");
 
 		Image MMBackroundImage = LoadImage("res/textures/main_menu/background.png");
-		//backgroundAnim = LoadImageAnim("res/textures/gameplay/background.gif", &frames);
-		backgroundAnim = LoadImage("res/textures/gameplay/player.png");
+		backgroundAnim = LoadImageAnim("res/textures/gameplay/background.gif", &frames);
+		//backgroundAnim = LoadImage("res/textures/gameplay/player.png");
 		Image mediumEnemyImage = LoadImage("res/textures/gameplay/virus_medium.png");
 		Image bigEnemyImage = LoadImage("res/textures/gameplay/virus_big.png");
 
@@ -174,8 +174,8 @@ namespace resources
 		ImageResize(&bigEnemyImage, 120, 120);
 
 		MMBackground = LoadTextureFromImage(MMBackroundImage);
-		//gameplayBackground = LoadTextureFromImage(backgroundAnim);
-		gameplayBackground = LoadTexture("res/textures/gameplay/player.png");
+		gameplayBackground = LoadTextureFromImage(backgroundAnim);
+		//gameplayBackground = LoadTexture("res/textures/gameplay/player.png");
 		playerTexture = LoadTexture("res/textures/gameplay/player.png");
 		smallEnemy = LoadTexture("res/textures/gameplay/virus_small.png");
 		mediumEnemy = LoadTextureFromImage(mediumEnemyImage);

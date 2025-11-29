@@ -87,7 +87,7 @@ namespace gameplayFeatures
 
 	void draw(Player player, std::vector <Enemy> enemies, Button buttons[], int amountOfButtons, Font font, Texture background, Texture tutorialLeft, Texture tutorialRight)
 	{
-		int lifePositionX = 800;
+		//int lifePositionX = 800;
 		int textPositionY = 20;
 
 		Vector2 scorePos = { 50.0f, static_cast <float> (textPositionY) };
@@ -108,9 +108,9 @@ namespace gameplayFeatures
 
 		DrawRectangle(0, 0, screenWidth, 50, WHITE);
 
-		DrawTextPro(font, TextFormat("Score: %i", player.score), scorePos, origin, 0.0f, 20.0f, 2.0f, BLACK);
-		DrawTextPro(font, "Vida: ", lifesPos, origin, 0.0f, 20.0f, 2.0f, BLACK);
-		DrawRectangle(lifePositionX + 50, textPositionY, player.lives * 50, 20, RED);
+		DrawTextPro(font, TextFormat("Score: %i", player.score), scorePos, origin, 0.0f, normalTextSize, 2.0f, BLACK);
+		DrawTextPro(font, "Vida: ", lifesPos, origin, 0.0f, normalTextSize, 2.0f, BLACK);
+		DrawRectangle(static_cast<int>(lifesPos.x) + 50, textPositionY, player.lives * 50, 20, RED);
 
 		if (isPauseOn)
 			buttonsFeatures::drawButtons(buttons, amountOfButtons, font);

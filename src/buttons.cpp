@@ -26,7 +26,7 @@ namespace buttonsFeatures
 		{
 			textSize = MeasureTextEx(font, texts[i].c_str(), static_cast <float>(buttons[i].textSize), 2.0f);
 
-			buttons[i].rec.width = static_cast <float> (texts[i].size()) * buttons[i].textSize;
+			buttons[i].rec.width = static_cast <float> (texts[i].size() * buttons[i].textSize);
 			buttons[i].rec.height = buttons[i].baseHeight;
 			buttons[i].rec.y = startingPosY;
 			buttons[i].rec.x = startingPosX - (buttons[i].rec.width / 2.0f);
@@ -34,7 +34,7 @@ namespace buttonsFeatures
 			buttons[i].text = texts[i];
 
 			buttons[i].textPos.x = buttons[i].rec.x + (buttons[i].rec.width / 4.0f);
-			buttons[i].textPos.y = buttons[i].rec.y + textSize.y;
+			buttons[i].textPos.y = buttons[i].rec.y + (buttons[i].rec.height / 4.0f);
 
 			switch (buttonScreen)
 			{

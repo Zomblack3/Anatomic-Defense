@@ -116,7 +116,7 @@ namespace enemiesFeatures
 
 	void moveEnemy(std::vector <Enemy>& enemies, float deltaTime)
 	{
-		for (int i = 0; i < enemies.size(); i++)
+		for (unsigned int i = 0; i < enemies.size(); i++)
 		{
 			enemies.at(i).position.x += enemies.at(i).speed.x = static_cast <float>(sin(enemies.at(i).rotation * DEG2RAD) * enemies.at(i).baseSpeed) * deltaTime;
 			enemies.at(i).position.y -= enemies.at(i).speed.y = static_cast <float>(cos(enemies.at(i).rotation * DEG2RAD) * enemies.at(i).baseSpeed) * deltaTime;
@@ -135,7 +135,7 @@ namespace enemiesFeatures
 
 	void drawEnemy(std::vector <Enemy> enemies)
 	{
-		for (int i = 0; i < enemies.size(); i++)
+		for (unsigned int i = 0; i < enemies.size(); i++)
 		{
 			switch (enemies.at(i).type)
 			{
@@ -166,7 +166,7 @@ namespace enemiesFeatures
 		float distanceY = 0.0f;
 		float totalDistance = 0.0f;
 
-		for (int i = 0; i < enemies.size(); i++)
+		for (unsigned int i = 0; i < enemies.size(); i++)
 		{
 			for (int j = 0; j < maxAmountOfBullets; j++)
 			{
@@ -208,10 +208,11 @@ namespace enemiesFeatures
 		float distanceX = 0.0f;
 		float distanceY = 0.0f;
 		float totalDistance = 0.0f;
+		float untouchableTimerReduction = deltaTime * 100.0f;
 
 		if (player.untouchableTimer <= 0)
 		{
-			for (int i = 0; i < enemies.size(); i++)
+			for (unsigned int i = 0; i < enemies.size(); i++)
 			{
 				if (player.pos.x > enemies.at(i).position.x)
 					distanceX = player.pos.x - enemies.at(i).position.x;
@@ -234,21 +235,24 @@ namespace enemiesFeatures
 					else
 						enemies.erase(enemies.begin() + i);
 
-					player.untouchableTimer = 50.0f;
+					player.untouchableTimer = player.baseUntouchableTimer;
 				}
 			}
 		}
 		else
-			player.untouchableTimer -= deltaTime * 100;
+			player.untouchableTimer -= untouchableTimerReduction;
 	}
 
 	Enemy setSplitedEnemy(ENEMY_TYPE type, Vector2 position, Texture smallEnemy, Texture mediumEnemy)
 	{
+		const int minRotation = 0;
+		const int maxRotation = 360;
+
 		Enemy enemy;
 
 		enemy.isActive = true;
 
-		enemy.rotation = static_cast <float> (GetRandomValue(0, 360));
+		enemy.rotation = static_cast <float> (GetRandomValue(minRotation, maxRotation));
 
 		switch (type)
 		{
@@ -268,6 +272,8 @@ namespace enemiesFeatures
 			enemy.baseSpeed = baseSpeedMedium;
 			enemy.points = pointsMedium;
 			enemy.texture = mediumEnemy;
+			enemy.texture.height = 50;
+			enemy.texture.width = 50;
 
 			break;
 		default:

@@ -6,32 +6,24 @@
 
 bool isPauseOn = false;
 
-namespace gameplay
+namespace mainFunctions
 {
-	void gameplay(Player& player, std::vector <Enemy>& enemies, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Font font, Image& backgroundAnim, Texture& background, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, int frames, Texture tutorialLeft, Texture tutorialRight)
+	void gameplay(Player& player, std::vector <Enemy>& enemies, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Font font, Texture& background, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, Texture tutorialLeft, Texture tutorialRight)
 	{
 		float deltaTime = GetFrameTime();
 
-		gameplayFeatures::update(player, enemies, deltaTime, buttons, amountOfButtons, currentScreen, background, backgroundAnim, frames, smallEnemy, mediumEnemy, bigEnemy);
+		gameplayFunctions::update(player, enemies, deltaTime, buttons, amountOfButtons, currentScreen, smallEnemy, mediumEnemy, bigEnemy);
 
-		gameplayFeatures::draw(player, enemies, buttons, amountOfButtons, font, background, tutorialLeft, tutorialRight);
+		gameplayFunctions::draw(player, enemies, buttons, amountOfButtons, font, background, tutorialLeft, tutorialRight);
 	}
 }
 
-namespace gameplayFeatures
+namespace gameplayFunctions
 {
-	unsigned int nextFrameDataOffset = 0;  // Current byte offset to next frame in image.data
-
-	int currentAnimFrame = 0;       // Current animation frame to load and draw
-	float frameDelay = 1.0f / 15.0f;             // Frame delay to switch between animation frames
-	float animTimer = 0.0f;           // General frames counter
-
-	void update(Player& player, std::vector <Enemy>& enemies, float deltaTime, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Texture& gameplayBackground, Image& backgroundAnim, int frames, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy)
+	void update(Player& player, std::vector <Enemy>& enemies, float deltaTime, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy)
 	{
 		if (!isPauseOn && player.isActive)
 		{
-			updateBackground(backgroundAnim, gameplayBackground, frames, deltaTime);
-
 			enemiesFeatures::spawnEnemy(enemies, smallEnemy, mediumEnemy, bigEnemy, deltaTime);
 
 			playerFeatures::movePlayer(player, deltaTime);
@@ -127,30 +119,5 @@ namespace gameplayFeatures
 		}
 
 		EndDrawing();
-	}
-
-	void updateBackground(Image& backgroundAnim, Texture& background, int& frames, float deltaTime)
-	{
-		animTimer += deltaTime;
-
-		if (animTimer >= frameDelay)
-		{
-			// Move to next frame
-			// NOTE: If final frame is reached we return to first frame
-			currentAnimFrame++;
-			
-			if (currentAnimFrame >= frames) 
-				currentAnimFrame = 0;
-
-			// Get memory offset position for next frame data in image.data
-			nextFrameDataOffset = backgroundAnim.width * backgroundAnim.height * 4 * currentAnimFrame;
-
-			// Update GPU texture data with next frame image data
-			// WARNING: Data size (frame size) and pixel format must match already created texture
-			UpdateTexture(background, ((unsigned char*)backgroundAnim.data) + nextFrameDataOffset);
-
-			animTimer -= frameDelay;
-		}
-
 	}
 }

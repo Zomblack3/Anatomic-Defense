@@ -88,21 +88,6 @@ namespace playerFeatures
 		float grades = angle * (180.0f / PI) + 90.0f;
 
 		player.rotation = grades;
-
-		/*if (player.rotation > grades)
-			player.rotation -= 2.0f;
-		else if (player.rotation < grades)
-			player.rotation += 2.0f;*/
-
-		/*if (IsKeyDown(KEY_LEFT)) 
-			player.rotation -= 5.0f * deltaTime;
-		if (IsKeyDown(KEY_RIGHT)) 
-			player.rotation += 5.0f * deltaTime;
-
-		if (player.rotation >= 360.0f)
-			player.rotation -= 360.0f;
-		if (player.rotation < 0.0f)
-			player.rotation += 360.0f;*/
 	}
 
 	void addScore(Player& player, int points)
@@ -152,17 +137,14 @@ namespace playerShooting
 			if (!bullets[i].isActive)
 			{
 				bullets[i].isActive = true;
+
 				// Set bullet position and speed based on player position and rotation
 				bullets[i].position.x = player.hitboxPos.x;
 				bullets[i].position.y = player.hitboxPos.y;
 				bullets[i].speed.x = static_cast <float>(sin(player.rotation * DEG2RAD) * bullets[i].baseSpeed);
 				bullets[i].speed.y = static_cast <float>(cos(player.rotation * DEG2RAD) * bullets[i].baseSpeed);
 
-				InitAudioDevice();
-
 				PlaySound(player.shotSound);
-
-				CloseAudioDevice();
 
 				break; // Shoot only one bullet at a time
 			}

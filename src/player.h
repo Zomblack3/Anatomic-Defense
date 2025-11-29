@@ -46,6 +46,7 @@ struct Player
 	float size = 20.0f;
 	float height = 0.0f;
 
+	float baseUntouchableTimer = 50.0f;
 	float untouchableTimer = 0.0f;
 
 	int lives = 3;

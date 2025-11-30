@@ -18,11 +18,24 @@ namespace enemiesFeatures
 	const int pointsMedium = 25;
 	const int pointsBig = 40;
 
-	float spawnTimer = 0.0f;
 	float baseSpawnTime = 500.0f;
+	float spawnTimer = 0.0f;
+	float untouchableTimerReduction = deltaTime * 100.0f;
 
 	void spawnEnemy(std::vector <Enemy>& enemies, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, float deltaTime)
 	{
+		const int maxAmountOfEnemies = 100;
+		const int maxRotation = 360;
+
+		const int minValueToSpawnFromLeft = 5;
+		const int minValueToSpawnFromRight = screenWidth - 5;
+
+		const int amountOfEnemiesKind = 3;
+
+		const int maxGeneralPercentage = 100;
+
+		untouchableTimerReduction = deltaTime * 100.0f;
+
 		Enemy enemy = { };
 
 		int randomEnemyType = 0;
@@ -33,19 +46,19 @@ namespace enemiesFeatures
 		Vector2 enemySpeed = { };
 		Vector2 enemyPos = { };
 
-		if (spawnTimer <= 0 && enemies.size() < 100)
+		if (spawnTimer <= 0 && enemies.size() < maxAmountOfEnemies)
 		{
-			enemy.rotation = static_cast <float> (GetRandomValue(0, 360));
+			enemy.rotation = static_cast <float> (GetRandomValue(0, maxRotation));
 
-			randomEnemyType = GetRandomValue(1, 3);
+			randomEnemyType = GetRandomValue(0, amountOfEnemiesKind);
 
 			enemyPos.x = static_cast <float>(GetRandomValue(0, screenWidth));
 
-			if (enemyPos.x > 5 || enemyPos.x < screenWidth - 5)
+			if (enemyPos.x > minValueToSpawnFromLeft || enemyPos.x < minValueToSpawnFromRight)
 			{
-				randomPosY = GetRandomValue(0, 100);
+				randomPosY = GetRandomValue(0, maxGeneralPercentage);
 
-				if (randomPosY < 50)
+				if (randomPosY < maxGeneralPercentage / 2)
 					enemyPos.y = 0;
 				else
 					enemyPos.y = screenHeight;
@@ -55,7 +68,7 @@ namespace enemiesFeatures
 
 			switch (randomEnemyType)
 			{
-			case 1:
+			case 0:
 
 				enemyType = ENEMY_TYPE::SMALL;
 				enemy.radius = radiusSmall;
@@ -64,7 +77,7 @@ namespace enemiesFeatures
 				enemy.texture = smallEnemy;
 
 				break;
-			case 2:
+			case 1:
 
 				enemyType = ENEMY_TYPE::MEDIUM;
 				enemy.radius = radiusMedium;
@@ -73,7 +86,7 @@ namespace enemiesFeatures
 				enemy.texture = mediumEnemy;
 
 				break;
-			case 3:
+			case 2:
 
 				enemyType = ENEMY_TYPE::BIG;
 				enemy.radius = radiusBig;
@@ -97,10 +110,10 @@ namespace enemiesFeatures
 
 			spawnTimer = baseSpawnTime;
 
-			baseSpawnTime -= deltaTime * 100;
+			baseSpawnTime -= untouchableTimerReduction;
 		}
 		else
-			spawnTimer -= deltaTime * 100;
+			spawnTimer -= untouchableTimerReduction;
 	}
 
 	void splitEnemy(std::vector<Enemy>& enemies, Enemy enemySplited, ENEMY_TYPE type, int index, Texture smallEnemy, Texture mediumEnemy)
@@ -208,7 +221,7 @@ namespace enemiesFeatures
 		float distanceX = 0.0f;
 		float distanceY = 0.0f;
 		float totalDistance = 0.0f;
-		float untouchableTimerReduction = deltaTime * 100.0f;
+		untouchableTimerReduction = deltaTime * 100.0f;
 
 		if (player.untouchableTimer <= 0)
 		{
@@ -228,7 +241,7 @@ namespace enemiesFeatures
 
 				if (totalDistance <= enemies.at(i).radius + player.hitboxRadius)
 				{
-					player.lives--;
+					player.lifes--;
 
 					if (enemies.at(i).type != ENEMY_TYPE::SMALL)
 						splitEnemy(enemies, enemies.at(i), enemies.at(i).type, i, smallEnemy, mediumEnemy);

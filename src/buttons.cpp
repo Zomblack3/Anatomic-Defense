@@ -127,15 +127,6 @@ namespace buttonsFeatures
 
 				buttons[i].directionScreen = SCREEN::MAIN_MENU;
 
-				/*switch (i)
-				{
-				default:
-
-					buttons[i].directionScreen = SCREEN::MAIN_MENU;
-
-					break;
-				}*/
-
 				break;
 			default:
 				break;

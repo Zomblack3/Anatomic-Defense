@@ -78,6 +78,8 @@ namespace playerFeatures
 
 	void rotatePlayer(Player& player)
 	{
+		const float maxGrades = 360.0f;
+
 		float mouseX = static_cast <float> (GetMouseX());
 		float mouseY = static_cast <float> (GetMouseY());
 
@@ -85,7 +87,7 @@ namespace playerFeatures
 		float deltaY = mouseY - player.pos.y;
 
 		float angle = static_cast <float> (atan2(deltaY, deltaX));
-		float grades = angle * (180.0f / PI) + 90.0f;
+		float grades = angle * ((maxGrades / 2) / PI) + (maxGrades / 4);
 
 		player.rotation = grades;
 	}
@@ -97,18 +99,20 @@ namespace playerFeatures
 
 	void setDefault(Player& player)
 	{
+		const int maxAmountOfLifes = 3;
+
 		player.pos = { 0.0f, 0.0f };
 		player.speed = { 0.0f, 0.0f };
 		player.color = RED;
 		player.acceleration = 0.0f;
 		player.rotation = 0.0f;
-		player.lives = 3;
+		player.lifes = maxAmountOfLifes;
 		player.score = 0;
 	}
 
 	bool isAlive(const Player player)
 	{
-		return player.lives > 0;
+		return player.lifes > 0;
 	}
 }
 

@@ -122,6 +122,8 @@ namespace run
 				break;
 			case SCREEN::END_SCREEN:
 
+				CloseAudioDevice();
+
 				CloseWindow();
 
 				break;
@@ -132,6 +134,8 @@ namespace run
 				break;
 			case SCREEN::EXIT:
 
+				CloseAudioDevice();
+
 				CloseWindow();
 
 				break;
@@ -139,8 +143,6 @@ namespace run
 				break;
 			}
 		}
-
-		CloseAudioDevice();
 
 		resources::unloadResources(font, MMBackground, gameplayBackground, player.texture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound);
 	}
@@ -150,15 +152,8 @@ namespace resources
 {
 	void loadResources(Texture& MMBackground, Texture& gameplayBackground, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShotSound)
 	{
-		int loadingText = MeasureText("Cargando Recursos", 30);
-
-		BeginDrawing();
-
-		ClearBackground(BLACK);
-
-		DrawText("Cargando Recursos", (screenWidth / 2) - (loadingText / 2), static_cast <int> (screenHeight) / 2, 30, WHITE);
-
-		EndDrawing();
+		const int sizeOfMediumEnemy = 50;
+		const int sizeOfBigEnemy = 120;
 
 		playerShotSound = LoadSound("res/sound_efects/player/player_shot.wav");
 
@@ -168,8 +163,8 @@ namespace resources
 		Image bigEnemyImage = LoadImage("res/textures/gameplay/virus_big.png");
 
 		ImageResize(&MMBackroundImage, screenWidth, screenHeight);
-		ImageResize(&mediumEnemyImage, 50, 50);
-		ImageResize(&bigEnemyImage, 120, 120);
+		ImageResize(&mediumEnemyImage, sizeOfMediumEnemy, sizeOfMediumEnemy);
+		ImageResize(&bigEnemyImage, sizeOfBigEnemy, sizeOfBigEnemy);
 
 		MMBackground = LoadTextureFromImage(MMBackroundImage);
 		gameplayBackground = LoadTexture("res/textures/gameplay/background.png");

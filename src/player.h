@@ -49,7 +49,7 @@ struct Player
 	float baseUntouchableTimer = 50.0f;
 	float untouchableTimer = 0.0f;
 
-	int lives = 3;
+	int lifes = 3;
 	int score = 0;
 	int hitboxRadius = 10;
 	

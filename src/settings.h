@@ -12,3 +12,7 @@ const float baseAcceleration = 3.0f / 1000000.0f;
 const float normalTextSize = 20.0f;
 const float titleTextSize = 50.0f;
 const float textSpacing = 2.0f;
+
+// Textures consts
+const int hudWidth = screenWidth;
+const int hudHeight = 50;

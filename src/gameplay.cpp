@@ -8,13 +8,13 @@ bool isPauseOn = false;
 
 namespace mainFunctions
 {
-	void gameplay(Player& player, std::vector <Enemy>& enemies, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Font font, Texture& background, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, Texture tutorialLeft, Texture tutorialRight)
+	void gameplay(Player& player, std::vector <Enemy>& enemies, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Font font, Texture& background, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, Texture tutorialLeft, Texture tutorialRight, Texture hudTexture, Texture hudValuesTexture)
 	{
 		float deltaTime = GetFrameTime();
 
 		gameplayFunctions::update(player, enemies, deltaTime, buttons, amountOfButtons, currentScreen, smallEnemy, mediumEnemy, bigEnemy);
 
-		gameplayFunctions::draw(player, enemies, buttons, amountOfButtons, font, background, tutorialLeft, tutorialRight);
+		gameplayFunctions::draw(player, enemies, buttons, amountOfButtons, font, background, tutorialLeft, tutorialRight, hudTexture, hudValuesTexture);
 	}
 }
 
@@ -77,13 +77,44 @@ namespace gameplayFunctions
 		}
 	}
 
-	void draw(Player player, std::vector <Enemy> enemies, Button buttons[], int amountOfButtons, Font font, Texture background, Texture tutorialLeft, Texture tutorialRight)
+	void draw(Player player, std::vector <Enemy> enemies, Button buttons[], int amountOfButtons, Font font, Texture background, Texture tutorialLeft, Texture tutorialRight, Texture hudTexture, Texture hudValuesTexture)
 	{
-		//int lifePositionX = 800;
-		int textPositionY = 20;
+		const int tutorialTextSize = 40;
 
-		Vector2 scorePos = { 50.0f, static_cast <float> (textPositionY) };
-		Vector2 lifesPos = { 800.0f, static_cast <float> (textPositionY) };
+		float lifePosX = 800.0f;
+		float scorePosX = 150.0f;
+		int textPositionY = 15;
+
+		std::string scoreText = TextFormat("Puntaje: %i", player.score);
+		std::string lifesText = TextFormat("Vidas: %i", player.lifes);
+
+		std::string tutorialRightText = "MOVERSE";
+		std::string tutorialLeftText = "DISPARAR";
+		std::string startingText = "Presione ENTER para iniciar";
+
+		Vector2 scoreTextLength = MeasureTextEx(font, scoreText.c_str(), normalTextSize, textSpacing);
+		Vector2 lifesTextLength = MeasureTextEx(font, lifesText.c_str(), normalTextSize, textSpacing);
+
+		Vector2 tutorialRightTextLength = MeasureTextEx(font, tutorialRightText.c_str(), tutorialTextSize, textSpacing);
+		Vector2 tutorialLeftTextLength = MeasureTextEx(font, tutorialLeftText.c_str(), tutorialTextSize, textSpacing);
+		Vector2 startingTextLength = MeasureTextEx(font, startingText.c_str(), tutorialTextSize, textSpacing);
+
+		Vector2 scorePos = { scorePosX, static_cast <float> (textPositionY) };
+		Vector2 lifesPos = { lifePosX, static_cast <float> (textPositionY) };
+
+		Vector2 tutorialRightTexturePos = { (screenWidth / 4.0f) - (tutorialLeft.width / 2.0f), screenHeight / 4.0f };
+		Vector2 tutorialLeftTexturePos = { (screenWidth - (screenWidth / 4.0f)) - (tutorialLeft.width / 2.0f), screenHeight / 4.0f };
+		Vector2 startingTextPos = { (screenWidth / 2.0f) - (startingTextLength.x / 2.0f), screenWidth - (screenWidth / 2.0f) };
+
+		Vector2 tutorialRightTextPos = { tutorialRightTexturePos.x - 5.0f , (screenWidth / 4.0f) + tutorialLeft.height - (tutorialLeft.height / 2.0f)};
+		Vector2 tutorialLeftTextPos = { tutorialLeftTexturePos.x - 5.0f, (screenWidth / 4.0f) + tutorialLeft.height - (tutorialLeft.height / 2.0f)};
+
+		int scoreTexturePosX = static_cast <int> (scorePos.x) - 20;
+		int scoreTexturePosY = static_cast <int> (scorePos.y) - 5;
+
+		int lifesTexturePosX = static_cast <int> (lifesPos.x) - 20;
+		int lifesTexturePosY = static_cast <int> (lifesPos.y) - 5;
+
 		Vector2 origin = { 0.0f, 0.0f };
 
 		BeginDrawing();
@@ -98,24 +129,34 @@ namespace gameplayFunctions
 
 		enemiesFeatures::drawEnemy(enemies);
 
-		DrawRectangle(0, 0, screenWidth, 50, WHITE);
+		DrawTexture(hudTexture, 0, 0, WHITE);
 
-		DrawTextPro(font, TextFormat("Score: %i", player.score), scorePos, origin, 0.0f, normalTextSize, textSpacing, BLACK);
-		DrawTextPro(font, "Vida: ", lifesPos, origin, 0.0f, normalTextSize, textSpacing, BLACK);
-		DrawRectangle(static_cast<int>(lifesPos.x) + 50, textPositionY, player.lifes * 50, 20, RED);
+		hudValuesTexture.width = static_cast <int> (scoreTextLength.x) + 40;
+		hudValuesTexture.height = static_cast <int> (scoreTextLength.y) + 10;
+
+		DrawTexture(hudValuesTexture, scoreTexturePosX, scoreTexturePosY, WHITE);
+
+		hudValuesTexture.width = static_cast <int> (lifesTextLength.x) + 40;
+		hudValuesTexture.height = static_cast <int> (lifesTextLength.y) + 10;
+
+		DrawTexture(hudValuesTexture, lifesTexturePosX, lifesTexturePosY, WHITE);
+
+		DrawTextPro(font, scoreText.c_str(), scorePos, origin, 0.0f, normalTextSize, textSpacing, YELLOW);
+		DrawTextPro(font, lifesText.c_str(), lifesPos, origin, 0.0f, normalTextSize, textSpacing, YELLOW);
 
 		if (isPauseOn)
 			buttonsFeatures::drawButtons(buttons, amountOfButtons, font);
 
 		if (!player.isActive)
 		{
-			DrawTexture(tutorialLeft, static_cast <int> ((screenWidth / 4.0f) - (tutorialLeft.width / 2.0f)), static_cast <int> (screenHeight / 4.0f), WHITE);
-			DrawTexture(tutorialRight, static_cast <int> ((screenWidth - (screenWidth / 4.0f)) - (tutorialLeft.width / 2.0f)), static_cast <int> (screenHeight / 4.0f), WHITE);
+			DrawTexture(tutorialRight, static_cast <int> (tutorialRightTexturePos.x), static_cast <int> (tutorialRightTexturePos.y), WHITE);
+			DrawTexture(tutorialLeft, static_cast <int> (tutorialLeftTexturePos.x), static_cast <int> (tutorialLeftTexturePos.y), WHITE);
 
-			DrawText("DISPARAR", static_cast <int> (((screenWidth / 4.0f) - (tutorialLeft.width / 2.0f)) - (MeasureText("DISPARAR", 40) / 5.0f)), static_cast <int> ((screenWidth / 4.0f) + tutorialLeft.height - (tutorialLeft.height / 2.0f)), 40, WHITE);
-			DrawText("MOVERSE", static_cast <int> ((screenWidth - (screenWidth / 4.0f)) - (tutorialRight.width / 2.0f) - (MeasureText("MOVERSE", 40) / 5.0f)), static_cast <int> ((screenWidth / 4.0f) + tutorialRight.height - (tutorialRight.height / 2.0f)), 40, WHITE);
+			DrawTextEx(font, tutorialLeftText.c_str(), tutorialLeftTextPos, tutorialTextSize, textSpacing, YELLOW);
+			DrawTextEx(font, tutorialRightText.c_str(), tutorialRightTextPos, tutorialTextSize, textSpacing, YELLOW);
 
-			DrawText("Presione ENTER para iniciar", static_cast <int> ((screenWidth / 2.0f) - (MeasureText("Presione ENTER para iniciar", 40) / 2.0f)), static_cast <int> (screenWidth - (screenWidth / 2.0f)), 40, WHITE);
+			//DrawText("Presione ENTER para iniciar", static_cast <int> ((screenWidth / 2.0f) - (MeasureText("Presione ENTER para iniciar", 40) / 2.0f)), static_cast <int> (screenWidth - (screenWidth / 2.0f)), tutorialTextSize, WHITE);
+			DrawTextEx(font, startingText.c_str(), startingTextPos, tutorialTextSize, textSpacing, YELLOW);
 		}
 
 		EndDrawing();

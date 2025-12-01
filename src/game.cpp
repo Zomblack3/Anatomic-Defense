@@ -48,6 +48,9 @@ namespace run
 		buttonsFeatures::setButtons(buttonsES, amountOfButtonsES, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfES, SCREEN::END_SCREEN, oldScreenTexture, metalTexture);
 		buttonsFeatures::setButtons(buttonsExit, amountOfButtonsExit, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfExit, SCREEN::EXIT, oldScreenTexture, metalTexture);
 
+		metalTexture.width = hudWidth;
+		metalTexture.height = hudHeight;
+
 		SCREEN currentScreen = SCREEN::MAIN_MENU;
 
 		Texture MMBackground = { };
@@ -124,7 +127,7 @@ namespace run
 				break;
 			case SCREEN::GAMEPLAY:
 
-				mainFunctions::gameplay(player, enemies, buttonsPause, amountOfButtonsPause, currentScreen, font, gameplayBackground, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight);
+				mainFunctions::gameplay(player, enemies, buttonsPause, amountOfButtonsPause, currentScreen, font, gameplayBackground, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, metalTexture, oldScreenTexture);
 
 				break;
 			case SCREEN::END_SCREEN:

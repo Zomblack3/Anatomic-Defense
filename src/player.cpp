@@ -101,7 +101,9 @@ namespace playerFeatures
 	{
 		const int maxAmountOfLifes = 3;
 
-		player.pos = { 0.0f, 0.0f };
+		player.pos = { screenWidth / 2.0f, screenHeight / 2.0f };
+		player.height = (player.size / 2) / tanf(20 * DEG2RAD);
+		
 		player.speed = { 0.0f, 0.0f };
 		player.acceleration = 0.0f;
 		

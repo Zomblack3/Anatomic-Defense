@@ -46,11 +46,7 @@ namespace gameplayFunctions
 				isPauseOn = true;
 
 			if (!playerFeatures::isAlive(player))
-			{
-				playerFeatures::setDefault(player);
-
-				currentScreen = SCREEN::END_SCREEN;
-			}
+				currentScreen = SCREEN::END_GAME;
 		}
 		else if (isPauseOn)
 		{
@@ -65,7 +61,15 @@ namespace gameplayFunctions
 						if (i == 0)
 							isPauseOn = false;
 						else
+						{
 							currentScreen = buttons[i].directionScreen;
+
+							isPauseOn = false;
+
+							playerFeatures::setDefault(player);
+
+							enemies.clear();
+						}
 					}
 				}
 			}
@@ -125,27 +129,7 @@ namespace gameplayFunctions
 
 		playerShooting::drawBullets(player.bullets, maxAmountOfBullets);
 
-		playerFeatures::drawPlayer(player);
-
 		enemiesFeatures::drawEnemy(enemies);
-
-		DrawTexture(hudTexture, 0, 0, WHITE);
-
-		hudValuesTexture.width = static_cast <int> (scoreTextLength.x) + 40;
-		hudValuesTexture.height = static_cast <int> (scoreTextLength.y) + 10;
-
-		DrawTexture(hudValuesTexture, scoreTexturePosX, scoreTexturePosY, WHITE);
-
-		hudValuesTexture.width = static_cast <int> (lifesTextLength.x) + 40;
-		hudValuesTexture.height = static_cast <int> (lifesTextLength.y) + 10;
-
-		DrawTexture(hudValuesTexture, lifesTexturePosX, lifesTexturePosY, WHITE);
-
-		DrawTextPro(font, scoreText.c_str(), scorePos, origin, 0.0f, normalTextSize, textSpacing, YELLOW);
-		DrawTextPro(font, lifesText.c_str(), lifesPos, origin, 0.0f, normalTextSize, textSpacing, YELLOW);
-
-		if (isPauseOn)
-			buttonsFeatures::drawButtons(buttons, amountOfButtons, font);
 
 		if (!player.isActive)
 		{
@@ -155,9 +139,30 @@ namespace gameplayFunctions
 			DrawTextEx(font, tutorialLeftText.c_str(), tutorialLeftTextPos, tutorialTextSize, textSpacing, YELLOW);
 			DrawTextEx(font, tutorialRightText.c_str(), tutorialRightTextPos, tutorialTextSize, textSpacing, YELLOW);
 
-			//DrawText("Presione ENTER para iniciar", static_cast <int> ((screenWidth / 2.0f) - (MeasureText("Presione ENTER para iniciar", 40) / 2.0f)), static_cast <int> (screenWidth - (screenWidth / 2.0f)), tutorialTextSize, WHITE);
 			DrawTextEx(font, startingText.c_str(), startingTextPos, tutorialTextSize, textSpacing, YELLOW);
 		}
+		else
+		{
+			playerFeatures::drawPlayer(player);
+
+			DrawTexture(hudTexture, 0, 0, WHITE);
+
+			hudValuesTexture.width = static_cast <int> (scoreTextLength.x) + 40;
+			hudValuesTexture.height = static_cast <int> (scoreTextLength.y) + 10;
+
+			DrawTexture(hudValuesTexture, scoreTexturePosX, scoreTexturePosY, WHITE);
+
+			hudValuesTexture.width = static_cast <int> (lifesTextLength.x) + 40;
+			hudValuesTexture.height = static_cast <int> (lifesTextLength.y) + 10;
+
+			DrawTexture(hudValuesTexture, lifesTexturePosX, lifesTexturePosY, WHITE);
+
+			DrawTextPro(font, scoreText.c_str(), scorePos, origin, 0.0f, normalTextSize, textSpacing, YELLOW);
+			DrawTextPro(font, lifesText.c_str(), lifesPos, origin, 0.0f, normalTextSize, textSpacing, YELLOW);
+		}
+
+		if (isPauseOn)
+			buttonsFeatures::drawButtons(buttons, amountOfButtons, font);
 
 		EndDrawing();
 	}

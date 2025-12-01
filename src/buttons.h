@@ -19,7 +19,7 @@ struct Button
 
 	Vector2 textPos = { };
 	Vector2 backTexturePos = { };
-	Texture texture = { };
+	Texture frontTexture = { };
 	Texture backTexture = { };
 
 	Color unselectedButtonColor = WHITE;

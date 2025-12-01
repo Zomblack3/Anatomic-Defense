@@ -32,11 +32,11 @@ namespace buttonsFeatures
 			buttons[i].textPos.x = buttons[i].rec.x + (buttons[i].rec.width / 4.0f);
 			buttons[i].textPos.y = buttons[i].rec.y + (buttons[i].rec.height / 4.0f);
 
-			buttons[i].texture = texture;
+			buttons[i].frontTexture = texture;
 			buttons[i].backTexture = backTexture;
 
-			buttons[i].texture.height = static_cast <int> (buttons[i].rec.height);
-			buttons[i].texture.width = static_cast <int> (buttons[i].rec.width);
+			buttons[i].frontTexture.height = static_cast <int> (buttons[i].rec.height);
+			buttons[i].frontTexture.width = static_cast <int> (buttons[i].rec.width);
 
 			buttons[i].backTexture.height = static_cast <int> (buttons[i].rec.height + 10.0f);
 			buttons[i].backTexture.width = static_cast <int> (buttons[i].rec.width + 10.0f);
@@ -92,7 +92,7 @@ namespace buttonsFeatures
 				}
 
 				break;
-			case SCREEN::END_SCREEN:
+			case SCREEN::END_GAME:
 
 				switch (i)
 				{
@@ -169,7 +169,7 @@ namespace buttonsFeatures
 				DrawRectangle(static_cast <int> (buttons[i].rec.x), static_cast <int> (buttons[i].rec.y), static_cast <int>(buttons[i].rec.width), static_cast <int> (buttons[i].rec.height), buttons[i].actualColor);
 
 				DrawTexture(buttons[i].backTexture, static_cast <int>(buttons[i].backTexturePos.x), static_cast <int>(buttons[i].backTexturePos.y), WHITE);
-				DrawTexture(buttons[i].texture, static_cast <int>(buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), buttons[i].actualColor);
+				DrawTexture(buttons[i].frontTexture, static_cast <int>(buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), buttons[i].actualColor);
 
 				DrawTextEx(font, buttons[i].text.c_str(), buttons[i].textPos, static_cast <float>(buttons[i].textSize), 2, buttons[i].actualTextColor);
 			}
@@ -178,7 +178,7 @@ namespace buttonsFeatures
 				DrawRectangle(static_cast <int> (buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), static_cast <int>(buttons[i].rec.width), static_cast <int>(buttons[i].rec.height), buttons[i].actualColor);
 
 				DrawTexture(buttons[i].backTexture, static_cast <int>(buttons[i].backTexturePos.x), static_cast <int>(buttons[i].backTexturePos.y), WHITE);
-				DrawTexture(buttons[i].texture, static_cast <int>(buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), buttons[i].actualColor);
+				DrawTexture(buttons[i].frontTexture, static_cast <int>(buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), buttons[i].actualColor);
 				
 				DrawTextEx(font, buttons[i].text.c_str(), buttons[i].textPos, static_cast <float>(buttons[i].textSize), 2, buttons[i].actualTextColor);
 			}

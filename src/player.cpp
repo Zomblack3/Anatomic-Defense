@@ -103,11 +103,16 @@ namespace playerFeatures
 
 		player.pos = { 0.0f, 0.0f };
 		player.speed = { 0.0f, 0.0f };
-		player.color = RED;
 		player.acceleration = 0.0f;
+		
+		player.color = RED;
+		
 		player.rotation = 0.0f;
+		
 		player.lifes = maxAmountOfLifes;
 		player.score = 0;
+
+		player.isActive = false;
 	}
 
 	bool isAlive(const Player player)

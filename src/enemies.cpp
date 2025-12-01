@@ -20,7 +20,7 @@ namespace enemiesFeatures
 
 	float baseSpawnTime = 500.0f;
 	float spawnTimer = 0.0f;
-	float untouchableTimerReduction = deltaTime * 100.0f;
+	float untouchableTimerReduction = 0.0f;
 
 	void spawnEnemy(std::vector <Enemy>& enemies, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, float deltaTime)
 	{

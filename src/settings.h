@@ -11,3 +11,4 @@ const float baseAcceleration = 3.0f / 1000000.0f;
 // Texts  consts
 const float normalTextSize = 20.0f;
 const float titleTextSize = 50.0f;
+const float textSpacing = 2.0f;

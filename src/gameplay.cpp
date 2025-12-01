@@ -100,8 +100,8 @@ namespace gameplayFunctions
 
 		DrawRectangle(0, 0, screenWidth, 50, WHITE);
 
-		DrawTextPro(font, TextFormat("Score: %i", player.score), scorePos, origin, 0.0f, normalTextSize, 2.0f, BLACK);
-		DrawTextPro(font, "Vida: ", lifesPos, origin, 0.0f, normalTextSize, 2.0f, BLACK);
+		DrawTextPro(font, TextFormat("Score: %i", player.score), scorePos, origin, 0.0f, normalTextSize, textSpacing, BLACK);
+		DrawTextPro(font, "Vida: ", lifesPos, origin, 0.0f, normalTextSize, textSpacing, BLACK);
 		DrawRectangle(static_cast<int>(lifesPos.x) + 50, textPositionY, player.lifes * 50, 20, RED);
 
 		if (isPauseOn)

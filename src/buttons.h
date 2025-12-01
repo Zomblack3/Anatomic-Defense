@@ -18,11 +18,14 @@ struct Button
 	std::string text = " ";
 
 	Vector2 textPos = { };
+	Vector2 backTexturePos = { };
+	Texture texture = { };
+	Texture backTexture = { };
 
 	Color unselectedButtonColor = WHITE;
-	Color selectedButtonColor = DARKBLUE;
+	Color selectedButtonColor = RED;
 	Color actualColor = unselectedButtonColor;
-	Color unselectedTextColor = BLACK;
+	Color unselectedTextColor = WHITE;
 	Color selectedTextColor = YELLOW;
 	Color actualTextColor = unselectedTextColor;
 };
@@ -31,7 +34,7 @@ namespace buttonsFeatures
 {
     bool collitionCheckButtonMouse(Rectangle rec);
 
-    void setButtons(Button buttons[], int amountOfButtons, float startingPosX, float startingPosY, std::string texts[], SCREEN buttonScreen, Font font);
+    void setButtons(Button buttons[], int amountOfButtons, float startingPosX, float startingPosY, std::string texts[], SCREEN buttonScreen, Texture texture, Texture backTexture);
     void chageButtonState(Button& button);
     void drawButtons(Button buttons[], int amountOfButtons, Font font);
 }

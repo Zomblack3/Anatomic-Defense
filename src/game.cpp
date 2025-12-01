@@ -23,6 +23,12 @@ namespace run
 		const int amountOfButtonsExit = 2;
 
 		Font font = LoadFont("res/fonts/ds_digital/DS-DIGIB.TTF");
+		Font titleFont = LoadFont("res/fonts/Roboto/Roboto-Black.ttf");
+
+		titleFont.baseSize = static_cast <int> (titleTextSize);
+
+		Texture oldScreenTexture = LoadTexture("res/textures/screen_texture.jpg");
+		Texture metalTexture = LoadTexture("res/textures/metal_texture.jpg");
 
 		std::string textsOfMM[amountOfButtonsMM] = { "INICIAR", "OPCIONES", "CREDITOS", "SALIR" };
 		std::string textsOfOptions[amountOfButtonsOptions] = { "TAMARINDO", "TANGAMANDAPIO", "TANGENTE", "VOLVER AL MENU" };
@@ -30,17 +36,17 @@ namespace run
 		std::string textsOfES[amountOfButtonsES] = { "REINICIAR", "VOLVER AL MENU" };
 		std::string textsOfExit[amountOfButtonsExit] = { "SI", "NO" };
 
-		Button buttonsMM[amountOfButtonsMM];
-		Button buttonsOptions[amountOfButtonsOptions];
-		Button buttonsPause[amountOfButtonsPause];
-		Button buttonsES[amountOfButtonsES];
-		Button buttonsExit[amountOfButtonsExit];
+		Button buttonsMM[amountOfButtonsMM] = { };
+		Button buttonsOptions[amountOfButtonsOptions] = { };
+		Button buttonsPause[amountOfButtonsPause] = { };
+		Button buttonsES[amountOfButtonsES] = { };
+		Button buttonsExit[amountOfButtonsExit] = { };
 
-		buttonsFeatures::setButtons(buttonsMM, amountOfButtonsMM, screenWidth - (screenWidth / 4.0f), (screenHeight / 2.0f) - 100, textsOfMM, SCREEN::MAIN_MENU, font);
-		buttonsFeatures::setButtons(buttonsOptions, amountOfButtonsOptions, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 100, textsOfOptions, SCREEN::OPTIONS, font);
-		buttonsFeatures::setButtons(buttonsPause, amountOfButtonsPause, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfPause, SCREEN::GAMEPLAY, font);
-		buttonsFeatures::setButtons(buttonsES, amountOfButtonsES, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfES, SCREEN::END_SCREEN, font);
-		buttonsFeatures::setButtons(buttonsExit, amountOfButtonsExit, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfExit, SCREEN::EXIT, font);
+		buttonsFeatures::setButtons(buttonsMM, amountOfButtonsMM, screenWidth - (screenWidth / 4.0f), (screenHeight / 2.0f) - 100, textsOfMM, SCREEN::MAIN_MENU, oldScreenTexture, metalTexture);
+		buttonsFeatures::setButtons(buttonsOptions, amountOfButtonsOptions, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 100, textsOfOptions, SCREEN::OPTIONS, oldScreenTexture, metalTexture);
+		buttonsFeatures::setButtons(buttonsPause, amountOfButtonsPause, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfPause, SCREEN::GAMEPLAY, oldScreenTexture, metalTexture);
+		buttonsFeatures::setButtons(buttonsES, amountOfButtonsES, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfES, SCREEN::END_SCREEN, oldScreenTexture, metalTexture);
+		buttonsFeatures::setButtons(buttonsExit, amountOfButtonsExit, screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50, textsOfExit, SCREEN::EXIT, oldScreenTexture, metalTexture);
 
 		SCREEN currentScreen = SCREEN::MAIN_MENU;
 
@@ -57,22 +63,23 @@ namespace run
 		Sound playerShotSound = { };
 
 		std::string titleText = "ANATOMIC DEFENSE";
-		Vector2 titleLenght = MeasureTextEx(font, titleText.c_str(), 50, 2);
+
+		Vector2 titleLenght = MeasureTextEx(titleFont, titleText.c_str(), titleTextSize, textSpacing);
 		
 		Rectangle titleRec = { };
 		Vector2 titlePos = { };
 
-		titleRec.x = 50.0f;
-		titleRec.y = 50.0f;
-		titleRec.width = static_cast <float> (titleText.size()) * 50;
-		titleRec.height = 70.0f;
+		titleRec.width = titleLenght.x + 40.0f;
+		titleRec.height = titleLenght.y + 20.0f;
+		titleRec.x = screenWidth / 2.0f - titleRec.width / 2.0f;
+		titleRec.y = screenHeight / 7.0f;
 
-		titlePos.x = (titleRec.x + (titleRec.width / 2.0f)) - titleLenght.x / 2.0f;
+		titlePos.x = screenWidth / 2.0f - titleLenght.x / 2.0f;
 		titlePos.y = titleRec.y + (titleRec.height / 6.0f);
 
 		Player player;
 
-		std::vector <Enemy> enemies;
+		std::vector <Enemy> enemies = { };
 
 		player.pos = { screenWidth / 2.0f, screenHeight / 2.0f };
 		player.height = (player.size / 2) / tanf(20 * DEG2RAD);
@@ -91,8 +98,8 @@ namespace run
 
 				DrawTexture(MMBackground, 0, 0, WHITE);
 
-				DrawRectangle(static_cast <int> (titleRec.x), static_cast <int> (titleRec.y), static_cast <int> (titleRec.width), static_cast <int> (titleRec.height), WHITE);
-				DrawTextEx(font, titleText.c_str(), titlePos, titleTextSize, 2, BLACK);
+				DrawRectangle(static_cast <int> (titleRec.x), static_cast <int> (titleRec.y), static_cast <int> (titleRec.width), static_cast <int> (titleRec.height), RED);
+				DrawTextEx(titleFont, titleText.c_str(), titlePos, titleTextSize, textSpacing, WHITE);
 
 				buttonsFeatures::drawButtons(buttonsMM, amountOfButtonsMM, font);
 

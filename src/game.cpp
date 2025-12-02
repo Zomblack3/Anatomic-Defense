@@ -17,8 +17,7 @@ namespace run
 
 		InitAudioDevice();
 
-		const int amountOfButtonsMM = 4;
-		const int amountOfButtonsOptions = 4;
+		const int amountOfButtonsMM = 3;
 		const int amountOfButtonsPause = 2;
 		const int amountOfButtonsEG = 2;
 		const int amountOfButtonsExit = 2;
@@ -31,14 +30,12 @@ namespace run
 		Texture oldScreenTexture = LoadTexture("res/textures/screen_texture.jpg");
 		Texture metalTexture = LoadTexture("res/textures/metal_texture.jpg");
 
-		std::string textsOfMM[amountOfButtonsMM] = { "INICIAR", "OPCIONES", "CREDITOS", "SALIR" };
-		std::string textsOfOptions[amountOfButtonsOptions] = { "TAMARINDO", "TANGAMANDAPIO", "TANGENTE", "VOLVER AL MENU" };
+		std::string textsOfMM[amountOfButtonsMM] = { "INICIAR", "CREDITOS", "SALIR" };
 		std::string textsOfPause[amountOfButtonsPause] = { "VOLVER A LA PARTIDA", "VOLVER AL MENU" };
 		std::string textsOfEG[amountOfButtonsEG] = { "REINICIAR", "VOLVER AL MENU" };
 		std::string textsOfExit[amountOfButtonsExit] = { "SI", "NO" };
 
 		Button buttonsMM[amountOfButtonsMM] = { };
-		Button buttonsOptions[amountOfButtonsOptions] = { };
 		Button buttonsPause[amountOfButtonsPause] = { };
 		Button buttonsEG[amountOfButtonsEG] = { };
 		Button buttonsExit[amountOfButtonsExit] = { };
@@ -50,7 +47,6 @@ namespace run
 		Vector2 buttonsStartingPosExit = { screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50.0f };
 
 		buttonsFeatures::setButtons(buttonsMM, amountOfButtonsMM, buttonsStartingPosMM.x, buttonsStartingPosMM.y, textsOfMM, SCREEN::MAIN_MENU, oldScreenTexture, metalTexture);
-		buttonsFeatures::setButtons(buttonsOptions, amountOfButtonsOptions, buttonsStartingPosOptions.x, buttonsStartingPosOptions.y, textsOfOptions, SCREEN::OPTIONS, oldScreenTexture, metalTexture);
 		buttonsFeatures::setButtons(buttonsPause, amountOfButtonsPause, buttonsStartingPosPause.x, buttonsStartingPosPause.y, textsOfPause, SCREEN::GAMEPLAY, oldScreenTexture, metalTexture);
 		buttonsFeatures::setButtons(buttonsEG, amountOfButtonsEG, buttonsStartingPosEG.x, buttonsStartingPosEG.y, textsOfEG, SCREEN::END_GAME, oldScreenTexture, metalTexture);
 		buttonsFeatures::setButtons(buttonsExit, amountOfButtonsExit, buttonsStartingPosExit.x, buttonsStartingPosExit.y, textsOfExit, SCREEN::EXIT, oldScreenTexture, metalTexture);
@@ -141,11 +137,6 @@ namespace run
 			case SCREEN::END_GAME:
 
 				mainFunctions::endGame(player, enemies, buttonsEG, amountOfButtonsEG, currentScreen, titleFont, baseFont, EGBackground);
-
-				break;
-			case SCREEN::OPTIONS:
-
-
 
 				break;
 			case SCREEN::EXIT:

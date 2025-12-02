@@ -57,16 +57,6 @@ namespace buttonsFeatures
 					break;
 				case 1:
 
-					buttons[i].directionScreen = SCREEN::OPTIONS;
-
-					break;
-				case 2:
-
-					buttons[i].directionScreen = SCREEN::CREDITS;
-
-					break;
-				case 3:
-
 					buttons[i].directionScreen = SCREEN::EXIT;
 
 					break;
@@ -102,23 +92,6 @@ namespace buttonsFeatures
 
 					break;
 				case 1:
-
-					buttons[i].directionScreen = SCREEN::MAIN_MENU;
-
-					break;
-				default:
-
-					buttons[i].directionScreen = buttonScreen;
-
-					break;
-				}
-
-				break;
-			case SCREEN::OPTIONS:
-
-				switch (i)
-				{
-				case 3:
 
 					buttons[i].directionScreen = SCREEN::MAIN_MENU;
 

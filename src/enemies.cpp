@@ -6,17 +6,17 @@
 
 namespace enemiesFeatures
 {
-	const float baseSpeedSmall = 400.0f;
+	/*const float baseSpeedSmall = 400.0f;
 	const float baseSpeedMedium = 300.0f;
-	const float baseSpeedBig = 200.0f;
+	const float baseSpeedBig = 200.0f;*/
 
-	const float radiusSmall = 20.0f;
+	/*const float radiusSmall = 20.0f;
 	const float radiusMedium = 25.0f;
-	const float radiusBig = 35.0f;
+	const float radiusBig = 35.0f;*/
 
-	const int pointsSmall = 10;
+	/*const int pointsSmall = 10;
 	const int pointsMedium = 25;
-	const int pointsBig = 40;
+	const int pointsBig = 40;*/
 
 	float baseSpawnTime = 500.0f;
 	float spawnTimer = 0.0f;
@@ -24,6 +24,18 @@ namespace enemiesFeatures
 
 	void spawnEnemy(std::vector <Enemy>& enemies, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, float deltaTime)
 	{
+		const float baseSpeedSmall = 400.0f;
+		const float baseSpeedMedium = 300.0f;
+		const float baseSpeedBig = 200.0f;
+
+		const float radiusSmall = 20.0f;
+		const float radiusMedium = 25.0f;
+		const float radiusBig = 35.0f;
+
+		const int pointsSmall = 10;
+		const int pointsMedium = 25;
+		const int pointsBig = 40;
+
 		const int maxAmountOfEnemies = 100;
 		const int maxRotation = 360;
 
@@ -258,6 +270,15 @@ namespace enemiesFeatures
 
 	Enemy setSplitedEnemy(ENEMY_TYPE type, Vector2 position, Texture smallEnemy, Texture mediumEnemy)
 	{
+		const float baseSpeedSmall = 400.0f;
+		const float baseSpeedMedium = 300.0f;
+
+		const float radiusSmall = 20.0f;
+		const float radiusMedium = 25.0f;
+
+		const int pointsSmall = 10;
+		const int pointsMedium = 25;
+
 		const int minRotation = 0;
 		const int maxRotation = 360;
 

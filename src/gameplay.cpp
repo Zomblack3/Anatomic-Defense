@@ -92,16 +92,24 @@ namespace gameplayFunctions
 		std::string scoreText = TextFormat("Puntaje: %i", player.score);
 		std::string lifesText = TextFormat("Vidas: %i", player.lifes);
 
+		std::string pauseText = "PAUSA";
+
+		std::string tutorialPauseText = "Presione P para pausar";
 		std::string tutorialRightText = "MOVERSE";
 		std::string tutorialLeftText = "DISPARAR";
 		std::string startingText = "Presione ENTER para iniciar";
 
+		Vector2 pauseTextLength = MeasureTextEx(font, pauseText.c_str(), tutorialTextSize, textSpacing);
+
 		Vector2 scoreTextLength = MeasureTextEx(font, scoreText.c_str(), normalTextSize, textSpacing);
 		Vector2 lifesTextLength = MeasureTextEx(font, lifesText.c_str(), normalTextSize, textSpacing);
 
+		Vector2 tutorialPauseTextLength = MeasureTextEx(font, tutorialPauseText.c_str(), tutorialTextSize, textSpacing);
 		Vector2 tutorialRightTextLength = MeasureTextEx(font, tutorialRightText.c_str(), tutorialTextSize, textSpacing);
 		Vector2 tutorialLeftTextLength = MeasureTextEx(font, tutorialLeftText.c_str(), tutorialTextSize, textSpacing);
 		Vector2 startingTextLength = MeasureTextEx(font, startingText.c_str(), tutorialTextSize, textSpacing);
+
+		Vector2 pauseTextPos = { (screenWidth / 2.0f) - (pauseTextLength.x / 2.0f), screenHeight / 4.0f };
 
 		Vector2 scorePos = { scorePosX, static_cast <float> (textPositionY) };
 		Vector2 lifesPos = { lifePosX, static_cast <float> (textPositionY) };
@@ -110,6 +118,7 @@ namespace gameplayFunctions
 		Vector2 tutorialLeftTexturePos = { (screenWidth - (screenWidth / 4.0f)) - (tutorialLeft.width / 2.0f), screenHeight / 4.0f };
 		Vector2 startingTextPos = { (screenWidth / 2.0f) - (startingTextLength.x / 2.0f), screenWidth - (screenWidth / 2.0f) };
 
+		Vector2 tutorialPauseTextPos = { (screenWidth / 2.0f) - (tutorialPauseTextLength.x / 2.0f), screenHeight / 6.0f };
 		Vector2 tutorialRightTextPos = { tutorialRightTexturePos.x - 5.0f , (screenWidth / 4.0f) + tutorialLeft.height - (tutorialLeft.height / 2.0f)};
 		Vector2 tutorialLeftTextPos = { tutorialLeftTexturePos.x - 5.0f, (screenWidth / 4.0f) + tutorialLeft.height - (tutorialLeft.height / 2.0f)};
 
@@ -136,6 +145,7 @@ namespace gameplayFunctions
 			DrawTexture(tutorialRight, static_cast <int> (tutorialRightTexturePos.x), static_cast <int> (tutorialRightTexturePos.y), WHITE);
 			DrawTexture(tutorialLeft, static_cast <int> (tutorialLeftTexturePos.x), static_cast <int> (tutorialLeftTexturePos.y), WHITE);
 
+			DrawTextEx(font, tutorialPauseText.c_str(), tutorialPauseTextPos, tutorialTextSize, textSpacing, YELLOW);
 			DrawTextEx(font, tutorialLeftText.c_str(), tutorialLeftTextPos, tutorialTextSize, textSpacing, YELLOW);
 			DrawTextEx(font, tutorialRightText.c_str(), tutorialRightTextPos, tutorialTextSize, textSpacing, YELLOW);
 
@@ -162,7 +172,11 @@ namespace gameplayFunctions
 		}
 
 		if (isPauseOn)
+		{
+			DrawTextEx(font, pauseText.c_str(), pauseTextPos, tutorialTextSize, textSpacing, YELLOW);
+
 			buttonsFeatures::drawButtons(buttons, amountOfButtons, font);
+		}
 
 		EndDrawing();
 	}

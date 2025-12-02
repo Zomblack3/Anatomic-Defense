@@ -56,6 +56,11 @@ namespace buttonsFeatures
 
 					break;
 				case 1:
+					
+					buttons[i].directionScreen = SCREEN::CREDITS;
+
+					break;
+				case 2:
 
 					buttons[i].directionScreen = SCREEN::EXIT;
 

@@ -115,7 +115,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)libs\raylib-5.5_win32_msvc16\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -150,14 +150,16 @@
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>raylib.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)libs\raylib-5.5_win64_msvc16\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\buttons.cpp" />
+    <ClCompile Include="src\endGame.cpp" />
     <ClCompile Include="src\enemies.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\gameplay.cpp" />
@@ -166,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\buttons.h" />
+    <ClInclude Include="src\endGame.h" />
     <ClInclude Include="src\enemies.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gameplay.h" />

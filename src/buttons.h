@@ -37,4 +37,5 @@ namespace buttonsFeatures
     void setButtons(Button buttons[], int amountOfButtons, float startingPosX, float startingPosY, std::string texts[], SCREEN buttonScreen, Texture texture, Texture backTexture);
     void chageButtonState(Button& button);
     void drawButtons(Button buttons[], int amountOfButtons, Font font);
+	void drawSingleButton(Button button, Font font);
 }

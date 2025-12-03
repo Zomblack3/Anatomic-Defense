@@ -122,7 +122,7 @@ namespace buttonsFeatures
 		}
 	}
 
-	void chageButtonState(Button & button)
+	void chageButtonState(Button& button)
 	{
 		if (collitionCheckButtonMouse(button.rec))
 		{
@@ -142,24 +142,24 @@ namespace buttonsFeatures
 	{
 		for (int i = 0; i < amountOfButtons; i++)
 		{
-			if (!collitionCheckButtonMouse(buttons[i].rec))
-			{
-				DrawRectangle(static_cast <int> (buttons[i].rec.x), static_cast <int> (buttons[i].rec.y), static_cast <int>(buttons[i].rec.width), static_cast <int> (buttons[i].rec.height), buttons[i].actualColor);
+			drawSingleButton(buttons[i], font);
 
-				DrawTexture(buttons[i].backTexture, static_cast <int>(buttons[i].backTexturePos.x), static_cast <int>(buttons[i].backTexturePos.y), WHITE);
-				DrawTexture(buttons[i].frontTexture, static_cast <int>(buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), buttons[i].actualColor);
+			/*DrawRectangle(static_cast <int>(buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), static_cast <int>(buttons[i].rec.width), static_cast <int>(buttons[i].rec.height), buttons[i].actualColor);
 
-				DrawTextEx(font, buttons[i].text.c_str(), buttons[i].textPos, static_cast <float>(buttons[i].textSize), 2, buttons[i].actualTextColor);
-			}
-			else
-			{
-				DrawRectangle(static_cast <int> (buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), static_cast <int>(buttons[i].rec.width), static_cast <int>(buttons[i].rec.height), buttons[i].actualColor);
+			DrawTexture(buttons[i].backTexture, static_cast <int>(buttons[i].backTexturePos.x), static_cast <int>(buttons[i].backTexturePos.y), WHITE);
+			DrawTexture(buttons[i].frontTexture, static_cast <int>(buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), buttons[i].actualColor);
 
-				DrawTexture(buttons[i].backTexture, static_cast <int>(buttons[i].backTexturePos.x), static_cast <int>(buttons[i].backTexturePos.y), WHITE);
-				DrawTexture(buttons[i].frontTexture, static_cast <int>(buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), buttons[i].actualColor);
-				
-				DrawTextEx(font, buttons[i].text.c_str(), buttons[i].textPos, static_cast <float>(buttons[i].textSize), 2, buttons[i].actualTextColor);
-			}
+			DrawTextEx(font, buttons[i].text.c_str(), buttons[i].textPos, static_cast <float>(buttons[i].textSize), 2, buttons[i].actualTextColor);*/
 		}
+	}
+
+	void drawSingleButton(Button button, Font font)
+	{
+		DrawRectangleRec(button.rec, button.actualColor);
+
+		DrawTexture(button.backTexture, static_cast <int>(button.backTexturePos.x), static_cast <int>(button.backTexturePos.y), WHITE);
+		DrawTexture(button.frontTexture, static_cast <int>(button.rec.x), static_cast <int>(button.rec.y), button.actualColor);
+
+		DrawTextEx(font, button.text.c_str(), button.textPos, static_cast <float>(button.textSize), 2, button.actualTextColor);
 	}
 }

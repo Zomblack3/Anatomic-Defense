@@ -2,7 +2,7 @@
 
 enum class SCREEN
 {
-	MAIN_MENU,
+	MENU,
 	GAMEPLAY,
 	END_GAME,
 	CREDITS,

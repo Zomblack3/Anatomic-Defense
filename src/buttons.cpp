@@ -46,7 +46,7 @@ namespace buttonsFeatures
 
 			switch (buttonScreen)
 			{
-			case SCREEN::MAIN_MENU:
+			case SCREEN::MENU:
 
 				switch (i)
 				{
@@ -79,7 +79,7 @@ namespace buttonsFeatures
 				{
 				case 1:
 
-					buttons[i].directionScreen = SCREEN::MAIN_MENU;
+					buttons[i].directionScreen = SCREEN::MENU;
 
 					break;
 				default:
@@ -98,7 +98,7 @@ namespace buttonsFeatures
 					break;
 				case 1:
 
-					buttons[i].directionScreen = SCREEN::MAIN_MENU;
+					buttons[i].directionScreen = SCREEN::MENU;
 
 					break;
 				default:
@@ -111,7 +111,7 @@ namespace buttonsFeatures
 				break;
 			case SCREEN::EXIT:
 
-				buttons[i].directionScreen = SCREEN::MAIN_MENU;
+				buttons[i].directionScreen = SCREEN::MENU;
 
 				break;
 			default:

@@ -4,6 +4,7 @@
 
 #include "settings.h"
 
+#include "menu.h"
 #include "gameplay.h"
 #include "endGame.h"
 
@@ -17,7 +18,7 @@ namespace run
 
 		InitAudioDevice();
 
-		const int amountOfButtonsMM = 3;
+		const int amountOfButtonsMenu = 3;
 		const int amountOfButtonsPause = 2;
 		const int amountOfButtonsEG = 2;
 		const int amountOfButtonsExit = 2;
@@ -30,23 +31,23 @@ namespace run
 		Texture oldScreenTexture = LoadTexture("res/textures/screen_texture.jpg");
 		Texture metalTexture = LoadTexture("res/textures/metal_texture.jpg");
 
-		std::string textsOfMM[amountOfButtonsMM] = { "INICIAR", "CREDITOS", "SALIR" };
+		std::string textsOfMenu[amountOfButtonsMenu] = { "INICIAR", "CREDITOS", "SALIR" };
 		std::string textsOfPause[amountOfButtonsPause] = { "VOLVER A LA PARTIDA", "VOLVER AL MENU" };
 		std::string textsOfEG[amountOfButtonsEG] = { "REINICIAR", "VOLVER AL MENU" };
 		std::string textsOfExit[amountOfButtonsExit] = { "SI", "NO" };
 
-		Button buttonsMM[amountOfButtonsMM] = { };
+		Button buttonsMenu[amountOfButtonsMenu] = { };
 		Button buttonsPause[amountOfButtonsPause] = { };
 		Button buttonsEG[amountOfButtonsEG] = { };
 		Button buttonsExit[amountOfButtonsExit] = { };
 
-		Vector2 buttonsStartingPosMM = { screenWidth - (screenWidth / 4.0f), (screenHeight / 2.0f) - 100.0f };
+		Vector2 buttonsStartingPosMenu = { screenWidth - (screenWidth / 4.0f), (screenHeight / 2.0f) - 100.0f };
 		Vector2 buttonsStartingPosOptions = { screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 100.0f };
 		Vector2 buttonsStartingPosPause = { screenWidth / 2.0f, (screenHeight / 2.0f) - 50.0f };
 		Vector2 buttonsStartingPosEG = { screenWidth / 2.0f, screenHeight / 2.0f + (screenHeight / 8.0f) };
 		Vector2 buttonsStartingPosExit = { screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50.0f };
 
-		buttonsFeatures::setButtons(buttonsMM, amountOfButtonsMM, buttonsStartingPosMM.x, buttonsStartingPosMM.y, textsOfMM, SCREEN::MAIN_MENU, oldScreenTexture, metalTexture);
+		buttonsFeatures::setButtons(buttonsMenu, amountOfButtonsMenu, buttonsStartingPosMenu.x, buttonsStartingPosMenu.y, textsOfMenu, SCREEN::MENU, oldScreenTexture, metalTexture);
 		buttonsFeatures::setButtons(buttonsPause, amountOfButtonsPause, buttonsStartingPosPause.x, buttonsStartingPosPause.y, textsOfPause, SCREEN::GAMEPLAY, oldScreenTexture, metalTexture);
 		buttonsFeatures::setButtons(buttonsEG, amountOfButtonsEG, buttonsStartingPosEG.x, buttonsStartingPosEG.y, textsOfEG, SCREEN::END_GAME, oldScreenTexture, metalTexture);
 		buttonsFeatures::setButtons(buttonsExit, amountOfButtonsExit, buttonsStartingPosExit.x, buttonsStartingPosExit.y, textsOfExit, SCREEN::EXIT, oldScreenTexture, metalTexture);
@@ -54,9 +55,9 @@ namespace run
 		metalTexture.width = hudWidth;
 		metalTexture.height = hudHeight;
 
-		SCREEN currentScreen = SCREEN::MAIN_MENU;
+		SCREEN currentScreen = SCREEN::MENU;
 
-		Texture MMBackground = { };
+		Texture menuBackground = { };
 		Texture gameplayBackground = { };
 		Texture EGBackground = { };
 
@@ -69,64 +70,21 @@ namespace run
 
 		Sound playerShotSound = { };
 
-		std::string titleText = "ANATOMIC DEFENSE";
-
-		Vector2 titleLenght = MeasureTextEx(titleFont, titleText.c_str(), titleTextSize, textSpacing);
-		
-		Rectangle titleRec = { };
-		Vector2 titlePos = { };
-
-		titleRec.width = titleLenght.x + 40.0f;
-		titleRec.height = titleLenght.y + 20.0f;
-		titleRec.x = screenWidth / 2.0f - titleRec.width / 2.0f;
-		titleRec.y = screenHeight / 7.0f;
-
-		titlePos.x = screenWidth / 2.0f - titleLenght.x / 2.0f;
-		titlePos.y = titleRec.y + (titleRec.height / 6.0f);
-
 		Player player;
 
 		playerFeatures::setDefault(player);
 
 		std::vector <Enemy> enemies = { };
 
-		resources::loadResources(MMBackground, gameplayBackground, player.texture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, player.shotSound, EGBackground);
+		resources::loadResources(menuBackground, gameplayBackground, player.texture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, player.shotSound, EGBackground);
 
 		while (!WindowShouldClose())
 		{
 			switch (currentScreen)
 			{
-			case SCREEN::MAIN_MENU:
+			case SCREEN::MENU:
 
-				BeginDrawing();
-
-				ClearBackground(BLACK);
-
-				DrawTexture(MMBackground, 0, 0, WHITE);
-
-				DrawRectangle(static_cast <int> (titleRec.x), static_cast <int> (titleRec.y), static_cast <int> (titleRec.width), static_cast <int> (titleRec.height), RED);
-				DrawTextEx(titleFont, titleText.c_str(), titlePos, titleTextSize, textSpacing, WHITE);
-
-				buttonsFeatures::drawButtons(buttonsMM, amountOfButtonsMM, baseFont);
-
-				// Update
-				for (int i = 0; i < amountOfButtonsMM; i++)
-				{
-					buttonsFeatures::chageButtonState(buttonsMM[i]);
-
-					if (buttonsFeatures::collitionCheckButtonMouse(buttonsMM[i].rec))
-					{
-						if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-						{
-							if (buttonsMM[i].directionScreen != currentScreen)
-								currentScreen = buttonsMM[i].directionScreen;
-						}
-					}
-				}
-
-				DrawText("Creado por Zomblack3 (Santiago Britos)", 10, static_cast <int> (screenHeight) - 30, 30, BLACK);
-
-				EndDrawing();
+				mainFunctions::menu(currentScreen, buttonsMenu, amountOfButtonsMenu, menuBackground, titleFont, baseFont);
 
 				break;
 			case SCREEN::GAMEPLAY:
@@ -151,7 +109,7 @@ namespace run
 			}
 		}
 
-		resources::unloadResources(baseFont, MMBackground, gameplayBackground, player.texture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound, EGBackground);
+		resources::unloadResources(baseFont, menuBackground, gameplayBackground, player.texture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound, EGBackground);
 	}
 }
 

@@ -44,6 +44,9 @@
     <ClCompile Include="src\endGame.cpp">
       <Filter>Screens .cpp</Filter>
     </ClCompile>
+    <ClCompile Include="src\menu.cpp">
+      <Filter>Screens .cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game.h">
@@ -68,6 +71,9 @@
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="src\endGame.h">
+      <Filter>Screens .h</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu.h">
       <Filter>Screens .h</Filter>
     </ClInclude>
   </ItemGroup>

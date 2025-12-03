@@ -13,7 +13,7 @@ struct Button
 
 	float baseHeight = 50.0f;
 
-	SCREEN directionScreen = SCREEN::MAIN_MENU;
+	SCREEN directionScreen = SCREEN::MENU;
 
 	std::string text = " ";
 

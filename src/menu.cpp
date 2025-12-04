@@ -34,8 +34,12 @@ namespace menuFunctions
 	void draw(Button buttons[], int amountOfButtons, Texture background, Font titleFont, Font normalFont)
 	{
 		std::string titleText = "ANATOMIC DEFENSE";
+		std::string versionText = "Version 1.0";
 
 		Vector2 titleLenght = MeasureTextEx(titleFont, titleText.c_str(), titleTextSize, textSpacing);
+
+		int versionTextPosX = 10;
+		int versionTextPosY = static_cast <int> (screenHeight) - 50;
 
 		Rectangle titleRec = { };
 		Vector2 titlePos = { };
@@ -62,7 +66,7 @@ namespace menuFunctions
 
 		buttonsFeatures::drawButtons(buttons, amountOfButtons, normalFont);
 
-		DrawText("Creado por Zomblack3 (Santiago Britos)", 10, static_cast <int> (screenHeight) - 30, 30, BLACK);
+		DrawText(versionText.c_str(), versionTextPosX, versionTextPosY, static_cast <int> (titleTextSize), BLACK);
 
 		EndDrawing();
 	}

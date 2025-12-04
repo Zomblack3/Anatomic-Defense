@@ -26,7 +26,7 @@ struct Button
 	Color unselectedButtonColor = WHITE;
 	Color selectedButtonColor = RED;
 	Color actualColor = unselectedButtonColor;
-	Color unselectedTextColor = WHITE;
+	Color unselectedTextColor = GREEN;
 	Color selectedTextColor = YELLOW;
 	Color actualTextColor = unselectedTextColor;
 };
@@ -39,7 +39,7 @@ namespace buttonsFeatures
 	void setSingleButton(Button& button, float x, float y, std::string text, SCREEN directionScreen, Texture frontTexture, Texture backTexture);
 
 	void chageButtonState(Button& button);
-    
+
 	void drawButtons(Button buttons[], int amountOfButtons, Font font);
 	void drawSingleButton(Button button, Font font);
 }

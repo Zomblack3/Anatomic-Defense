@@ -66,6 +66,9 @@ namespace buttonsFeatures
 
 					break;
 				default:
+
+
+
 					break;
 				}
 
@@ -86,13 +89,53 @@ namespace buttonsFeatures
 					break;
 				default:
 
-					buttons[i].directionScreen = buttonScreen;
+					
+
+					break;
+				}
+
+				break;
+			case SCREEN::CREDITS:
+
+				switch (i)
+				{
+				case 0:
+
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_PROGRAMMERS, frontTexture, backTexture);
+
+					break;
+				case 1:
+
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_ARTISTS, frontTexture, backTexture);
+
+					break;
+				case 2:
+
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_MUSICIANS, frontTexture, backTexture);
+
+					break;
+				case 3:
+
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_SOUND_ENGENNIERS, frontTexture, backTexture);
+
+					break;
+				case 4:
+
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_FONTS, frontTexture, backTexture);
+
+					break;
+				default:
+
+
 
 					break;
 				}
 
 				break;
 			default:
+
+				setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], buttonScreen, frontTexture, backTexture);
+
 				break;
 			}
 

@@ -131,6 +131,12 @@ namespace gameplayFunctions
 		int lifesTexturePosX = static_cast <int> (lifesPos.x) - 20;
 		int lifesTexturePosY = static_cast <int> (lifesPos.y) - 5;
 
+		int hudValuesTextureScoreWidth = static_cast <int> (scoreTextLength.x) + 40;
+		int hudValuesTextureScoreHeight = static_cast <int> (scoreTextLength.y) + 10;
+
+		int hudValuesTextureLifesWidth = static_cast <int> (lifesTextLength.x) + 40;
+		int hudValuesTextureLifesHeight = static_cast <int> (lifesTextLength.y) + 10;
+
 		Vector2 origin = { 0.0f, 0.0f };
 
 		BeginDrawing();
@@ -160,13 +166,13 @@ namespace gameplayFunctions
 
 			DrawTexture(hudTexture, 0, 0, WHITE);
 
-			hudValuesTexture.width = static_cast <int> (scoreTextLength.x) + 40;
-			hudValuesTexture.height = static_cast <int> (scoreTextLength.y) + 10;
+			hudValuesTexture.width = hudValuesTextureScoreWidth;
+			hudValuesTexture.height = hudValuesTextureScoreHeight;
 
 			DrawTexture(hudValuesTexture, scoreTexturePosX, scoreTexturePosY, WHITE);
 
-			hudValuesTexture.width = static_cast <int> (lifesTextLength.x) + 40;
-			hudValuesTexture.height = static_cast <int> (lifesTextLength.y) + 10;
+			hudValuesTexture.width = hudValuesTextureLifesWidth;
+			hudValuesTexture.height = hudValuesTextureLifesHeight;
 
 			DrawTexture(hudValuesTexture, lifesTexturePosX, lifesTexturePosY, WHITE);
 

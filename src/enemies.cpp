@@ -303,8 +303,6 @@ namespace enemiesFeatures
 			enemy.baseSpeed = baseSpeedMedium;
 			enemy.points = pointsMedium;
 			enemy.texture = mediumEnemy;
-			enemy.texture.height = 50;
-			enemy.texture.width = 50;
 			enemy.deathSound = mediumEnemyDeathSound;
 
 			break;

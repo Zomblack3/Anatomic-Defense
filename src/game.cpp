@@ -7,8 +7,7 @@
 #include "menu.h"
 #include "gameplay.h"
 #include "endGame.h"
-
-bool areAssetsReady = false;
+#include "credits.h"
 
 namespace run
 {
@@ -52,29 +51,48 @@ namespace run
 		resources::loadResources(menuBackground, gameplayBackground, playerTexture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound, EGBackground, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound, playerHitSound, baseFont, titleFont, metalTexture, oldScreenTexture, menuMusic, gameplayMusic);
 
 		const int amountOfButtonsMenu = 3;
+		const int amountOfButtonsCredits = 5;
 		const int amountOfButtonsPause = 2;
 		const int amountOfButtonsEG = 2;
 
 		titleFont.baseSize = static_cast <int> (titleTextSize);
 
 		std::string textsOfMenu[amountOfButtonsMenu] = { "INICIAR", "CREDITOS", "SALIR" };
+		std::string textsOfCredits[amountOfButtonsCredits] = { "PROGRAMACION", "ARTE", "MUSICA", "SONIDO", "TIPOGRAFIAS" };
 		std::string textsOfPause[amountOfButtonsPause] = { "VOLVER A LA PARTIDA", "VOLVER AL MENU" };
 		std::string textsOfEG[amountOfButtonsEG] = { "REINICIAR", "VOLVER AL MENU" };
 
+		std::string textOfReturnMenu = "VOLVER AL MENU";
+		std::string textOfReturnCredits = "VOLVER A LOS CREDITOS";
+
 		Button buttonsMenu[amountOfButtonsMenu] = { };
+		Button buttonsCredits[amountOfButtonsCredits] = { };
 		Button buttonsPause[amountOfButtonsPause] = { };
 		Button buttonsEG[amountOfButtonsEG] = { };
 
+		Button returnMenuButton = { };
+		Button returnCreditsButton = { };
+
 		Vector2 buttonsStartingPosMenu = { screenWidth / 2.0f, (screenHeight / 2.0f) - 100.0f };
+		Vector2 buttonsStartingPosCredits = { screenWidth / 2.0f, (screenHeight / 2.0f) - 250.0f };
 		Vector2 buttonsStartingPosPause = { screenWidth / 2.0f, (screenHeight / 2.0f) - 50.0f };
 		Vector2 buttonsStartingPosEG = { screenWidth / 2.0f, screenHeight / 2.0f + (screenHeight / 8.0f) };
 
+		Vector2 returnMenuButtonPos = { screenWidth / 2.0f, screenHeight - (screenHeight / 6.0f) };
+		Vector2 returnCreditsButtonPos = { screenWidth / 2.0f, screenHeight - (screenHeight / 6.0f) };
+
 		buttonsFeatures::setButtons(buttonsMenu, amountOfButtonsMenu, buttonsStartingPosMenu.x, buttonsStartingPosMenu.y, textsOfMenu, SCREEN::MENU, oldScreenTexture, metalTexture);
+		buttonsFeatures::setButtons(buttonsCredits, amountOfButtonsCredits, buttonsStartingPosCredits.x, buttonsStartingPosCredits.y, textsOfCredits, SCREEN::CREDITS, oldScreenTexture, metalTexture);
 		buttonsFeatures::setButtons(buttonsPause, amountOfButtonsPause, buttonsStartingPosPause.x, buttonsStartingPosPause.y, textsOfPause, SCREEN::GAMEPLAY, oldScreenTexture, metalTexture);
 		buttonsFeatures::setButtons(buttonsEG, amountOfButtonsEG, buttonsStartingPosEG.x, buttonsStartingPosEG.y, textsOfEG, SCREEN::END_GAME, oldScreenTexture, metalTexture);
 
+		buttonsFeatures::setSingleButton(returnMenuButton, returnMenuButtonPos.x, returnMenuButtonPos.y, textOfReturnMenu, SCREEN::MENU, oldScreenTexture, metalTexture);
+		buttonsFeatures::setSingleButton(returnCreditsButton, returnCreditsButtonPos.x, returnCreditsButtonPos.y, textOfReturnCredits, SCREEN::CREDITS, oldScreenTexture, metalTexture);
+
 		metalTexture.width = hudWidth;
 		metalTexture.height = hudHeight;
+
+		SetMusicVolume(gameplayMusic, 0.5);
 
 		Player player;
 
@@ -99,7 +117,7 @@ namespace run
 
 				mainFunctions::menu(currentScreen, buttonsMenu, amountOfButtonsMenu, menuBackground, titleFont, baseFont);
 
-				if (currentScreen != SCREEN::MENU)
+				if (currentScreen != SCREEN::MENU && currentScreen != SCREEN::CREDITS)
 					StopMusicStream(menuMusic);
 
 				break;
@@ -116,6 +134,21 @@ namespace run
 			case SCREEN::END_GAME:
 
 				mainFunctions::endGame(player, enemies, buttonsEG, amountOfButtonsEG, currentScreen, titleFont, baseFont, EGBackground);
+
+				break;
+			case SCREEN::CREDITS:
+			case SCREEN::CREDITS_PROGRAMMERS:
+			case SCREEN::CREDITS_ARTISTS:
+			case SCREEN::CREDITS_MUSICIANS:
+			case SCREEN::CREDITS_SOUND_ENGENNIERS:
+			case SCREEN::CREDITS_FONTS:
+
+				if (!IsMusicStreamPlaying(menuMusic))
+					PlayMusicStream(menuMusic);
+				else
+					UpdateMusicStream(menuMusic);
+
+				mainFunctions::credits(currentScreen, returnMenuButton, returnCreditsButton, buttonsCredits, amountOfButtonsCredits, metalTexture, oldScreenTexture, metalTexture, baseFont);
 
 				break;
 			case SCREEN::EXIT:
@@ -138,7 +171,6 @@ namespace resources
 {
 	void loadResources(Texture& menuBackground, Texture& gameplayBackground, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShotSound, Texture& EGBackground, Sound& smallEnemyDeathSound, Sound& mediumEnemyDeathSound, Sound& bigEnemyDeathSound, Sound& playerHitSound, Font& baseFont, Font& titleFont, Texture& metalTexture, Texture& oldScreenTexture, Music& menuMusic, Music& gameplayMusic)
 	{
-
 		// Fonts // 
 		
 		baseFont = LoadFont("res/fonts/ds_digital/DS-DIGIB.TTF");
@@ -164,6 +196,7 @@ namespace resources
 
 		/* General */
 		metalTexture = LoadTexture("res/textures/metal_texture.jpg");
+		oldScreenTexture = LoadTexture("res/textures/old_screen_texture.jpg");
 
 		/* Backgrounds */
 		menuBackground = LoadTexture("res/textures/main_menu/background.png");
@@ -171,6 +204,7 @@ namespace resources
 		menuBackground.height = screenHeight;
 
 		gameplayBackground = LoadTexture("res/textures/gameplay/background.png");
+		EGBackground = LoadTexture("res/textures/end_game/background.jpg");
 
 		/* Player */
 		playerTexture = LoadTexture("res/textures/gameplay/player.png");
@@ -178,6 +212,7 @@ namespace resources
 		/* Enemy */
 		smallEnemy = LoadTexture("res/textures/gameplay/small_enemy.png");
 		mediumEnemy = LoadTexture("res/textures/gameplay/medium_enemy.png");
+		bigEnemy = LoadTexture("res/textures/gameplay/big_enemy.png");
 		
 		/* Tutorial */
 		tutorialLeft = LoadTexture("res/textures/gameplay/left_click_tutorial.png");

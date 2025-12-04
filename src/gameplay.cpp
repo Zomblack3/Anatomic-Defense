@@ -83,6 +83,7 @@ namespace gameplayFunctions
 	void draw(Player player, std::vector <Enemy> enemies, Button buttons[], int amountOfButtons, Font font, Texture background, Texture tutorialLeft, Texture tutorialRight, Texture hudTexture, Texture hudValuesTexture)
 	{
 		const int tutorialTextSize = 40;
+		const int idicationsTextSize = 25;
 
 		float lifePosX = 800.0f;
 		float scorePosX = 150.0f;
@@ -96,6 +97,9 @@ namespace gameplayFunctions
 		std::string tutorialPauseText = "Presione P para pausar";
 		std::string tutorialRightText = "MOVERSE";
 		std::string tutorialLeftText = "DISPARAR";
+		std::string tutorialIndications1Text = "Tu objetivo es eliminar la mayor cantidad de viruses";
+		std::string tutorialIndications2Text = "Si chocas contra un virus, perdes una vida";
+		std::string tutorialLoseConditionText = "Si te quedas sin vidas, el paciente muere";
 		std::string startingText = "Presione ENTER para iniciar";
 
 		Vector2 pauseTextLength = MeasureTextEx(font, pauseText.c_str(), tutorialTextSize, textSpacing);
@@ -106,6 +110,9 @@ namespace gameplayFunctions
 		Vector2 tutorialPauseTextLength = MeasureTextEx(font, tutorialPauseText.c_str(), tutorialTextSize, textSpacing);
 		Vector2 tutorialRightTextLength = MeasureTextEx(font, tutorialRightText.c_str(), tutorialTextSize, textSpacing);
 		Vector2 tutorialLeftTextLength = MeasureTextEx(font, tutorialLeftText.c_str(), tutorialTextSize, textSpacing);
+		Vector2 tutorialIndications1TextLength = MeasureTextEx(font, tutorialIndications1Text.c_str(), idicationsTextSize, textSpacing);
+		Vector2 tutorialIndications2TextLength = MeasureTextEx(font, tutorialIndications2Text.c_str(), idicationsTextSize, textSpacing);
+		Vector2 tutorialLoseConditionTextLength = MeasureTextEx(font, tutorialLoseConditionText.c_str(), idicationsTextSize, textSpacing);
 		Vector2 startingTextLength = MeasureTextEx(font, startingText.c_str(), tutorialTextSize, textSpacing);
 
 		Vector2 pauseTextPos = { (screenWidth / 2.0f) - (pauseTextLength.x / 2.0f), screenHeight / 4.0f };
@@ -115,11 +122,14 @@ namespace gameplayFunctions
 
 		Vector2 tutorialRightTexturePos = { (screenWidth / 4.0f) - (tutorialLeft.width / 2.0f), screenHeight / 4.0f };
 		Vector2 tutorialLeftTexturePos = { (screenWidth - (screenWidth / 4.0f)) - (tutorialLeft.width / 2.0f), screenHeight / 4.0f };
-		Vector2 startingTextPos = { (screenWidth / 2.0f) - (startingTextLength.x / 2.0f), screenWidth - (screenWidth / 2.0f) };
 
 		Vector2 tutorialPauseTextPos = { (screenWidth / 2.0f) - (tutorialPauseTextLength.x / 2.0f), screenHeight / 6.0f };
 		Vector2 tutorialRightTextPos = { tutorialRightTexturePos.x - 5.0f , (screenWidth / 4.0f) + tutorialLeft.height - (tutorialLeft.height / 2.0f)};
 		Vector2 tutorialLeftTextPos = { tutorialLeftTexturePos.x - 5.0f, (screenWidth / 4.0f) + tutorialLeft.height - (tutorialLeft.height / 2.0f)};
+		Vector2 tutorialIndications1TextPos = { (screenWidth / 2.0f) - (tutorialIndications1TextLength.x / 2.0f), (screenHeight / 2.0f) + 100.0f };
+		Vector2 tutorialIndications2TextPos = { (screenWidth / 2.0f) - (tutorialIndications2TextLength.x / 2.0f), (screenHeight / 2.0f) + 150.0f };
+		Vector2 tutorialLoseConditionsTextPos = { (screenWidth / 2.0f) - (tutorialLoseConditionTextLength.x / 2.0f), (screenHeight / 2.0f) + 200.0f };
+		Vector2 startingTextPos = { (screenWidth / 2.0f) - (startingTextLength.x / 2.0f), screenHeight - (screenHeight / 6.0f) };
 
 		int scoreTexturePosX = static_cast <int> (scorePos.x) - 20;
 		int scoreTexturePosY = static_cast <int> (scorePos.y) - 5;
@@ -151,8 +161,11 @@ namespace gameplayFunctions
 			DrawTexture(tutorialLeft, static_cast <int> (tutorialLeftTexturePos.x), static_cast <int> (tutorialLeftTexturePos.y), WHITE);
 
 			DrawTextEx(font, tutorialPauseText.c_str(), tutorialPauseTextPos, tutorialTextSize, textSpacing, YELLOW);
-			DrawTextEx(font, tutorialLeftText.c_str(), tutorialLeftTextPos, tutorialTextSize, textSpacing, YELLOW);
 			DrawTextEx(font, tutorialRightText.c_str(), tutorialRightTextPos, tutorialTextSize, textSpacing, YELLOW);
+			DrawTextEx(font, tutorialLeftText.c_str(), tutorialLeftTextPos, tutorialTextSize, textSpacing, YELLOW);
+			DrawTextEx(font, tutorialIndications1Text.c_str(), tutorialIndications1TextPos, idicationsTextSize, textSpacing, YELLOW);
+			DrawTextEx(font, tutorialIndications2Text.c_str(), tutorialIndications2TextPos, idicationsTextSize, textSpacing, YELLOW);
+			DrawTextEx(font, tutorialLoseConditionText.c_str(), tutorialLoseConditionsTextPos, idicationsTextSize, textSpacing, YELLOW);
 
 			DrawTextEx(font, startingText.c_str(), startingTextPos, tutorialTextSize, textSpacing, YELLOW);
 		}

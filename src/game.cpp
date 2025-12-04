@@ -39,6 +39,11 @@ namespace run
 		Font baseFont = { };
 		Font titleFont = { };
 
+		Sound playerShotSound = { };
+		Sound playerHitSound = { };
+
+		Sound smallEnemyDeathSound = { };
+		Sound mediumEnemyDeathSound = { };
 		Sound bigEnemyDeathSound = { };
 		
 		resources::loadResources(menuBackground, gameplayBackground, playerTexture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound, EGBackground, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound, playerHitSound, baseFont, titleFont, metalTexture, oldScreenTexture);

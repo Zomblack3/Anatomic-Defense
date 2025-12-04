@@ -39,6 +39,9 @@ namespace run
 		Font baseFont = { };
 		Font titleFont = { };
 
+		Music menuMusic = { };
+		Music gameplayMusic = { };
+
 		Sound playerShotSound = { };
 		Sound playerHitSound = { };
 
@@ -46,35 +49,29 @@ namespace run
 		Sound mediumEnemyDeathSound = { };
 		Sound bigEnemyDeathSound = { };
 		
-		resources::loadResources(menuBackground, gameplayBackground, playerTexture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound, EGBackground, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound, playerHitSound, baseFont, titleFont, metalTexture, oldScreenTexture);
+		resources::loadResources(menuBackground, gameplayBackground, playerTexture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound, EGBackground, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound, playerHitSound, baseFont, titleFont, metalTexture, oldScreenTexture, menuMusic, gameplayMusic);
 
 		const int amountOfButtonsMenu = 3;
 		const int amountOfButtonsPause = 2;
 		const int amountOfButtonsEG = 2;
-		const int amountOfButtonsExit = 2;
 
 		titleFont.baseSize = static_cast <int> (titleTextSize);
 
 		std::string textsOfMenu[amountOfButtonsMenu] = { "INICIAR", "CREDITOS", "SALIR" };
 		std::string textsOfPause[amountOfButtonsPause] = { "VOLVER A LA PARTIDA", "VOLVER AL MENU" };
 		std::string textsOfEG[amountOfButtonsEG] = { "REINICIAR", "VOLVER AL MENU" };
-		std::string textsOfExit[amountOfButtonsExit] = { "SI", "NO" };
 
 		Button buttonsMenu[amountOfButtonsMenu] = { };
 		Button buttonsPause[amountOfButtonsPause] = { };
 		Button buttonsEG[amountOfButtonsEG] = { };
-		Button buttonsExit[amountOfButtonsExit] = { };
 
 		Vector2 buttonsStartingPosMenu = { screenWidth / 2.0f, (screenHeight / 2.0f) - 100.0f };
-		Vector2 buttonsStartingPosOptions = { screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 100.0f };
 		Vector2 buttonsStartingPosPause = { screenWidth / 2.0f, (screenHeight / 2.0f) - 50.0f };
 		Vector2 buttonsStartingPosEG = { screenWidth / 2.0f, screenHeight / 2.0f + (screenHeight / 8.0f) };
-		Vector2 buttonsStartingPosExit = { screenWidth - (screenWidth / 2.0f), (screenHeight / 2.0f) - 50.0f };
 
 		buttonsFeatures::setButtons(buttonsMenu, amountOfButtonsMenu, buttonsStartingPosMenu.x, buttonsStartingPosMenu.y, textsOfMenu, SCREEN::MENU, oldScreenTexture, metalTexture);
 		buttonsFeatures::setButtons(buttonsPause, amountOfButtonsPause, buttonsStartingPosPause.x, buttonsStartingPosPause.y, textsOfPause, SCREEN::GAMEPLAY, oldScreenTexture, metalTexture);
 		buttonsFeatures::setButtons(buttonsEG, amountOfButtonsEG, buttonsStartingPosEG.x, buttonsStartingPosEG.y, textsOfEG, SCREEN::END_GAME, oldScreenTexture, metalTexture);
-		buttonsFeatures::setButtons(buttonsExit, amountOfButtonsExit, buttonsStartingPosExit.x, buttonsStartingPosExit.y, textsOfExit, SCREEN::EXIT, oldScreenTexture, metalTexture);
 
 		metalTexture.width = hudWidth;
 		metalTexture.height = hudHeight;
@@ -95,10 +92,23 @@ namespace run
 			{
 			case SCREEN::MENU:
 
+				if (!IsMusicStreamPlaying(menuMusic))
+					PlayMusicStream(menuMusic);
+				else
+					UpdateMusicStream(menuMusic);
+
 				mainFunctions::menu(currentScreen, buttonsMenu, amountOfButtonsMenu, menuBackground, titleFont, baseFont);
+
+				if (currentScreen != SCREEN::MENU)
+					StopMusicStream(menuMusic);
 
 				break;
 			case SCREEN::GAMEPLAY:
+
+				if (!IsMusicStreamPlaying(gameplayMusic))
+					PlayMusicStream(gameplayMusic);
+				else
+					UpdateMusicStream(gameplayMusic);
 
 				mainFunctions::gameplay(player, enemies, buttonsPause, amountOfButtonsPause, currentScreen, baseFont, gameplayBackground, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, metalTexture, oldScreenTexture, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound);
 
@@ -120,13 +130,13 @@ namespace run
 			}
 		}
 
-		resources::unloadResources(baseFont, menuBackground, gameplayBackground, player.texture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound, EGBackground, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound, titleFont, metalTexture, oldScreenTexture, playerHitSound);
+		resources::unloadResources(baseFont, menuBackground, gameplayBackground, player.texture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound, EGBackground, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound, titleFont, metalTexture, oldScreenTexture, playerHitSound, menuMusic, gameplayMusic);
 	}
 }
 
 namespace resources
 {
-	void loadResources(Texture& menuBackground, Texture& gameplayBackground, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShotSound, Texture& EGBackground, Sound& smallEnemyDeathSound, Sound& mediumEnemyDeathSound, Sound& bigEnemyDeathSound, Sound& playerHitSound, Font& baseFont, Font& titleFont, Texture& metalTexture, Texture& oldScreenTexture)
+	void loadResources(Texture& menuBackground, Texture& gameplayBackground, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShotSound, Texture& EGBackground, Sound& smallEnemyDeathSound, Sound& mediumEnemyDeathSound, Sound& bigEnemyDeathSound, Sound& playerHitSound, Font& baseFont, Font& titleFont, Texture& metalTexture, Texture& oldScreenTexture, Music& menuMusic, Music& gameplayMusic)
 	{
 		const int sizeOfMediumEnemy = 50;
 		const int sizeOfBigEnemy = 120;
@@ -135,6 +145,11 @@ namespace resources
 		
 		baseFont = LoadFont("res/fonts/ds_digital/DS-DIGIB.TTF");
 		titleFont = LoadFont("res/fonts/Roboto/Roboto-Black.ttf");
+
+		// Music //
+
+		menuMusic = LoadMusicStream("res/music/menu_music.mp3");
+		gameplayMusic = LoadMusicStream("res/music/gameplay_music.mp3");
 
 		// Sounds //
 
@@ -182,11 +197,15 @@ namespace resources
 		areAssetsReady = true;
 	}
 
-	void unloadResources(Font& baseFont, Texture& MMBackground, Texture& gameplayBackground, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShotSound, Texture& EGBackground, Sound& smallEnemyDeathSound, Sound& mediumEnemyDeathSound, Sound& bigEnemyDeathSound, Font& titleFont, Texture& metalTexture, Texture& screenTexture, Sound& playerHitSound)
+	void unloadResources(Font& baseFont, Texture& MMBackground, Texture& gameplayBackground, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShotSound, Texture& EGBackground, Sound& smallEnemyDeathSound, Sound& mediumEnemyDeathSound, Sound& bigEnemyDeathSound, Font& titleFont, Texture& metalTexture, Texture& screenTexture, Sound& playerHitSound, Music& menuMusic, Music& gameplayMusic)
 	{
 		// Font //
 		UnloadFont(baseFont);
 		UnloadFont(titleFont);
+
+		// Music //
+		UnloadMusicStream(menuMusic);
+		UnloadMusicStream(gameplayMusic);
 
 		// Sounds //
 		UnloadSound(playerShotSound);

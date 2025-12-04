@@ -159,6 +159,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\buttons.cpp" />
+    <ClCompile Include="src\credits.cpp" />
     <ClCompile Include="src\endGame.cpp" />
     <ClCompile Include="src\enemies.cpp" />
     <ClCompile Include="src\game.cpp" />
@@ -169,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\buttons.h" />
+    <ClInclude Include="src\credits.h" />
     <ClInclude Include="src\endGame.h" />
     <ClInclude Include="src\enemies.h" />
     <ClInclude Include="src\game.h" />

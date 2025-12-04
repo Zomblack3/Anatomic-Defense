@@ -138,8 +138,6 @@ namespace resources
 {
 	void loadResources(Texture& menuBackground, Texture& gameplayBackground, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShotSound, Texture& EGBackground, Sound& smallEnemyDeathSound, Sound& mediumEnemyDeathSound, Sound& bigEnemyDeathSound, Sound& playerHitSound, Font& baseFont, Font& titleFont, Texture& metalTexture, Texture& oldScreenTexture, Music& menuMusic, Music& gameplayMusic)
 	{
-		const int sizeOfMediumEnemy = 50;
-		const int sizeOfBigEnemy = 120;
 
 		// Fonts // 
 		
@@ -166,7 +164,6 @@ namespace resources
 
 		/* General */
 		metalTexture = LoadTexture("res/textures/metal_texture.jpg");
-		oldScreenTexture = LoadTexture("res/textures/screen_texture.jpg");
 
 		/* Backgrounds */
 		menuBackground = LoadTexture("res/textures/main_menu/background.png");
@@ -174,27 +171,17 @@ namespace resources
 		menuBackground.height = screenHeight;
 
 		gameplayBackground = LoadTexture("res/textures/gameplay/background.png");
-		EGBackground = LoadTexture("res/textures/end_game/background.png");
 
 		/* Player */
 		playerTexture = LoadTexture("res/textures/gameplay/player.png");
 		
 		/* Enemy */
-		smallEnemy = LoadTexture("res/textures/gameplay/virus_small.png");
-		
-		mediumEnemy = LoadTexture("res/textures/gameplay/virus_medium.png");
-		mediumEnemy.width = sizeOfMediumEnemy;
-		mediumEnemy.height = sizeOfMediumEnemy;
-
-		bigEnemy = LoadTexture("res/textures/gameplay/virus_big.png");
-		bigEnemy.width = sizeOfBigEnemy;
-		bigEnemy.height = sizeOfBigEnemy;
+		smallEnemy = LoadTexture("res/textures/gameplay/small_enemy.png");
+		mediumEnemy = LoadTexture("res/textures/gameplay/medium_enemy.png");
 		
 		/* Tutorial */
 		tutorialLeft = LoadTexture("res/textures/gameplay/left_click_tutorial.png");
 		tutorialRight = LoadTexture("res/textures/gameplay/right_click_tutorial.png");
-
-		areAssetsReady = true;
 	}
 
 	void unloadResources(Font& baseFont, Texture& MMBackground, Texture& gameplayBackground, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShotSound, Texture& EGBackground, Sound& smallEnemyDeathSound, Sound& mediumEnemyDeathSound, Sound& bigEnemyDeathSound, Font& titleFont, Texture& metalTexture, Texture& screenTexture, Sound& playerHitSound, Music& menuMusic, Music& gameplayMusic)

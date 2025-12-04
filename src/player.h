@@ -36,6 +36,7 @@ struct Player
 	Rectangle textureDest = { };
 
 	Sound shotSound = { };
+	Sound hitSound = { };
 
 	Bullet bullets[maxAmountOfBullets];
 	

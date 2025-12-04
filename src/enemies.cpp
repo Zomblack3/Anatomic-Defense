@@ -248,6 +248,7 @@ namespace enemiesFeatures
 				{
 					player.lifes--;
 
+					PlaySound(player.hitSound);
 					PlaySound(enemies.at(i).deathSound);
 
 					if (enemies.at(i).type != ENEMY_TYPE::SMALL)

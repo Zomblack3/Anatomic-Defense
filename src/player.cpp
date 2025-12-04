@@ -31,15 +31,21 @@ namespace playerFeatures
 
 	void drawPlayer(const Player player)
 	{
-		DrawTexturePro(player.texture, player.textureRec, player.textureDest, player.textureOrigin, player.rotation, WHITE);
+		if (player.untouchableTimer <= 0)
+			DrawTexturePro(player.texture, player.textureRec, player.textureDest, player.textureOrigin, player.rotation, WHITE);
+		else
+			DrawTexturePro(player.texture, player.textureRec, player.textureDest, player.textureOrigin, player.rotation, RED);
 	}
 
 	void movePlayer(Player& player, const float deltaTime)
 	{
+		float speedX = static_cast <float> (sin(player.rotation * DEG2RAD) * player.acceleration);
+		float speedY = static_cast <float> (cos(player.rotation * DEG2RAD) * player.acceleration);
+
 		if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
 		{
-			player.speed.x += static_cast <float> (sin(player.rotation * DEG2RAD) * player.acceleration);
-			player.speed.y += static_cast <float> (cos(player.rotation * DEG2RAD) * player.acceleration);
+			player.speed.x += speedX;
+			player.speed.y += speedY;
 
 			if (player.acceleration < player.maxAcceleration)
 				player.acceleration += baseAcceleration;

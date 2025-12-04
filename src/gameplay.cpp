@@ -27,7 +27,9 @@ namespace gameplayFunctions
 			enemiesFeatures::spawnEnemy(enemies, smallEnemy, mediumEnemy, bigEnemy, deltaTime, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound);
 
 			playerFeatures::movePlayer(player, deltaTime);
+
 			playerFeatures::rotatePlayer(player);
+
 			playerFeatures::setPlayerDirection(player);
 
 			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsKeyPressed(KEY_SPACE))
@@ -38,6 +40,7 @@ namespace gameplayFunctions
 			if (enemies.size() > 0)
 			{
 				enemiesFeatures::moveEnemy(enemies, deltaTime);
+
 				enemiesFeatures::checkBulletEnemyCollition(enemies, player, smallEnemy, mediumEnemy, smallEnemyDeathSound, mediumEnemyDeathSound);
 				enemiesFeatures::checkPlayerEnemyCollition(enemies, player, deltaTime, smallEnemy, mediumEnemy, smallEnemyDeathSound, mediumEnemyDeathSound);
 			}

@@ -1,9 +1,5 @@
 #include "game.h"
 
-#include <math.h>
-
-#include "settings.h"
-
 #include "menu.h"
 #include "gameplay.h"
 #include "endGame.h"

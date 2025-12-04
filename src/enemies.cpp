@@ -1,9 +1,5 @@
 #include "enemies.h"
 
-#include <raymath.h>
-
-#include "settings.h"
-
 namespace enemiesFeatures
 {
 	float baseSpawnTime = 500.0f;

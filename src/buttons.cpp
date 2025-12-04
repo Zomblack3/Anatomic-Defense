@@ -1,7 +1,5 @@
 #include "buttons.h"
 
-#include "settings.h"
-
 namespace buttonsFeatures
 {
 	bool collitionCheckButtonMouse(Rectangle rec)

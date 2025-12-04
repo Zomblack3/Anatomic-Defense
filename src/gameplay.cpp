@@ -1,9 +1,5 @@
 #include "gameplay.h"
 
-#include <iostream>
-
-#include "settings.h"
-
 bool isPauseOn = false;
 
 namespace mainFunctions

@@ -69,6 +69,9 @@ namespace run
 		Texture tutorialRight = { };
 
 		Sound playerShotSound = { };
+		Sound smallEnemyDeathSound = { };
+		Sound mediumEnemyDeathSound = { };
+		Sound bigEnemyDeathSound = { };
 
 		Player player;
 
@@ -76,7 +79,7 @@ namespace run
 
 		std::vector <Enemy> enemies = { };
 
-		resources::loadResources(menuBackground, gameplayBackground, player.texture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, player.shotSound, EGBackground);
+		resources::loadResources(menuBackground, gameplayBackground, player.texture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, player.shotSound, EGBackground, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound);
 
 		while (!WindowShouldClose())
 		{
@@ -89,7 +92,7 @@ namespace run
 				break;
 			case SCREEN::GAMEPLAY:
 
-				mainFunctions::gameplay(player, enemies, buttonsPause, amountOfButtonsPause, currentScreen, baseFont, gameplayBackground, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, metalTexture, oldScreenTexture);
+				mainFunctions::gameplay(player, enemies, buttonsPause, amountOfButtonsPause, currentScreen, baseFont, gameplayBackground, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, metalTexture, oldScreenTexture, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound);
 
 				break;
 			case SCREEN::END_GAME:
@@ -109,53 +112,68 @@ namespace run
 			}
 		}
 
-		resources::unloadResources(baseFont, menuBackground, gameplayBackground, player.texture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound, EGBackground);
+		resources::unloadResources(baseFont, menuBackground, gameplayBackground, player.texture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound, EGBackground, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound);
 	}
 }
 
 namespace resources
 {
-	void loadResources(Texture& MMBackground, Texture& gameplayBackground, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShotSound, Texture& EGBackground)
+	void loadResources(Texture& menuBackground, Texture& gameplayBackground, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShotSound, Texture& EGBackground, Sound& smallEnemyDeathSound, Sound& mediumEnemyDeathSound, Sound& bigEnemyDeathSound)
 	{
 		const int sizeOfMediumEnemy = 50;
 		const int sizeOfBigEnemy = 120;
 
+		// Sounds
+
+		/* Player */
 		playerShotSound = LoadSound("res/sound_efects/player/player_shot.wav");
 
-		Image MMBackroundImage = LoadImage("res/textures/main_menu/background.png");
+		/* Enemies */
+		smallEnemyDeathSound = LoadSound("res/sound_efects/enemies/small_enemy_death_sound.wav");
+		mediumEnemyDeathSound = LoadSound("res/sound_efects/enemies/medium_enemy_death_sound.wav");
+		bigEnemyDeathSound = LoadSound("res/sound_efects/enemies/big_enemy_death_sound.wav");
 
-		Image mediumEnemyImage = LoadImage("res/textures/gameplay/virus_medium.png");
-		Image bigEnemyImage = LoadImage("res/textures/gameplay/virus_big.png");
+		// Textures
+		
+		/* Backgrounds */
+		menuBackground = LoadTexture("res/textures/main_menu/background.png");
+		menuBackground.width = screenWidth;
+		menuBackground.height = screenHeight;
 
-		ImageResize(&MMBackroundImage, screenWidth, screenHeight);
-		ImageResize(&mediumEnemyImage, sizeOfMediumEnemy, sizeOfMediumEnemy);
-		ImageResize(&bigEnemyImage, sizeOfBigEnemy, sizeOfBigEnemy);
-
-		MMBackground = LoadTextureFromImage(MMBackroundImage);
 		gameplayBackground = LoadTexture("res/textures/gameplay/background.png");
 		EGBackground = LoadTexture("res/textures/end_game/background.png");
 
+		/* Player */
 		playerTexture = LoadTexture("res/textures/gameplay/player.png");
 		
+		/* Enemy */
 		smallEnemy = LoadTexture("res/textures/gameplay/virus_small.png");
-		mediumEnemy = LoadTextureFromImage(mediumEnemyImage);
-		bigEnemy = LoadTextureFromImage(bigEnemyImage);
 		
+		mediumEnemy = LoadTexture("res/textures/gameplay/virus_medium.png");
+		mediumEnemy.width = sizeOfMediumEnemy;
+		mediumEnemy.height = sizeOfMediumEnemy;
+
+		bigEnemy = LoadTexture("res/textures/gameplay/virus_big.png");
+		bigEnemy.width = sizeOfBigEnemy;
+		bigEnemy.height = sizeOfBigEnemy;
+		
+		/* Tutorial */
 		tutorialLeft = LoadTexture("res/textures/gameplay/left_click_tutorial.png");
 		tutorialRight = LoadTexture("res/textures/gameplay/right_click_tutorial.png");
 
 		areAssetsReady = true;
-
-		UnloadImage(MMBackroundImage);
 	}
 
-	void unloadResources(Font& font, Texture& MMBackground, Texture& gameplayBackground, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShot, Texture& EGBackground)
+	void unloadResources(Font& font, Texture& MMBackground, Texture& gameplayBackground, Texture& playerTexture, Texture& smallEnemy, Texture& mediumEnemy, Texture& bigEnemy, Texture& tutorialLeft, Texture& tutorialRight, Sound& playerShot, Texture& EGBackground, Sound& smallEnemyDeathSound, Sound& mediumEnemyDeathSound, Sound& bigEnemyDeathSound)
 	{
 		// Font
 		UnloadFont(font);
 
 		// Sounds
 		UnloadSound(playerShot);
+		UnloadSound(smallEnemyDeathSound);
+		UnloadSound(mediumEnemyDeathSound);
+		UnloadSound(bigEnemyDeathSound);
 
 		// Textures
 		UnloadTexture(MMBackground);

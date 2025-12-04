@@ -18,32 +18,10 @@ namespace buttonsFeatures
 		return false;
 	}
 
-	void setButtons(Button buttons[], int amountOfButtons, float startingPosX, float startingPosY, std::string texts[], SCREEN buttonScreen, Texture texture, Texture backTexture)
+	void setButtons(Button buttons[], int amountOfButtons, float startingPosX, float startingPosY, std::string texts[], SCREEN buttonScreen, Texture frontTexture, Texture backTexture)
 	{
 		for (int i = 0; i < amountOfButtons; i++)
 		{
-			buttons[i].rec.width = static_cast <float> (texts[i].size() * buttons[i].textSize);
-			buttons[i].rec.height = buttons[i].baseHeight;
-			buttons[i].rec.y = startingPosY;
-			buttons[i].rec.x = startingPosX - (buttons[i].rec.width / 2.0f);
-
-			buttons[i].text = texts[i];
-
-			buttons[i].textPos.x = buttons[i].rec.x + (buttons[i].rec.width / 4.0f);
-			buttons[i].textPos.y = buttons[i].rec.y + (buttons[i].rec.height / 4.0f);
-
-			buttons[i].frontTexture = texture;
-			buttons[i].backTexture = backTexture;
-
-			buttons[i].frontTexture.height = static_cast <int> (buttons[i].rec.height);
-			buttons[i].frontTexture.width = static_cast <int> (buttons[i].rec.width);
-
-			buttons[i].backTexture.height = static_cast <int> (buttons[i].rec.height + 10.0f);
-			buttons[i].backTexture.width = static_cast <int> (buttons[i].rec.width + 10.0f);
-
-			buttons[i].backTexturePos.x = buttons[i].rec.x - 5.0f;
-			buttons[i].backTexturePos.y = buttons[i].rec.y - 5.0f;
-
 			switch (buttonScreen)
 			{
 			case SCREEN::MENU:
@@ -52,22 +30,22 @@ namespace buttonsFeatures
 				{
 				case 0:
 
-					buttons[i].directionScreen = SCREEN::GAMEPLAY;
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::GAMEPLAY, frontTexture, backTexture);
 
 					break;
 				case 1:
-					
-					buttons[i].directionScreen = SCREEN::CREDITS;
+
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS, frontTexture, backTexture);
 
 					break;
 				case 2:
 
-					buttons[i].directionScreen = SCREEN::EXIT;
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::EXIT, frontTexture, backTexture);
 
 					break;
 				default:
 
-					buttons[i].directionScreen = buttonScreen;
+
 
 					break;
 				}
@@ -77,9 +55,14 @@ namespace buttonsFeatures
 
 				switch (i)
 				{
+				case 0:
+
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::GAMEPLAY, frontTexture, backTexture);
+
+					break;
 				case 1:
 
-					buttons[i].directionScreen = SCREEN::MENU;
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::MENU, frontTexture, backTexture);
 
 					break;
 				default:
@@ -93,12 +76,12 @@ namespace buttonsFeatures
 				{
 				case 0:
 
-					buttons[i].directionScreen = SCREEN::GAMEPLAY;
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::GAMEPLAY, frontTexture, backTexture);
 
 					break;
 				case 1:
 
-					buttons[i].directionScreen = SCREEN::MENU;
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::MENU, frontTexture, backTexture);
 
 					break;
 				default:
@@ -109,17 +92,61 @@ namespace buttonsFeatures
 				}
 
 				break;
-			case SCREEN::EXIT:
-
-				buttons[i].directionScreen = SCREEN::MENU;
-
-				break;
 			default:
 				break;
 			}
 
 			startingPosY += buttons[i].rec.height * 2.0f;
 		}
+	}
+
+	void setSingleButton(Button& button, float x, float y, std::string text, SCREEN directionScreen, Texture frontTexture, Texture backTexture)
+	{
+		float finalRecWidth = static_cast <float> (text.size() * button.textSize);
+
+		int backTextureHeight = 0;
+		int backTextureWidth = 0;
+		float backTexturePosX = 0.0f;
+		float backTexturePosY = 0.0f;
+
+		Vector2 finalTextPos = { };
+
+		float finalPosX = 0.0f;
+
+		button.rec.width = finalRecWidth;
+		button.rec.height = button.baseHeight;
+
+		finalPosX = x - button.rec.width / 2.0f;
+
+		button.rec.x = finalPosX;
+		button.rec.y = y;
+
+		button.text = text;
+
+		button.frontTexture = frontTexture;
+		button.backTexture = backTexture;
+
+		button.directionScreen = directionScreen;
+
+		backTextureHeight = static_cast <int> (button.rec.height + 10.0f);
+		backTextureWidth = static_cast <int> (button.rec.width + 10.0f);
+
+		backTexturePosX = button.rec.x - 5.0f;
+		backTexturePosY = button.rec.y - 5.0f;
+
+		button.frontTexture.width = static_cast <int> (button.rec.width);
+		button.frontTexture.height = static_cast <int> (button.rec.height);
+
+		button.backTexture.width = backTextureWidth;
+		button.backTexture.height = backTextureHeight;
+
+		button.backTexturePos.x = backTexturePosX;
+		button.backTexturePos.y = backTexturePosY;
+
+		finalTextPos.x = button.rec.x + (button.rec.width / 4.0f);
+		finalTextPos.y = button.rec.y + (button.rec.height / 4.0f);
+
+		button.textPos = finalTextPos;
 	}
 
 	void chageButtonState(Button& button)

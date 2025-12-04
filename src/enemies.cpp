@@ -6,23 +6,11 @@
 
 namespace enemiesFeatures
 {
-	/*const float baseSpeedSmall = 400.0f;
-	const float baseSpeedMedium = 300.0f;
-	const float baseSpeedBig = 200.0f;*/
-
-	/*const float radiusSmall = 20.0f;
-	const float radiusMedium = 25.0f;
-	const float radiusBig = 35.0f;*/
-
-	/*const int pointsSmall = 10;
-	const int pointsMedium = 25;
-	const int pointsBig = 40;*/
-
 	float baseSpawnTime = 500.0f;
 	float spawnTimer = 0.0f;
 	float untouchableTimerReduction = 0.0f;
 
-	void spawnEnemy(std::vector <Enemy>& enemies, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, float deltaTime)
+	void spawnEnemy(std::vector <Enemy>& enemies, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, float deltaTime, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound, Sound bigEnemyDeathSound)
 	{
 		const float baseSpeedSmall = 400.0f;
 		const float baseSpeedMedium = 300.0f;
@@ -87,6 +75,7 @@ namespace enemiesFeatures
 				enemy.baseSpeed = baseSpeedSmall;
 				enemy.points = pointsSmall;
 				enemy.texture = smallEnemy;
+				enemy.deathSound = smallEnemyDeathSound;
 
 				break;
 			case 1:
@@ -96,6 +85,7 @@ namespace enemiesFeatures
 				enemy.baseSpeed = baseSpeedMedium;
 				enemy.points = pointsMedium;
 				enemy.texture = mediumEnemy;
+				enemy.deathSound = mediumEnemyDeathSound;
 
 				break;
 			case 2:
@@ -105,6 +95,7 @@ namespace enemiesFeatures
 				enemy.baseSpeed = baseSpeedBig;
 				enemy.points = pointsBig;
 				enemy.texture = bigEnemy;
+				enemy.deathSound = bigEnemyDeathSound;
 
 				break;
 			default:
@@ -128,10 +119,10 @@ namespace enemiesFeatures
 			spawnTimer -= untouchableTimerReduction;
 	}
 
-	void splitEnemy(std::vector<Enemy>& enemies, Enemy enemySplited, ENEMY_TYPE type, int index, Texture smallEnemy, Texture mediumEnemy)
+	void splitEnemy(std::vector<Enemy>& enemies, Enemy enemySplited, ENEMY_TYPE type, int index, Texture smallEnemy, Texture mediumEnemy, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound)
 	{
-		Enemy enemy1 = setSplitedEnemy(type, enemySplited.position, smallEnemy, mediumEnemy);
-		Enemy enemy2 = setSplitedEnemy(type, enemySplited.position, smallEnemy, mediumEnemy);
+		Enemy enemy1 = setSplitedEnemy(type, enemySplited.position, smallEnemy, mediumEnemy, smallEnemyDeathSound, mediumEnemyDeathSound);
+		Enemy enemy2 = setSplitedEnemy(type, enemySplited.position, smallEnemy, mediumEnemy, smallEnemyDeathSound, mediumEnemyDeathSound);
 
 		enemies.erase(enemies.begin() + index);
 
@@ -185,7 +176,7 @@ namespace enemiesFeatures
 		}
 	}
 
-	void checkBulletEnemyCollition(std::vector<Enemy>& enemies, Player& player, Texture smallEnemy, Texture mediumEnemy)
+	void checkBulletEnemyCollition(std::vector<Enemy>& enemies, Player& player, Texture smallEnemy, Texture mediumEnemy, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound)
 	{
 		float distanceX = 0.0f;
 		float distanceY = 0.0f;
@@ -213,8 +204,10 @@ namespace enemiesFeatures
 					{
 						playerFeatures::addScore(player, enemies.at(i).points);
 
+						PlaySound(enemies.at(i).deathSound);
+
 						if (enemies.at(i).type != ENEMY_TYPE::SMALL)
-							splitEnemy(enemies, enemies.at(i), enemies.at(i).type, i, smallEnemy, mediumEnemy);
+							splitEnemy(enemies, enemies.at(i), enemies.at(i).type, i, smallEnemy, mediumEnemy, smallEnemyDeathSound, mediumEnemyDeathSound);
 						else
 							enemies.erase(enemies.begin() + i);
 
@@ -228,7 +221,7 @@ namespace enemiesFeatures
 		}
 	}
 
-	void checkPlayerEnemyCollition(std::vector<Enemy>& enemies, Player& player, float deltaTime, Texture smallEnemy, Texture mediumEnemy)
+	void checkPlayerEnemyCollition(std::vector<Enemy>& enemies, Player& player, float deltaTime, Texture smallEnemy, Texture mediumEnemy, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound)
 	{
 		float distanceX = 0.0f;
 		float distanceY = 0.0f;
@@ -255,8 +248,10 @@ namespace enemiesFeatures
 				{
 					player.lifes--;
 
+					PlaySound(enemies.at(i).deathSound);
+
 					if (enemies.at(i).type != ENEMY_TYPE::SMALL)
-						splitEnemy(enemies, enemies.at(i), enemies.at(i).type, i, smallEnemy, mediumEnemy);
+						splitEnemy(enemies, enemies.at(i), enemies.at(i).type, i, smallEnemy, mediumEnemy, smallEnemyDeathSound, mediumEnemyDeathSound);
 					else
 						enemies.erase(enemies.begin() + i);
 
@@ -268,7 +263,7 @@ namespace enemiesFeatures
 			player.untouchableTimer -= untouchableTimerReduction;
 	}
 
-	Enemy setSplitedEnemy(ENEMY_TYPE type, Vector2 position, Texture smallEnemy, Texture mediumEnemy)
+	Enemy setSplitedEnemy(ENEMY_TYPE type, Vector2 position, Texture smallEnemy, Texture mediumEnemy, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound)
 	{
 		const float baseSpeedSmall = 400.0f;
 		const float baseSpeedMedium = 300.0f;
@@ -297,6 +292,7 @@ namespace enemiesFeatures
 			enemy.baseSpeed = baseSpeedSmall;
 			enemy.points = pointsSmall;
 			enemy.texture = smallEnemy;
+			enemy.deathSound = smallEnemyDeathSound;
 
 			break;
 		case ENEMY_TYPE::BIG:
@@ -308,6 +304,7 @@ namespace enemiesFeatures
 			enemy.texture = mediumEnemy;
 			enemy.texture.height = 50;
 			enemy.texture.width = 50;
+			enemy.deathSound = mediumEnemyDeathSound;
 
 			break;
 		default:

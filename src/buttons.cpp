@@ -141,16 +141,7 @@ namespace buttonsFeatures
 	void drawButtons(Button buttons[], int amountOfButtons, Font font)
 	{
 		for (int i = 0; i < amountOfButtons; i++)
-		{
 			drawSingleButton(buttons[i], font);
-
-			/*DrawRectangle(static_cast <int>(buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), static_cast <int>(buttons[i].rec.width), static_cast <int>(buttons[i].rec.height), buttons[i].actualColor);
-
-			DrawTexture(buttons[i].backTexture, static_cast <int>(buttons[i].backTexturePos.x), static_cast <int>(buttons[i].backTexturePos.y), WHITE);
-			DrawTexture(buttons[i].frontTexture, static_cast <int>(buttons[i].rec.x), static_cast <int>(buttons[i].rec.y), buttons[i].actualColor);
-
-			DrawTextEx(font, buttons[i].text.c_str(), buttons[i].textPos, static_cast <float>(buttons[i].textSize), 2, buttons[i].actualTextColor);*/
-		}
 	}
 
 	void drawSingleButton(Button button, Font font)

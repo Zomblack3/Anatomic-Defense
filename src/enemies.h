@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+
 #include <raylib.h>
 
 #include "player.h"
@@ -19,6 +20,8 @@ struct Enemy
 
 	Color color = GREEN;
 
+	Sound deathSound = { };
+
 	Texture texture = { };
 
 	ENEMY_TYPE type = ENEMY_TYPE::SMALL;
@@ -35,15 +38,15 @@ struct Enemy
 
 namespace enemiesFeatures
 {
-	void spawnEnemy(std::vector <Enemy>& enemies, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, float deltaTime);
-	void splitEnemy(std::vector <Enemy>& enemies, Enemy enemySplited, ENEMY_TYPE type, int index, Texture smallEnemy, Texture mediumEnemy);
+	void spawnEnemy(std::vector <Enemy>& enemies, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, float deltaTime, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound, Sound bigEnemyDeathSound);
+	void splitEnemy(std::vector <Enemy>& enemies, Enemy enemySplited, ENEMY_TYPE type, int index, Texture smallEnemy, Texture mediumEnemy, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound);
 	void moveEnemy(std::vector <Enemy>& enemies, float deltaTime);
 	void drawEnemy(std::vector <Enemy> enemies);
 
-	void checkBulletEnemyCollition(std::vector <Enemy>& enemies, Player& player, Texture smallEnemy, Texture mediumEnemy);
-	void checkPlayerEnemyCollition(std::vector <Enemy>& enemies, Player& player, float deltaTime, Texture smallEnemy, Texture mediumEnemy);
+	void checkBulletEnemyCollition(std::vector <Enemy>& enemies, Player& player, Texture smallEnemy, Texture mediumEnemy, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound);
+	void checkPlayerEnemyCollition(std::vector <Enemy>& enemies, Player& player, float deltaTime, Texture smallEnemy, Texture mediumEnemy, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound);
 
-	Enemy setSplitedEnemy(ENEMY_TYPE type, Vector2 position, Texture smallEnemy, Texture mediumEnemy);
+	Enemy setSplitedEnemy(ENEMY_TYPE type, Vector2 position, Texture smallEnemy, Texture mediumEnemy, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound);
 }
 
 

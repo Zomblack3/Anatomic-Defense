@@ -8,11 +8,11 @@ bool isPauseOn = false;
 
 namespace mainFunctions
 {
-	void gameplay(Player& player, std::vector <Enemy>& enemies, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Font font, Texture& background, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, Texture tutorialLeft, Texture tutorialRight, Texture hudTexture, Texture hudValuesTexture)
+	void gameplay(Player& player, std::vector <Enemy>& enemies, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Font font, Texture& background, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, Texture tutorialLeft, Texture tutorialRight, Texture hudTexture, Texture hudValuesTexture, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound, Sound bigEnemyDeathSound)
 	{
 		float deltaTime = GetFrameTime();
 
-		gameplayFunctions::update(player, enemies, deltaTime, buttons, amountOfButtons, currentScreen, smallEnemy, mediumEnemy, bigEnemy);
+		gameplayFunctions::update(player, enemies, deltaTime, buttons, amountOfButtons, currentScreen, smallEnemy, mediumEnemy, bigEnemy, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound);
 
 		gameplayFunctions::draw(player, enemies, buttons, amountOfButtons, font, background, tutorialLeft, tutorialRight, hudTexture, hudValuesTexture);
 	}
@@ -20,11 +20,11 @@ namespace mainFunctions
 
 namespace gameplayFunctions
 {
-	void update(Player& player, std::vector <Enemy>& enemies, float deltaTime, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy)
+	void update(Player& player, std::vector <Enemy>& enemies, float deltaTime, Button buttons[], int amountOfButtons, SCREEN& currentScreen, Texture smallEnemy, Texture mediumEnemy, Texture bigEnemy, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound, Sound bigEnemyDeathSound)
 	{
 		if (!isPauseOn && player.isActive)
 		{
-			enemiesFeatures::spawnEnemy(enemies, smallEnemy, mediumEnemy, bigEnemy, deltaTime);
+			enemiesFeatures::spawnEnemy(enemies, smallEnemy, mediumEnemy, bigEnemy, deltaTime, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound);
 
 			playerFeatures::movePlayer(player, deltaTime);
 			playerFeatures::rotatePlayer(player);
@@ -38,8 +38,8 @@ namespace gameplayFunctions
 			if (enemies.size() > 0)
 			{
 				enemiesFeatures::moveEnemy(enemies, deltaTime);
-				enemiesFeatures::checkBulletEnemyCollition(enemies, player, smallEnemy, mediumEnemy);
-				enemiesFeatures::checkPlayerEnemyCollition(enemies, player, deltaTime, smallEnemy, mediumEnemy);
+				enemiesFeatures::checkBulletEnemyCollition(enemies, player, smallEnemy, mediumEnemy, smallEnemyDeathSound, mediumEnemyDeathSound);
+				enemiesFeatures::checkPlayerEnemyCollition(enemies, player, deltaTime, smallEnemy, mediumEnemy, smallEnemyDeathSound, mediumEnemyDeathSound);
 			}
 
 			if (IsKeyPressed(KEY_P))

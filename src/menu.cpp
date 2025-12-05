@@ -34,7 +34,7 @@ namespace menuFunctions
 	void draw(Button buttons[], int amountOfButtons, Texture background, Font titleFont, Font normalFont)
 	{
 		std::string titleText = "ANATOMIC DEFENSE";
-		std::string versionText = "Version 1.0";
+		std::string versionText = "Version 2.0";
 
 		Vector2 titleLenght = MeasureTextEx(titleFont, titleText.c_str(), titleTextSize, textSpacing);
 

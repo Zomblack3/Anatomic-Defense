@@ -45,8 +45,8 @@ namespace playerFeatures
 
 		if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
 		{
-			player.speed.x += speedX;
-			player.speed.y += speedY;
+			player.speed.x += speedX * deltaTime;
+			player.speed.y += speedY * deltaTime;
 
 			if (player.acceleration < player.maxAcceleration)
 				player.acceleration += baseAcceleration;

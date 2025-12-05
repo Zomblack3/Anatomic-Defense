@@ -29,8 +29,9 @@ namespace enemiesFeatures
 		const int amountOfEnemiesKind = 3;
 
 		const int maxGeneralPercentage = 100;
+		const int untouchableTimerBooster = 100;
 
-		untouchableTimerReduction = deltaTime * 100.0f;
+		untouchableTimerReduction = deltaTime * untouchableTimerBooster;
 
 		Enemy enemy = { };
 
@@ -102,7 +103,7 @@ namespace enemiesFeatures
 			enemy.speed.y = static_cast <float> (cos(enemy.rotation * DEG2RAD) * enemy.baseSpeed);
 
 			enemy.type = enemyType;
-			enemy.position = enemyPos;
+			enemy.pos = enemyPos;
 			enemy.speed = enemySpeed;
 
 			enemies.push_back(enemy);
@@ -117,8 +118,8 @@ namespace enemiesFeatures
 
 	void splitEnemy(std::vector<Enemy>& enemies, Enemy enemySplited, ENEMY_TYPE type, int index, Texture smallEnemy, Texture mediumEnemy, Sound smallEnemyDeathSound, Sound mediumEnemyDeathSound)
 	{
-		Enemy enemy1 = setSplitedEnemy(type, enemySplited.position, smallEnemy, mediumEnemy, smallEnemyDeathSound, mediumEnemyDeathSound);
-		Enemy enemy2 = setSplitedEnemy(type, enemySplited.position, smallEnemy, mediumEnemy, smallEnemyDeathSound, mediumEnemyDeathSound);
+		Enemy enemy1 = setSplitedEnemy(type, enemySplited.pos, smallEnemy, mediumEnemy, smallEnemyDeathSound, mediumEnemyDeathSound);
+		Enemy enemy2 = setSplitedEnemy(type, enemySplited.pos, smallEnemy, mediumEnemy, smallEnemyDeathSound, mediumEnemyDeathSound);
 
 		enemies.erase(enemies.begin() + index);
 
@@ -130,18 +131,18 @@ namespace enemiesFeatures
 	{
 		for (unsigned int i = 0; i < enemies.size(); i++)
 		{
-			enemies.at(i).position.x += enemies.at(i).speed.x = static_cast <float>(sin(enemies.at(i).rotation * DEG2RAD) * enemies.at(i).baseSpeed) * deltaTime;
-			enemies.at(i).position.y -= enemies.at(i).speed.y = static_cast <float>(cos(enemies.at(i).rotation * DEG2RAD) * enemies.at(i).baseSpeed) * deltaTime;
+			enemies.at(i).pos.x += enemies.at(i).speed.x = static_cast <float>(sin(enemies.at(i).rotation * DEG2RAD) * enemies.at(i).baseSpeed) * deltaTime;
+			enemies.at(i).pos.y -= enemies.at(i).speed.y = static_cast <float>(cos(enemies.at(i).rotation * DEG2RAD) * enemies.at(i).baseSpeed) * deltaTime;
 
-			if (enemies.at(i).position.x > screenWidth + enemies.at(i).radius)
-				enemies.at(i).position.x = -(enemies.at(i).radius);
-			else if (enemies.at(i).position.x < -(enemies.at(i).radius))
-				enemies.at(i).position.x = screenWidth + enemies.at(i).radius;
+			if (enemies.at(i).pos.x > screenWidth + enemies.at(i).radius)
+				enemies.at(i).pos.x = -(enemies.at(i).radius);
+			else if (enemies.at(i).pos.x < -(enemies.at(i).radius))
+				enemies.at(i).pos.x = screenWidth + enemies.at(i).radius;
 
-			if (enemies.at(i).position.y > (screenHeight + enemies.at(i).radius))
-				enemies.at(i).position.y = -(enemies.at(i).radius);
-			else if (enemies.at(i).position.y < -(enemies.at(i).radius))
-				enemies.at(i).position.y = screenHeight + enemies.at(i).radius;
+			if (enemies.at(i).pos.y > (screenHeight + enemies.at(i).radius))
+				enemies.at(i).pos.y = -(enemies.at(i).radius);
+			else if (enemies.at(i).pos.y < -(enemies.at(i).radius))
+				enemies.at(i).pos.y = screenHeight + enemies.at(i).radius;
 		}
 	}
 
@@ -153,17 +154,17 @@ namespace enemiesFeatures
 			{
 			case ENEMY_TYPE::SMALL:
 
-				DrawTexture(enemies.at(i).texture, static_cast <int>(enemies.at(i).position.x - enemies.at(i).radius), static_cast <int>(enemies.at(i).position.y - enemies.at(i).radius), WHITE);
+				DrawTexture(enemies.at(i).texture, static_cast <int>(enemies.at(i).pos.x - enemies.at(i).radius), static_cast <int>(enemies.at(i).pos.y - enemies.at(i).radius), WHITE);
 
 				break;
 			case ENEMY_TYPE::MEDIUM:
 
-				DrawTexture(enemies.at(i).texture, static_cast <int>(enemies.at(i).position.x - enemies.at(i).radius), static_cast <int>(enemies.at(i).position.y - enemies.at(i).radius), WHITE);
+				DrawTexture(enemies.at(i).texture, static_cast <int>(enemies.at(i).pos.x - enemies.at(i).radius), static_cast <int>(enemies.at(i).pos.y - enemies.at(i).radius), WHITE);
 
 				break;
 			case ENEMY_TYPE::BIG:
 				
-				DrawTexture(enemies.at(i).texture, static_cast <int>(enemies.at(i).position.x - enemies.at(i).radius - enemies.at(i).radius / 2) - 10, static_cast <int>(enemies.at(i).position.y - enemies.at(i).radius - enemies.at(i).radius / 2), WHITE);
+				DrawTexture(enemies.at(i).texture, static_cast <int>(enemies.at(i).pos.x - enemies.at(i).radius - enemies.at(i).radius / 2) - 10, static_cast <int>(enemies.at(i).pos.y - enemies.at(i).radius - enemies.at(i).radius / 2), WHITE);
 				
 				break;
 			default:
@@ -184,15 +185,15 @@ namespace enemiesFeatures
 			{
 				if (player.bullets[j].isActive && enemies.size() != 0)
 				{
-					if (player.bullets[j].position.x > enemies.at(i).position.x)
-						distanceX = player.bullets[j].position.x - enemies.at(i).position.x;
+					if (player.bullets[j].position.x > enemies.at(i).pos.x)
+						distanceX = player.bullets[j].position.x - enemies.at(i).pos.x;
 					else
-						distanceX = enemies.at(i).position.x - player.bullets[j].position.x;
+						distanceX = enemies.at(i).pos.x - player.bullets[j].position.x;
 
-					if (player.bullets[j].position.y > enemies.at(i).position.y)
-						distanceY = player.bullets[j].position.y - enemies.at(i).position.y;
+					if (player.bullets[j].position.y > enemies.at(i).pos.y)
+						distanceY = player.bullets[j].position.y - enemies.at(i).pos.y;
 					else
-						distanceY = enemies.at(i).position.y - player.bullets[j].position.y;
+						distanceY = enemies.at(i).pos.y - player.bullets[j].position.y;
 
 					totalDistance = static_cast <float> (sqrt((distanceX * distanceX) + (distanceY * distanceY)));
 
@@ -228,15 +229,15 @@ namespace enemiesFeatures
 		{
 			for (unsigned int i = 0; i < enemies.size(); i++)
 			{
-				if (player.pos.x > enemies.at(i).position.x)
-					distanceX = player.pos.x - enemies.at(i).position.x;
+				if (player.pos.x > enemies.at(i).pos.x)
+					distanceX = player.pos.x - enemies.at(i).pos.x;
 				else
-					distanceX = enemies.at(i).position.x - player.pos.x;
+					distanceX = enemies.at(i).pos.x - player.pos.x;
 
-				if (player.pos.y > enemies.at(i).position.y)
-					distanceY = player.pos.y - enemies.at(i).position.y;
+				if (player.pos.y > enemies.at(i).pos.y)
+					distanceY = player.pos.y - enemies.at(i).pos.y;
 				else
-					distanceY = enemies.at(i).position.y - player.pos.y;
+					distanceY = enemies.at(i).pos.y - player.pos.y;
 
 				totalDistance = static_cast <float> (sqrt((distanceX * distanceX) + (distanceY * distanceY)));
 
@@ -310,7 +311,7 @@ namespace enemiesFeatures
 		enemy.speed.x = static_cast <float> (sin(enemy.rotation * DEG2RAD) * enemy.baseSpeed);
 		enemy.speed.y = static_cast <float> (cos(enemy.rotation * DEG2RAD) * enemy.baseSpeed);
 
-		enemy.position = position;
+		enemy.pos = position;
 
 		return enemy;
 	}

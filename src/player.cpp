@@ -9,22 +9,23 @@ namespace playerFeatures
 		int frameWidth = player.texture.width;
 		int frameHeight = player.texture.height;
 
+		/* Rectangle configuration */
 		player.textureRec.x = 0.0f;
 		player.textureRec.y = 0.0f;
 		player.textureRec.width = static_cast <float> (frameWidth);
 		player.textureRec.height = static_cast <float> (frameHeight);
 
+		/* Destiny configuration (Position)*/
 		player.textureDest.x = player.pos.x - (player.texture.width / 2.0f);
 		player.textureDest.y = player.pos.y - (player.texture.height / 2.0f);
 		player.textureDest.width = player.textureRec.width;
 		player.textureDest.height = player.textureRec.height;
 
+		/* Origin configuration (Position of the edge of the texture) */
 		player.textureOrigin.x = player.texture.width / 2.0f;
 		player.textureOrigin.y = player.texture.height / 2.0f;
 
-		player.texturePos.x = player.textureOrigin.x - player.texture.width;
-		player.texturePos.y = player.textureOrigin.y - player.texture.height;
-
+		/* Hitbox configuration */
 		player.hitboxPos.x = player.textureDest.x;
 		player.hitboxPos.y = player.textureDest.y;
 	}

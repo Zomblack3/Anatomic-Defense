@@ -46,12 +46,16 @@ namespace run
 		
 		resources::loadResources(menuBackground, gameplayBackground, playerTexture, smallEnemy, mediumEnemy, bigEnemy, tutorialLeft, tutorialRight, playerShotSound, EGBackground, smallEnemyDeathSound, mediumEnemyDeathSound, bigEnemyDeathSound, playerHitSound, baseFont, titleFont, metalTexture, oldScreenTexture, menuMusic, gameplayMusic);
 
+		// Const of buttons amount //
+
 		const int amountOfButtonsMenu = 3;
 		const int amountOfButtonsCredits = 5;
 		const int amountOfButtonsPause = 2;
 		const int amountOfButtonsEG = 2;
 
 		titleFont.baseSize = static_cast <int> (titleTextSize);
+
+		// Buttons texts //
 
 		std::string textsOfMenu[amountOfButtonsMenu] = { "INICIAR", "CREDITOS", "SALIR" };
 		std::string textsOfCredits[amountOfButtonsCredits] = { "PROGRAMACION", "ARTE", "MUSICA", "SONIDO", "TIPOGRAFIAS" };
@@ -61,6 +65,8 @@ namespace run
 		std::string textOfReturnMenu = "VOLVER AL MENU";
 		std::string textOfReturnCredits = "VOLVER A LOS CREDITOS";
 
+		// Buttons //
+
 		Button buttonsMenu[amountOfButtonsMenu] = { };
 		Button buttonsCredits[amountOfButtonsCredits] = { };
 		Button buttonsPause[amountOfButtonsPause] = { };
@@ -69,6 +75,8 @@ namespace run
 		Button returnMenuButton = { };
 		Button returnCreditsButton = { };
 
+		// Buttons positions //
+
 		Vector2 buttonsStartingPosMenu = { screenWidth / 2.0f, (screenHeight / 2.0f) - 100.0f };
 		Vector2 buttonsStartingPosCredits = { screenWidth / 2.0f, (screenHeight / 2.0f) - 250.0f };
 		Vector2 buttonsStartingPosPause = { screenWidth / 2.0f, (screenHeight / 2.0f) - 50.0f };
@@ -76,6 +84,8 @@ namespace run
 
 		Vector2 returnMenuButtonPos = { screenWidth / 2.0f, screenHeight - (screenHeight / 6.0f) };
 		Vector2 returnCreditsButtonPos = { screenWidth / 2.0f, screenHeight - (screenHeight / 6.0f) };
+
+		// Buttons setting //
 
 		buttonsFeatures::setButtons(buttonsMenu, amountOfButtonsMenu, buttonsStartingPosMenu.x, buttonsStartingPosMenu.y, textsOfMenu, SCREEN::MENU, oldScreenTexture, metalTexture, baseFont);
 		buttonsFeatures::setButtons(buttonsCredits, amountOfButtonsCredits, buttonsStartingPosCredits.x, buttonsStartingPosCredits.y, textsOfCredits, SCREEN::CREDITS, oldScreenTexture, metalTexture, baseFont);

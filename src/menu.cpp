@@ -39,13 +39,16 @@ namespace menuFunctions
 		Vector2 titleLenght = MeasureTextEx(titleFont, titleText.c_str(), titleTextSize, textSpacing);
 
 		int versionTextPosX = 10;
-		int versionTextPosY = static_cast <int> (screenHeight) - 50;
+		int versionTextPosY = 10;
 
 		Rectangle titleRec = { };
 		Vector2 titlePos = { };
 
-		float finalTitleRecWidth = titleLenght.x + 40.0f;
-		float finalTitleRecHeight = titleLenght.y + 20.0f;
+		float extraWidth = 40.0f;
+		float extraHeight = 20.0f;
+
+		float finalTitleRecWidth = titleLenght.x + extraWidth;
+		float finalTitleRecHeight = titleLenght.y + extraHeight;
 
 		titleRec.width = finalTitleRecWidth;
 		titleRec.height = finalTitleRecHeight;
@@ -66,7 +69,7 @@ namespace menuFunctions
 
 		buttonsFeatures::drawButtons(buttons, amountOfButtons, normalFont);
 
-		DrawText(versionText.c_str(), versionTextPosX, versionTextPosY, static_cast <int> (titleTextSize), BLACK);
+		DrawText(versionText.c_str(), versionTextPosX, versionTextPosY, static_cast <int> (normalTextSize), DARKBLUE);
 
 		EndDrawing();
 	}

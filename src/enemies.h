@@ -15,7 +15,7 @@ enum class ENEMY_TYPE
 
 struct Enemy
 {
-	Vector2 position = { 0.0f, 0.0f };
+	Vector2 pos = { 0.0f, 0.0f };
 	Vector2 speed = { 0.0f, 0.0f };
 
 	Color color = GREEN;

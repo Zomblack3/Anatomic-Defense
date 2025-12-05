@@ -89,11 +89,16 @@ namespace gameplayFunctions
 		float scorePosX = 150.0f;
 		int textPositionY = 15;
 
+		// Texts //
+		
+		/* Player variables */
 		std::string scoreText = TextFormat("Puntaje: %i", player.score);
 		std::string lifesText = TextFormat("Vidas: %i", player.lifes);
 
+		/* Pause title */
 		std::string pauseText = "PAUSA";
 
+		/* Tutorial */
 		std::string tutorialPauseText = "Presione P para pausar";
 		std::string tutorialRightText = "MOVERSE";
 		std::string tutorialLeftText = "DISPARAR";
@@ -102,11 +107,16 @@ namespace gameplayFunctions
 		std::string tutorialLoseConditionText = "Si te quedas sin vidas, el paciente muere";
 		std::string startingText = "Presione ENTER para iniciar";
 
-		Vector2 pauseTextLength = MeasureTextEx(font, pauseText.c_str(), tutorialTextSize, textSpacing);
+		// Texts length //
 
+		/* Player variables */
 		Vector2 scoreTextLength = MeasureTextEx(font, scoreText.c_str(), normalTextSize, textSpacing);
 		Vector2 lifesTextLength = MeasureTextEx(font, lifesText.c_str(), normalTextSize, textSpacing);
 
+		/* Pause */
+		Vector2 pauseTextLength = MeasureTextEx(font, pauseText.c_str(), tutorialTextSize, textSpacing);
+
+		/* Tutorial */
 		Vector2 tutorialPauseTextLength = MeasureTextEx(font, tutorialPauseText.c_str(), tutorialTextSize, textSpacing);
 		Vector2 tutorialRightTextLength = MeasureTextEx(font, tutorialRightText.c_str(), tutorialTextSize, textSpacing);
 		Vector2 tutorialLeftTextLength = MeasureTextEx(font, tutorialLeftText.c_str(), tutorialTextSize, textSpacing);
@@ -115,14 +125,30 @@ namespace gameplayFunctions
 		Vector2 tutorialLoseConditionTextLength = MeasureTextEx(font, tutorialLoseConditionText.c_str(), idicationsTextSize, textSpacing);
 		Vector2 startingTextLength = MeasureTextEx(font, startingText.c_str(), tutorialTextSize, textSpacing);
 
-		Vector2 pauseTextPos = { (screenWidth / 2.0f) - (pauseTextLength.x / 2.0f), screenHeight / 4.0f };
-
-		Vector2 scorePos = { scorePosX, static_cast <float> (textPositionY) };
-		Vector2 lifesPos = { lifePosX, static_cast <float> (textPositionY) };
+		// Tutorial texture positions //
 
 		Vector2 tutorialRightTexturePos = { (screenWidth / 4.0f) - (tutorialLeft.width / 2.0f), screenHeight / 4.0f };
 		Vector2 tutorialLeftTexturePos = { (screenWidth - (screenWidth / 4.0f)) - (tutorialLeft.width / 2.0f), screenHeight / 4.0f };
+		
+		// Texts positions //
 
+		/* Player variables */
+		Vector2 scorePos = { scorePosX, static_cast <float> (textPositionY) };
+		Vector2 lifesPos = { lifePosX, static_cast <float> (textPositionY) };
+
+		int extraDistanceX = 20;
+		int extraDistanceY = 5;
+
+		int scoreTexturePosX = static_cast <int> (scorePos.x) - extraDistanceX;
+		int scoreTexturePosY = static_cast <int> (scorePos.y) - extraDistanceY;
+
+		int lifesTexturePosX = static_cast <int> (lifesPos.x) - extraDistanceX;
+		int lifesTexturePosY = static_cast <int> (lifesPos.y) - extraDistanceY;
+
+		/* Pause */
+		Vector2 pauseTextPos = { (screenWidth / 2.0f) - (pauseTextLength.x / 2.0f), screenHeight / 4.0f };
+
+		/* Tutorial */
 		Vector2 tutorialPauseTextPos = { (screenWidth / 2.0f) - (tutorialPauseTextLength.x / 2.0f), screenHeight / 6.0f };
 		Vector2 tutorialRightTextPos = { tutorialRightTexturePos.x - 5.0f , (screenWidth / 4.0f) + tutorialLeft.height - (tutorialLeft.height / 2.0f)};
 		Vector2 tutorialLeftTextPos = { tutorialLeftTexturePos.x - 5.0f, (screenWidth / 4.0f) + tutorialLeft.height - (tutorialLeft.height / 2.0f)};
@@ -131,19 +157,16 @@ namespace gameplayFunctions
 		Vector2 tutorialLoseConditionsTextPos = { (screenWidth / 2.0f) - (tutorialLoseConditionTextLength.x / 2.0f), (screenHeight / 2.0f) + 200.0f };
 		Vector2 startingTextPos = { (screenWidth / 2.0f) - (startingTextLength.x / 2.0f), screenHeight - (screenHeight / 6.0f) };
 
-		int scoreTexturePosX = static_cast <int> (scorePos.x) - 20;
-		int scoreTexturePosY = static_cast <int> (scorePos.y) - 5;
+		// HUD sizes //
 
-		int lifesTexturePosX = static_cast <int> (lifesPos.x) - 20;
-		int lifesTexturePosY = static_cast <int> (lifesPos.y) - 5;
+		const int hudExtraWidth = 40;
+		const int hudExtraHeight = 10;
 
-		int hudValuesTextureScoreWidth = static_cast <int> (scoreTextLength.x) + 40;
-		int hudValuesTextureScoreHeight = static_cast <int> (scoreTextLength.y) + 10;
+		int hudValuesTextureScoreWidth = static_cast <int> (scoreTextLength.x) + hudExtraWidth;
+		int hudValuesTextureScoreHeight = static_cast <int> (scoreTextLength.y) + hudExtraHeight;
 
-		int hudValuesTextureLifesWidth = static_cast <int> (lifesTextLength.x) + 40;
-		int hudValuesTextureLifesHeight = static_cast <int> (lifesTextLength.y) + 10;
-
-		Vector2 origin = { 0.0f, 0.0f };
+		int hudValuesTextureLifesWidth = static_cast <int> (lifesTextLength.x) + hudExtraWidth;
+		int hudValuesTextureLifesHeight = static_cast <int> (lifesTextLength.y) + hudExtraHeight;
 
 		BeginDrawing();
 
@@ -185,8 +208,8 @@ namespace gameplayFunctions
 
 			DrawTexture(hudValuesTexture, lifesTexturePosX, lifesTexturePosY, WHITE);
 
-			DrawTextPro(font, scoreText.c_str(), scorePos, origin, 0.0f, normalTextSize, textSpacing, YELLOW);
-			DrawTextPro(font, lifesText.c_str(), lifesPos, origin, 0.0f, normalTextSize, textSpacing, YELLOW);
+			DrawTextEx(font, scoreText.c_str(), scorePos, normalTextSize, textSpacing, YELLOW);
+			DrawTextEx(font, lifesText.c_str(), lifesPos, normalTextSize, textSpacing, YELLOW);
 		}
 
 		if (isPauseOn)

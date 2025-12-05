@@ -14,18 +14,23 @@ namespace mainFunctions
 	{
 		Vector2 buttonsStartingPos = { screenWidth / 2.0f, (screenHeight / 2.0f) - 250.0f };
 
+		// Credits buttons //
+
+		/* Buttons texts*/
 		std::string programmingTexts[amountOfProgrammingButtons] = { "Zomblack3" };
 		std::string artTexts[amountOfArtButtons] = { "CreativeSpace [Enemigos]", "freepik [Fondo de fin del juego, Textura frontal de botones]", "template.net [Textura contorno de botones]", "Quimono [Fondo del juego]", "Zomblack3 [Jugador]" };
 		std::string musicTexts[amountOfMusicButtons] = { "denwriteman [Musica del juego]", "Megisss [Musica del menu]" };
 		std::string soundsTexts[amountOfSoundsButtons] = { "bolkmar [Disparo de jugador]", "Zuzek06 [Muerte del enemigo pequeno]", "qudobup [Muerte del enemigo mediano y grande]", "Jofae [Choque de la nave]" };
 		std::string fontsTexts[amountOfFontButtons] = { "Dusit Supasawat [Ds-Digital]", "Google [Roboto]" };
 
+		/* Buttons */
 		Button programmingButtons[amountOfProgrammingButtons] = { };
 		Button artButtons[amountOfArtButtons] = { };
 		Button musicButtons[amountOfMusicButtons] = { };
 		Button soundsButtons[amountOfSoundsButtons] = { };
 		Button fontsButtons[amountOfFontButtons] = { };
 
+		/* Set Buttons */
 		buttonsFeatures::setButtons(programmingButtons, amountOfProgrammingButtons, buttonsStartingPos.x, buttonsStartingPos.y, programmingTexts, SCREEN::CREDITS_PROGRAMMERS, frontTexture, backTexture, baseFont);
 		buttonsFeatures::setButtons(artButtons, amountOfArtButtons, buttonsStartingPos.x, buttonsStartingPos.y, artTexts, SCREEN::CREDITS_ARTISTS, frontTexture, backTexture, baseFont);
 		buttonsFeatures::setButtons(musicButtons, amountOfMusicButtons, buttonsStartingPos.x, buttonsStartingPos.y, musicTexts, SCREEN::CREDITS_MUSICIANS, frontTexture, backTexture, baseFont);

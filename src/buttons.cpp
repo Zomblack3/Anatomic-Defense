@@ -222,6 +222,6 @@ namespace buttonsFeatures
 		DrawTexture(button.backTexture, static_cast <int>(button.backTexturePos.x), static_cast <int>(button.backTexturePos.y), WHITE);
 		DrawTexture(button.frontTexture, static_cast <int>(button.rec.x), static_cast <int>(button.rec.y), button.actualColor);
 
-		DrawTextEx(font, button.text.c_str(), button.textPos, static_cast <float>(button.textSize), 2, button.actualTextColor);
+		DrawTextEx(font, button.text.c_str(), button.textPos, static_cast <float>(button.textSize), textSpacing, button.actualTextColor);
 	}
 }

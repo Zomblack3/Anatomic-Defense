@@ -21,7 +21,6 @@ struct Player
 {
 	Vector2 pos = { 0.0f, 0.0f };
 	Vector2 textureOrigin = { 0.0f, 0.0f };
-	Vector2 texturePos = { 0.0f, 0.0f };
 	Vector2 hitboxPos = { 0.0f, 0.0f };
 
 	Vector2 speed = { 0.0f, 0.0f };

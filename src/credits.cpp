@@ -26,11 +26,11 @@ namespace mainFunctions
 		Button soundsButtons[amountOfSoundsButtons] = { };
 		Button fontsButtons[amountOfFontButtons] = { };
 
-		buttonsFeatures::setButtons(programmingButtons, amountOfProgrammingButtons, buttonsStartingPos.x, buttonsStartingPos.y, programmingTexts, SCREEN::CREDITS_PROGRAMMERS, frontTexture, backTexture);
-		buttonsFeatures::setButtons(artButtons, amountOfArtButtons, buttonsStartingPos.x, buttonsStartingPos.y, artTexts, SCREEN::CREDITS_ARTISTS, frontTexture, backTexture);
-		buttonsFeatures::setButtons(musicButtons, amountOfMusicButtons, buttonsStartingPos.x, buttonsStartingPos.y, musicTexts, SCREEN::CREDITS_MUSICIANS, frontTexture, backTexture);
-		buttonsFeatures::setButtons(soundsButtons, amountOfSoundsButtons, buttonsStartingPos.x, buttonsStartingPos.y, soundsTexts, SCREEN::CREDITS_SOUND_ENGENNIERS, frontTexture, backTexture);
-		buttonsFeatures::setButtons(fontsButtons, amountOfFontButtons, buttonsStartingPos.x, buttonsStartingPos.y, fontsTexts, SCREEN::CREDITS_FONTS, frontTexture, backTexture);
+		buttonsFeatures::setButtons(programmingButtons, amountOfProgrammingButtons, buttonsStartingPos.x, buttonsStartingPos.y, programmingTexts, SCREEN::CREDITS_PROGRAMMERS, frontTexture, backTexture, baseFont);
+		buttonsFeatures::setButtons(artButtons, amountOfArtButtons, buttonsStartingPos.x, buttonsStartingPos.y, artTexts, SCREEN::CREDITS_ARTISTS, frontTexture, backTexture, baseFont);
+		buttonsFeatures::setButtons(musicButtons, amountOfMusicButtons, buttonsStartingPos.x, buttonsStartingPos.y, musicTexts, SCREEN::CREDITS_MUSICIANS, frontTexture, backTexture, baseFont);
+		buttonsFeatures::setButtons(soundsButtons, amountOfSoundsButtons, buttonsStartingPos.x, buttonsStartingPos.y, soundsTexts, SCREEN::CREDITS_SOUND_ENGENNIERS, frontTexture, backTexture, baseFont);
+		buttonsFeatures::setButtons(fontsButtons, amountOfFontButtons, buttonsStartingPos.x, buttonsStartingPos.y, fontsTexts, SCREEN::CREDITS_FONTS, frontTexture, backTexture, baseFont);
 
 		creditsFunctions::update(currentScreen, buttons, returnMenuButton, returnCreditsButton, amountOfButtons, programmingButtons, artButtons, musicButtons, soundsButtons, fontsButtons);
 

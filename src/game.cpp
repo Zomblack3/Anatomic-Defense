@@ -77,13 +77,13 @@ namespace run
 		Vector2 returnMenuButtonPos = { screenWidth / 2.0f, screenHeight - (screenHeight / 6.0f) };
 		Vector2 returnCreditsButtonPos = { screenWidth / 2.0f, screenHeight - (screenHeight / 6.0f) };
 
-		buttonsFeatures::setButtons(buttonsMenu, amountOfButtonsMenu, buttonsStartingPosMenu.x, buttonsStartingPosMenu.y, textsOfMenu, SCREEN::MENU, oldScreenTexture, metalTexture);
-		buttonsFeatures::setButtons(buttonsCredits, amountOfButtonsCredits, buttonsStartingPosCredits.x, buttonsStartingPosCredits.y, textsOfCredits, SCREEN::CREDITS, oldScreenTexture, metalTexture);
-		buttonsFeatures::setButtons(buttonsPause, amountOfButtonsPause, buttonsStartingPosPause.x, buttonsStartingPosPause.y, textsOfPause, SCREEN::GAMEPLAY, oldScreenTexture, metalTexture);
-		buttonsFeatures::setButtons(buttonsEG, amountOfButtonsEG, buttonsStartingPosEG.x, buttonsStartingPosEG.y, textsOfEG, SCREEN::END_GAME, oldScreenTexture, metalTexture);
+		buttonsFeatures::setButtons(buttonsMenu, amountOfButtonsMenu, buttonsStartingPosMenu.x, buttonsStartingPosMenu.y, textsOfMenu, SCREEN::MENU, oldScreenTexture, metalTexture, baseFont);
+		buttonsFeatures::setButtons(buttonsCredits, amountOfButtonsCredits, buttonsStartingPosCredits.x, buttonsStartingPosCredits.y, textsOfCredits, SCREEN::CREDITS, oldScreenTexture, metalTexture, baseFont);
+		buttonsFeatures::setButtons(buttonsPause, amountOfButtonsPause, buttonsStartingPosPause.x, buttonsStartingPosPause.y, textsOfPause, SCREEN::GAMEPLAY, oldScreenTexture, metalTexture, baseFont);
+		buttonsFeatures::setButtons(buttonsEG, amountOfButtonsEG, buttonsStartingPosEG.x, buttonsStartingPosEG.y, textsOfEG, SCREEN::END_GAME, oldScreenTexture, metalTexture, baseFont);
 
-		buttonsFeatures::setSingleButton(returnMenuButton, returnMenuButtonPos.x, returnMenuButtonPos.y, textOfReturnMenu, SCREEN::MENU, oldScreenTexture, metalTexture);
-		buttonsFeatures::setSingleButton(returnCreditsButton, returnCreditsButtonPos.x, returnCreditsButtonPos.y, textOfReturnCredits, SCREEN::CREDITS, oldScreenTexture, metalTexture);
+		buttonsFeatures::setSingleButton(returnMenuButton, returnMenuButtonPos.x, returnMenuButtonPos.y, textOfReturnMenu, SCREEN::MENU, oldScreenTexture, metalTexture, baseFont);
+		buttonsFeatures::setSingleButton(returnCreditsButton, returnCreditsButtonPos.x, returnCreditsButtonPos.y, textOfReturnCredits, SCREEN::CREDITS, oldScreenTexture, metalTexture, baseFont);
 
 		metalTexture.width = hudWidth;
 		metalTexture.height = hudHeight;

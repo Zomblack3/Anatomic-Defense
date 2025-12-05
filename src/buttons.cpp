@@ -1,5 +1,7 @@
 #include "buttons.h"
 
+#include "settings.h"
+
 namespace buttonsFeatures
 {
 	bool collitionCheckButtonMouse(Rectangle rec)
@@ -16,7 +18,7 @@ namespace buttonsFeatures
 		return false;
 	}
 
-	void setButtons(Button buttons[], int amountOfButtons, float startingPosX, float startingPosY, std::string texts[], SCREEN buttonScreen, Texture frontTexture, Texture backTexture)
+	void setButtons(Button buttons[], int amountOfButtons, float startingPosX, float startingPosY, std::string texts[], SCREEN buttonScreen, Texture frontTexture, Texture backTexture, Font font)
 	{
 		for (int i = 0; i < amountOfButtons; i++)
 		{
@@ -28,17 +30,17 @@ namespace buttonsFeatures
 				{
 				case 0:
 
-					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::GAMEPLAY, frontTexture, backTexture);
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::GAMEPLAY, frontTexture, backTexture, font);
 
 					break;
 				case 1:
 
-					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS, frontTexture, backTexture);
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS, frontTexture, backTexture, font);
 
 					break;
 				case 2:
 
-					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::EXIT, frontTexture, backTexture);
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::EXIT, frontTexture, backTexture, font);
 
 					break;
 				default:
@@ -55,12 +57,12 @@ namespace buttonsFeatures
 				{
 				case 0:
 
-					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::GAMEPLAY, frontTexture, backTexture);
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::GAMEPLAY, frontTexture, backTexture, font);
 
 					break;
 				case 1:
 
-					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::MENU, frontTexture, backTexture);
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::MENU, frontTexture, backTexture, font);
 
 					break;
 				default:
@@ -77,12 +79,12 @@ namespace buttonsFeatures
 				{
 				case 0:
 
-					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::GAMEPLAY, frontTexture, backTexture);
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::GAMEPLAY, frontTexture, backTexture, font);
 
 					break;
 				case 1:
 
-					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::MENU, frontTexture, backTexture);
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::MENU, frontTexture, backTexture, font);
 
 					break;
 				default:
@@ -99,27 +101,27 @@ namespace buttonsFeatures
 				{
 				case 0:
 
-					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_PROGRAMMERS, frontTexture, backTexture);
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_PROGRAMMERS, frontTexture, backTexture, font);
 
 					break;
 				case 1:
 
-					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_ARTISTS, frontTexture, backTexture);
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_ARTISTS, frontTexture, backTexture, font);
 
 					break;
 				case 2:
 
-					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_MUSICIANS, frontTexture, backTexture);
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_MUSICIANS, frontTexture, backTexture, font);
 
 					break;
 				case 3:
 
-					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_SOUND_ENGENNIERS, frontTexture, backTexture);
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_SOUND_ENGENNIERS, frontTexture, backTexture, font);
 
 					break;
 				case 4:
 
-					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_FONTS, frontTexture, backTexture);
+					setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], SCREEN::CREDITS_FONTS, frontTexture, backTexture, font);
 
 					break;
 				default:
@@ -132,7 +134,7 @@ namespace buttonsFeatures
 				break;
 			default:
 
-				setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], buttonScreen, frontTexture, backTexture);
+				setSingleButton(buttons[i], startingPosX, startingPosY, texts[i], buttonScreen, frontTexture, backTexture, font);
 
 				break;
 			}
@@ -141,17 +143,18 @@ namespace buttonsFeatures
 		}
 	}
 
-	void setSingleButton(Button& button, float x, float y, std::string text, SCREEN directionScreen, Texture frontTexture, Texture backTexture)
+	void setSingleButton(Button& button, float x, float y, std::string text, SCREEN directionScreen, Texture frontTexture, Texture backTexture, Font font)
 	{
-		float finalRecWidth = static_cast <float> (text.size() * button.textSize);
-
 		int backTextureHeight = 0;
 		int backTextureWidth = 0;
 		float backTexturePosX = 0.0f;
 		float backTexturePosY = 0.0f;
+		float buttonExtraSize = 10.0f;
 
 		Vector2 finalTextPos = { };
+		Vector2 textSize = MeasureTextEx(font, text.c_str(), static_cast <float> (button.textSize), textSpacing);
 
+		float finalRecWidth = textSize.x + buttonExtraSize;
 		float finalPosX = 0.0f;
 
 		button.rec.width = finalRecWidth;
@@ -169,11 +172,11 @@ namespace buttonsFeatures
 
 		button.directionScreen = directionScreen;
 
-		backTextureHeight = static_cast <int> (button.rec.height + 10.0f);
-		backTextureWidth = static_cast <int> (button.rec.width + 10.0f);
+		backTextureHeight = static_cast <int> (button.rec.height + buttonExtraSize);
+		backTextureWidth = static_cast <int> (button.rec.width + buttonExtraSize);
 
-		backTexturePosX = button.rec.x - 5.0f;
-		backTexturePosY = button.rec.y - 5.0f;
+		backTexturePosX = button.rec.x - (buttonExtraSize / 2.0f);
+		backTexturePosY = button.rec.y - (buttonExtraSize / 2.0f);
 
 		button.frontTexture.width = static_cast <int> (button.rec.width);
 		button.frontTexture.height = static_cast <int> (button.rec.height);
@@ -184,7 +187,7 @@ namespace buttonsFeatures
 		button.backTexturePos.x = backTexturePosX;
 		button.backTexturePos.y = backTexturePosY;
 
-		finalTextPos.x = button.rec.x + (button.rec.width / 4.0f);
+		finalTextPos.x = (button.rec.x + (button.rec.width / 2)) - (button.rec.width / 2.0f) + (buttonExtraSize / 2.0f);
 		finalTextPos.y = button.rec.y + (button.rec.height / 4.0f);
 
 		button.textPos = finalTextPos;
